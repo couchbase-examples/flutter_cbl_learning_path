@@ -60,6 +60,7 @@ class _UsernameInput extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
             child: TextField(
               key: const Key('loginForm_usernameInput_textField'),
+              keyboardType: TextInputType.emailAddress,
               onChanged: (username) =>
                   context.read<LoginBloc>().add(LoginUsernameChanged(username)),
               decoration: InputDecoration(
