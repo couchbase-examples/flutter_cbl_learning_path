@@ -1,11 +1,9 @@
 import 'package:bloc/bloc.dart';
-import 'package:flutter_cbl_learning_path/features/login/bloc/bloc.dart';
 import 'package:formz/formz.dart';
 
-import '../../authentication/authentication.dart';
+import 'package:flutter_cbl_learning_path/features/login/bloc/bloc.dart';
+import 'package:flutter_cbl_learning_path/features/router/route.dart';
 import '../models/models.dart';
-import 'login_event.dart';
-import 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final FakeAuthenticationService _authenticationService;
