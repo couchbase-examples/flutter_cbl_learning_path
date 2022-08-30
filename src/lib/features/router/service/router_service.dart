@@ -13,6 +13,7 @@ enum RouteToScreen {
   replicatorConfig,
   logout,
   none,
+  pop,
 }
 
 abstract class RouterService {
@@ -28,7 +29,9 @@ class AppRouterService extends RouterService {
   void dispose() => _controller.close();
 
   @override
-  void routeTo(RouteToScreen route) => _controller.add(route);
+  void routeTo(RouteToScreen route) {
+    _controller.add(route);
+  }
 
   @override
   Stream<RouteToScreen> get route async* {

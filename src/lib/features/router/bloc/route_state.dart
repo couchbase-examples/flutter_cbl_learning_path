@@ -89,6 +89,12 @@ class RouteState extends Equatable {
             user: User.empty,
             route: RouteToScreen.replicatorConfig);
 
+  const RouteState.pop()
+      : this(
+            status: AuthenticationStatus.authenticated,
+            user: User.empty,
+            route: RouteToScreen.pop);
+
   @override
   List<Object> get props => [status, user, route];
 }

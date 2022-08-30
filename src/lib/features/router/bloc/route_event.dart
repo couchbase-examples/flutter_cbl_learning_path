@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import '../../login/models/user.dart';
 import '../service/auth_service.dart';
 import '../service/router_service.dart';
 
@@ -12,16 +11,6 @@ abstract class RouteEvent extends Equatable {
 
 // Fired just after the app is launched
 class AppLoaded extends RouteEvent {}
-
-// Fired when a user has successfully logged in
-class UserLoggedIn extends RouteEvent {
-  final User user;
-
-  const UserLoggedIn({required this.user});
-
-  @override
-  List<Object> get props => [user];
-}
 
 // Fired when the user has logged out
 class UserLoggedOut extends RouteEvent {}

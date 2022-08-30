@@ -35,7 +35,8 @@ class _AppViewState extends State<AppView> {
         "/auditEditor": (context) => const AuditEditorScreen(),
         "/dev": (context) => DeveloperMenuScreen(
             routerService: RepositoryProvider.of<AppRouterService>(context)),
-        "/devInfo": (context) => const DeveloperInfoScreen(),
+        "/devInfo": (context) => DeveloperInfoScreen(
+            routerService: RepositoryProvider.of<AppRouterService>(context)),
         "/devLoadSampleData": (context) => const DeveloperSampleDataScreen(),
         "/replicator": (context) => const ReplicatorScreen(),
         "/replicatorConfig": (context) => const ReplicatorConfigScreen(),
@@ -79,6 +80,9 @@ class _AppViewState extends State<AppView> {
               } else if (state.status == AuthenticationStatus.authenticated &&
                   state.route == RouteToScreen.replicatorConfig) {
                 _navigator.pushNamed("/replicatorConfig");
+              } else if (state.status == AuthenticationStatus.authenticated &&
+                  state.route == RouteToScreen.pop) {
+                _navigator.pop();
               } else {
                 if (state.status != AuthenticationStatus.authenticatedFailed) {
                   _navigator.pushAndRemoveUntil(

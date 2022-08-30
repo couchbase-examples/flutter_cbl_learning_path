@@ -59,6 +59,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           emit(state.copyWith(status: FormzStatus.submissionFailure));
         }
         emit(state.copyWith(status: FormzStatus.submissionSuccess));
+        //open the database because the user did properly login
+
       } catch (_) {
         emit(state.copyWith(status: FormzStatus.submissionFailure));
       }
