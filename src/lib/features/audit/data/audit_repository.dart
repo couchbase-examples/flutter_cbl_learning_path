@@ -11,7 +11,7 @@ class AuditRepository {
 
   const AuditRepository(this._databaseProvider);
 
-  Future<int> getCount() async {
+  Future<int> count() async {
     var count = 0;
     try {
       var attributeCount = 'count';
@@ -28,5 +28,19 @@ class AuditRepository {
       debugPrint(e.toString());
     }
     return count;
+  }
+
+  Future<bool> save(Audit document) async {
+    try {
+      var db = _databaseProvider.inventoryDatabase;
+      if (db != null) {
+        Map<String, dynamic> map = document.toJson();
+        var doc = MutableDocument.withId(document.auditId, map);
+        return await db.saveDocument(doc);
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+    return false;
   }
 }

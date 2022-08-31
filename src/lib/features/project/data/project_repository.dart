@@ -1,22 +1,38 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:cbl/cbl.dart';
+import 'package:flutter_cbl_learning_path/features/audit/data/audit_repository.dart';
+import 'package:uuid/uuid.dart';
 
+import 'package:flutter_cbl_learning_path/features/audit/data/stock_item_repository.dart';
 import 'package:flutter_cbl_learning_path/features/database/database.dart';
+import 'package:flutter_cbl_learning_path/features/project/data/warehouse_repository.dart';
+import 'package:flutter_cbl_learning_path/features/router/route.dart';
 import 'package:flutter_cbl_learning_path/models/models.dart';
 
 class ProjectRepository {
   final DatabaseProvider _databaseProvider;
+  final StockItemRepository _stockItemRepository;
+  final WarehouseRepository _warehouseRepository;
+  final AuditRepository _auditRepository;
+  final AuthenticationService _authenticationService;
+
   final String projectDocumentType = 'project';
   final String auditDocumentType = 'audit';
   final String attributeDocumentType = 'documentType';
 
-  const ProjectRepository(this._databaseProvider);
+  const ProjectRepository(
+      this._databaseProvider,
+      this._authenticationService,
+      this._auditRepository,
+      this._warehouseRepository,
+      this._stockItemRepository);
 
   String getDatabaseName() => _databaseProvider.currentInventoryDatabaseName;
 
-  Future<int> getCount() async {
+  Future<int> count() async {
     var count = 0;
     try {
       var attributeCount = 'count';
@@ -86,5 +102,94 @@ class ProjectRepository {
       debugPrint(e.toString());
     }
     return false;
+  }
+
+  Future<bool> updateWarehouse(String projectId, Warehouse warehouse) async {
+    try {
+      var project = await get(projectId);
+      project.warehouse = warehouse;
+      return save(project);
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+    return false;
+  }
+
+  Future<void> loadSampleData() async {
+    var currentUser = await _authenticationService.getCurrentUser();
+    var warehouses = await _warehouseRepository.get();
+    var warehouseCount = await _warehouseRepository.count();
+    var stockItems = await _stockItemRepository.get();
+    var stockItemsCount = await _stockItemRepository.count();
+
+    //won't create items if we can't get warehouse and stock items from prebuit warehouse database
+    if (stockItemsCount > 0 && warehouseCount > 0) {
+      var db = _databaseProvider.inventoryDatabase;
+      if (db != null) {
+        /* batch operations for saving multiple documents is a faster way to process
+        groups of documents at once */
+        db.inBatch(() async {
+          // <1>
+          //create 12 new projects with random data
+          var uuid = const Uuid();
+          final random = Random();
+          const minYear = 2022;
+          const maxYear = 2025;
+          const minMonth = 1;
+          const maxMonth = 12;
+          const minDay = 1;
+          const maxDay = 28;
+          var date = DateTime.now();
+          //create 12 new projects with random data
+          for (var projectIndex = 0; projectIndex <= 11; projectIndex++) {
+            // <2>
+            //get data items to create project
+            String projectId = uuid.v4();
+            var warehouse = warehouses[projectIndex]; // <3>
+            var yearRandom = minYear + random.nextInt(maxYear - minYear);
+            var monthRandom = minMonth + random.nextInt(maxMonth - minMonth);
+            var dayRandom = minDay + random.nextInt(maxDay - minDay);
+            var dueDate = DateTime.utc(yearRandom, monthRandom, dayRandom);
+            //create project
+            var projectDocument = Project(
+                //<4>
+                projectId,
+                '${warehouse.name} Audit',
+                'Audit of warehouse stock located in ${warehouse.city}, ${warehouse.state}.',
+                false,
+                dueDate,
+                warehouse,
+                currentUser!.team,
+                currentUser.username,
+                date,
+                currentUser.username,
+                date);
+            var didSave = await save(projectDocument); // <5>
+            if (didSave) {
+              // <6>
+              //create random audit counts per project // <7>
+              for (var auditIndex = 0; auditIndex <= 49; auditIndex++) {
+                var auditId = uuid.v4();
+                var stockCount = 1 + random.nextInt(10000 - 1);
+                var stockItemIndex = random.nextInt(stockItemsCount);
+                var stockItem = stockItems[stockItemIndex];
+                var auditDocument = Audit(
+                    auditId,
+                    projectId,
+                    stockItem,
+                    stockCount,
+                    'Found item ${stockItem.name} - ${stockItem.description} in warehouse',
+                    currentUser.team,
+                    currentUser.username,
+                    currentUser.username,
+                    date,
+                    date);
+                await _auditRepository.save(auditDocument);
+              }
+            }
+          }
+        });
+      }
+    }
   }
 }
