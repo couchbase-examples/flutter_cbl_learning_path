@@ -88,7 +88,7 @@ class RouteBloc extends Bloc<RouteEvent, RouteState> {
         final user = await _tryGetUser();
         if (user != null) {
           //init the database of the logged in user
-          _databaseProvider.initDatabases(user: user);
+          await _databaseProvider.initDatabases(user: user);
           return emit(RouteState.authenticated(user));
         }
         return emit(const RouteState.unauthenticated());

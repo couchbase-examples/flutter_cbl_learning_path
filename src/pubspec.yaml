@@ -33,20 +33,24 @@ dependencies:
   flutter_bloc: ^8.1.0
   bloc: ^8.1.0
   formz: ^0.4.0
-  cbl_dart: ^2.1.0
-  cbl_flutter_ce: ^2.1.0
+  cbl: ^2.0.0
   cbl_flutter: ^2.0.0
+  cbl_flutter_ce: ^2.1.0
   path_provider: ^2.0.2
   collection: ^1.15.0
   path: ^1.8.0
   archive: ^3.3.1
-
+  google_fonts: ^2.1.0
+  json_annotation: ^4.6.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
 
 dev_dependencies:
+  cbl_dart: ^2.1.0
+  build_runner: ^2.2.0
+  json_serializable: ^6.3.1
   flutter_test:
     sdk: flutter
 
