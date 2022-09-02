@@ -58,6 +58,11 @@ class DatabaseProvider {
     }
   }
 
+  String getInventoryDatabasePath() =>
+      '${cblDatabaseDirectory.path}/$currentInventoryDatabaseName';
+  String getWarehouseDatabasePath() =>
+      '${cblLogsDirectory.path}/$warehouseDatabaseName';
+
   /* setupFileSystem - used to calculate the path to save database and log files on the device */
   Future<void> setupFileSystem() async {
     final databaseDirectory = await getApplicationDocumentsDirectory();

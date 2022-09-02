@@ -17,6 +17,9 @@ class WarehouseRepository {
 
   const WarehouseRepository(this._databaseProvider);
 
+  String getDatabaseName() => _databaseProvider.warehouseDatabaseName;
+  String getDatabasePath() => _databaseProvider.getWarehouseDatabasePath();
+
   Future<int> count() async {
     var count = 0;
     try {

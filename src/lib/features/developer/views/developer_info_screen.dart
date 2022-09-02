@@ -1,5 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_cbl_learning_path/features/audit/data/audit_repository.dart';
+import 'package:flutter_cbl_learning_path/features/audit/data/stock_item_repository.dart';
+import 'package:flutter_cbl_learning_path/features/project/data/project_repository.dart';
+import 'package:flutter_cbl_learning_path/features/project/data/warehouse_repository.dart';
+import 'package:flutter_cbl_learning_path/features/router/service/auth_service.dart';
 import 'package:flutter_cbl_learning_path/widgets/back_navigation.dart';
+import '../developer_info.dart';
+import 'developer_info_list.dart';
 
 class DeveloperInfoScreen extends BackNavigationStatelessWidget {
   const DeveloperInfoScreen({super.key, required super.routerService});
@@ -12,13 +20,24 @@ class DeveloperInfoScreen extends BackNavigationStatelessWidget {
         appBar: AppBar(
           title: const Text('Developer Information'),
         ),
-        body: Center(
-          child: ElevatedButton(
-            onPressed: () {
-              // Navigate back to first screen when tapped.
-            },
-            child: const Text('Developer Info Screen!'),
-          ),
+        body: Padding(
+          padding: const EdgeInsets.all(2),
+          child: BlocProvider(
+              create: (context) {
+                return DevInfoBloc(
+                  authenticationService:
+                      RepositoryProvider.of<FakeAuthenticationService>(context),
+                  projectRepository:
+                      RepositoryProvider.of<ProjectRepository>(context),
+                  warehouseRepository:
+                      RepositoryProvider.of<WarehouseRepository>(context),
+                  auditRepository:
+                      RepositoryProvider.of<AuditRepository>(context),
+                  stockItemRepository:
+                      RepositoryProvider.of<StockItemRepository>(context),
+                )..add(DevInfoGetData());
+              },
+              child: const DeveloperInfoWidget()),
         ),
       ),
     );

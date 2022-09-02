@@ -31,6 +31,7 @@ class ProjectRepository {
       this._stockItemRepository);
 
   String getDatabaseName() => _databaseProvider.currentInventoryDatabaseName;
+  String getDatabasePath() => _databaseProvider.getInventoryDatabasePath();
 
   Future<int> count() async {
     var count = 0;
