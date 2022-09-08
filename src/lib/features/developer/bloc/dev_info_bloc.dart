@@ -30,7 +30,7 @@ class DevInfoBloc extends Bloc<DevInfoEvent, DevInfoState> {
         _warehouseRepository = warehouseRepository,
         _stockItemRepository = stockItemRepository,
         super(const DevInfoState(status: DevInfoStatus.uninitialized)) {
-    on<DevInfoGetData>(_initialize);
+    on<DevInfoGetDataEvent>(_initialize);
   }
 
   Future<void> _initialize(

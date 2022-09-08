@@ -61,7 +61,7 @@ class DatabaseProvider {
   String getInventoryDatabasePath() =>
       '${cblDatabaseDirectory.path}/$currentInventoryDatabaseName';
   String getWarehouseDatabasePath() =>
-      '${cblLogsDirectory.path}/$warehouseDatabaseName';
+      '${cblDatabaseDirectory.path}/$warehouseDatabaseName';
 
   /* setupFileSystem - used to calculate the path to save database and log files on the device */
   Future<void> setupFileSystem() async {
@@ -83,11 +83,8 @@ class DatabaseProvider {
       // use Dart Concurrency:
       // https://dart.dev/guides/language/concurrency
       if (!File("$cblPreBuiltDatabasePath/$databaseFileName").existsSync()) {
-        final unzipDatabaseRP = ReceivePort();
-        await Isolate.spawn(_unzipPrebuiltDatabase, unzipDatabaseRP.sendPort);
-
-        final copyDatabaseRP = ReceivePort();
-        await Isolate.spawn(_copyWarehouseDatabase, copyDatabaseRP.sendPort);
+        await _unzipPrebuiltDatabase();
+        await _copyWarehouseDatabase();
       }
       //open the warehouse database
       warehouseDatabase =
@@ -121,7 +118,7 @@ class DatabaseProvider {
     }
   }
 
-  Future<void> _copyWarehouseDatabase(SendPort sendPort) async {
+  Future<void> _copyWarehouseDatabase() async {
     //create database config
     var dbConfig = DatabaseConfiguration(directory: cblDatabaseDirectory.path);
 
@@ -132,12 +129,10 @@ class DatabaseProvider {
         from: cblPreBuiltDatabasePath,
         name: warehouseDatabaseName,
         config: dbConfig);
-
-    Isolate.exit(sendPort);
   }
 
   /* _unzipPrebuiltDatabase - unzip the prebuilt database included in the asset/database folder to the application database directory */
-  Future<void> _unzipPrebuiltDatabase(SendPort sendPort) async {
+  Future<void> _unzipPrebuiltDatabase() async {
     //get the prebuild database zip file back from asset folder
     var pbdbWarehousesZip = await rootBundle.load(assetsDatabaseFileName);
 
@@ -159,7 +154,6 @@ class DatabaseProvider {
         }
       }
     }
-    Isolate.exit(sendPort);
   }
 
   /* closeDatabases - close the databases */

@@ -7,7 +7,7 @@ import 'package:flutter_cbl_learning_path/features/project/data/warehouse_reposi
 import 'package:flutter_cbl_learning_path/features/router/service/auth_service.dart';
 import 'package:flutter_cbl_learning_path/widgets/back_navigation.dart';
 import '../developer_info.dart';
-import 'developer_info_list.dart';
+import 'developer_info_widget.dart';
 
 class DeveloperInfoScreen extends BackNavigationStatelessWidget {
   const DeveloperInfoScreen({super.key, required super.routerService});
@@ -35,7 +35,8 @@ class DeveloperInfoScreen extends BackNavigationStatelessWidget {
                       RepositoryProvider.of<AuditRepository>(context),
                   stockItemRepository:
                       RepositoryProvider.of<StockItemRepository>(context),
-                )..add(DevInfoGetData());
+                  //call add to have it get data right away
+                )..add(DevInfoGetDataEvent());
               },
               child: const DeveloperInfoWidget()),
         ),
