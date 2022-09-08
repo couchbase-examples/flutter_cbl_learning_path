@@ -6,7 +6,7 @@ abstract class DevInfoEvent extends Equatable {
 
 class DevInfoGetDataEvent extends DevInfoEvent {
   @override
-  String toString() => "DevInfoGetData";
+  String toString() => "DevInfoGetDataEvent";
 
   @override
   List<Object> get props => [];

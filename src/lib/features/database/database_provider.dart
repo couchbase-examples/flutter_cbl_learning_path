@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'dart:async';
-import 'dart:isolate';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:path_provider/path_provider.dart';
 import 'package:cbl_flutter/cbl_flutter.dart';
@@ -80,8 +79,6 @@ class DatabaseProvider {
           DatabaseConfiguration(directory: cblDatabaseDirectory.path);
 
       // create the warehouse database if it doesn't already exist
-      // use Dart Concurrency:
-      // https://dart.dev/guides/language/concurrency
       if (!File("$cblPreBuiltDatabasePath/$databaseFileName").existsSync()) {
         await _unzipPrebuiltDatabase();
         await _copyWarehouseDatabase();
@@ -99,13 +96,6 @@ class DatabaseProvider {
       projects, assets, and user profiles */
       inventoryDatabase =
           await Database.openAsync(currentInventoryDatabaseName, dbConfig);
-
-      /* @biozal - 8/30/2022
-       * tried to create these using Isolate.spawn but then I run into issue 
-       * here: https://github.com/dart-lang/sdk/issues/36983 
-       * for now will just call using standard async, but really this should be 
-       * spawned into a seperate process to stop frames from being dropped
-       */
 
       //create indexes for queries
       await _createDocumentTypeIndex();
@@ -125,7 +115,7 @@ class DatabaseProvider {
     // you MUST copy the prebuilt database to the warehouse database
     // never open a prebuilt database directly as this will cause issues
     // with sync
-    Database.copy(
+    await Database.copy(
         from: cblPreBuiltDatabasePath,
         name: warehouseDatabaseName,
         config: dbConfig);

@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
 import 'package:cbl/cbl.dart';
 
@@ -52,15 +50,16 @@ class WarehouseRepository {
       if (db != null) {
         var query = QueryBuilder.createAsync()
             .select(SelectResult.all())
-            .from(DataSource.database(db))
+            .from(DataSource.database(db).as('warehouse'))
             .where(Expression.property(attributeDocumentType)
                 .equalTo(Expression.string(documentType)));
 
         var result = await query.execute();
         var results = await result.allResults();
         for (var r in results) {
-          var warehouse = Warehouse.fromJson(jsonDecode(r.toJson()));
-          items.add(warehouse);
+          var map = r.toPlainMap();
+          var warehouseDoa = WarehouseDao.fromJson(map);
+          items.add(warehouseDoa.warehouse);
         }
       }
     } catch (e) {

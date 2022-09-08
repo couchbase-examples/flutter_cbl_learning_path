@@ -1,10 +1,10 @@
-import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
 import 'package:cbl/cbl.dart';
 
 import 'package:flutter_cbl_learning_path/features/database/database.dart';
 import 'package:flutter_cbl_learning_path/models/models.dart';
+
+import '../../../models/stock_item_dao.dart';
 
 class StockItemRepository {
   final DatabaseProvider _databaseProvider;
@@ -46,8 +46,9 @@ class StockItemRepository {
         var result = await query.execute();
         var results = await result.allResults();
         for (var r in results) {
-          var stockItem = StockItem.fromJson(jsonDecode(r.toJson()));
-          items.add(stockItem);
+          var map = r.toPlainMap();
+          var stockItemDao = StockItemDao.fromJson(map);
+          items.add(stockItemDao.item);
         }
       }
     } catch (e) {

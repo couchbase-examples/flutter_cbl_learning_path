@@ -6,21 +6,21 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'warehouse.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class Warehouse {
   final String warehouseId;
   final String name;
   final String address1;
-  final String address2;
+  final String? address2;
   final String city;
   final String state;
   final String postalCode;
-  final String salesTax;
+  final double salesTax;
   final double yearToDateBalance;
   final double latitude;
   final double longitude;
-  final String documentType = "warehouse";
   final List<String>? shippingTo;
+  final String documentType = "warehouse";
 
   const Warehouse(
       this.warehouseId,

@@ -21,14 +21,15 @@ Audit _$AuditFromJson(Map<String, dynamic> json) => Audit(
       json['modifiedOn'] == null
           ? null
           : DateTime.parse(json['modifiedOn'] as String),
-    );
+    )..documentType = json['documentType'] as String;
 
 Map<String, dynamic> _$AuditToJson(Audit instance) => <String, dynamic>{
       'auditId': instance.auditId,
       'projectId': instance.projectId,
-      'stockItem': instance.stockItem,
+      'stockItem': instance.stockItem.toJson(),
       'auditCount': instance.auditCount,
       'notes': instance.notes,
+      'documentType': instance.documentType,
       'team': instance.team,
       'createdBy': instance.createdBy,
       'modifiedBy': instance.modifiedBy,

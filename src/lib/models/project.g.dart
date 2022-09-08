@@ -35,7 +35,7 @@ Map<String, dynamic> _$ProjectToJson(Project instance) => <String, dynamic>{
       'isComplete': instance.isComplete,
       'documentType': instance.documentType,
       'dueDate': instance.dueDate?.toIso8601String(),
-      'warehouse': instance.warehouse,
+      'warehouse': instance.warehouse?.toJson(),
       'team': instance.team,
       'createdBy': instance.createdBy,
       'modifiedBy': instance.modifiedBy,

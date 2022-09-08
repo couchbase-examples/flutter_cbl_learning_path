@@ -82,7 +82,10 @@ class ProjectRepository {
       if (db != null) {
         Map<String, dynamic> map = document.toJson();
         var doc = MutableDocument.withId(document.projectId, map);
-        return await db.saveDocument(doc);
+        var result = await db.saveDocument(doc);
+        debugPrint(
+            'Did save project ${document.projectId} resulted in ${result.toString()}');
+        return true;
       }
     } catch (e) {
       debugPrint(e.toString());
@@ -109,7 +112,8 @@ class ProjectRepository {
     try {
       var project = await get(projectId);
       project.warehouse = warehouse;
-      return save(project);
+      await save(project);
+      return true;
     } catch (e) {
       debugPrint(e.toString());
     }
@@ -119,12 +123,10 @@ class ProjectRepository {
   Future<void> loadSampleData() async {
     var currentUser = await _authenticationService.getCurrentUser();
     var warehouses = await _warehouseRepository.get();
-    var warehouseCount = await _warehouseRepository.count();
     var stockItems = await _stockItemRepository.get();
-    var stockItemsCount = await _stockItemRepository.count();
 
     //won't create items if we can't get warehouse and stock items from prebuit warehouse database
-    if (stockItemsCount > 0 && warehouseCount > 0) {
+    if (warehouses.isNotEmpty && stockItems.isNotEmpty) {
       var db = _databaseProvider.inventoryDatabase;
       if (db != null) {
         /* batch operations for saving multiple documents is a faster way to process
@@ -172,7 +174,7 @@ class ProjectRepository {
               for (var auditIndex = 0; auditIndex <= 49; auditIndex++) {
                 var auditId = uuid.v4();
                 var stockCount = 1 + random.nextInt(10000 - 1);
-                var stockItemIndex = random.nextInt(stockItemsCount);
+                var stockItemIndex = random.nextInt(stockItems.length);
                 var stockItem = stockItems[stockItemIndex];
                 var auditDocument = Audit(
                     auditId,

@@ -44,7 +44,7 @@ class FakeAuthenticationService extends AuthenticationService {
   }
 
   @override
-  Future<void> authenticateUser(
+  Future<bool> authenticateUser(
       {required String username, required String password}) async {
     await Future.delayed(const Duration(milliseconds: 50));
     try {
@@ -56,10 +56,12 @@ class FakeAuthenticationService extends AuthenticationService {
         _controller.add(AuthenticationStatus.authenticatedFailed);
       } else {
         _controller.add(AuthenticationStatus.authenticated);
+        return true;
       }
     } catch (e) {
       _controller.add(AuthenticationStatus.authenticatedFailed);
     }
+    return false;
   }
 
   final List<User> _users = [

@@ -50,17 +50,14 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     if (state.status.isValidated) {
       emit(state.copyWith(status: FormzStatus.submissionInProgress));
       try {
-        _authenticationService.authenticateUser(
+        var result = await _authenticationService.authenticateUser(
           username: state.username.value,
           password: state.password.value,
         );
-        var authUser = await _authenticationService.getCurrentUser();
-        if (authUser == null) {
+        if (!result) {
           emit(state.copyWith(status: FormzStatus.submissionFailure));
         }
         emit(state.copyWith(status: FormzStatus.submissionSuccess));
-        //open the database because the user did properly login
-
       } catch (_) {
         emit(state.copyWith(status: FormzStatus.submissionFailure));
       }

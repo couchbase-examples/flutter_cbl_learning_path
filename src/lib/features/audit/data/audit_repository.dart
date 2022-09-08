@@ -36,7 +36,10 @@ class AuditRepository {
       if (db != null) {
         Map<String, dynamic> map = document.toJson();
         var doc = MutableDocument.withId(document.auditId, map);
-        return await db.saveDocument(doc);
+        var result = await db.saveDocument(doc);
+        debugPrint(
+            'Did save audit ${document.auditId} resulted in ${result.toString()}');
+        return true;
       }
     } catch (e) {
       debugPrint(e.toString());

@@ -54,7 +54,8 @@ class DevInfoBloc extends Bloc<DevInfoEvent, DevInfoState> {
         var inventoryPath = _projectRepository.getDatabasePath();
         var warehouseName = _warehouseRepository.getDatabaseName();
         var warehousePath = _warehouseRepository.getDatabasePath();
-
+        items.add(DeveloperInfo(title: 'Username', details: user.username));
+        items.add(DeveloperInfo(title: 'Team', details: user.team));
         items.add(DeveloperInfo(
             title: 'Inventory Database Path', details: inventoryPath));
         items.add(DeveloperInfo(

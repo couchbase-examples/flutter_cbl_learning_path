@@ -7,13 +7,14 @@ import 'stock_item.dart';
 
 part 'audit.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class Audit {
   String auditId;
   String projectId;
   StockItem stockItem;
   int auditCount;
   String notes;
+  String documentType = "audit";
 
   //security tracking
   String team;

@@ -6,7 +6,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'stock_item.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class StockItem {
   String itemId;
   String name;

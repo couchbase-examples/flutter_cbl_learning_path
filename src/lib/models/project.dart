@@ -6,7 +6,7 @@ import 'warehouse.dart';
 /// See:  https://docs.flutter.dev/development/data-and-backend/json#creating-model-classes-the-json_serializable-way
 part 'project.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class Project {
   String projectId;
   String name;
