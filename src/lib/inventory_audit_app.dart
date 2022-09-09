@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_cbl_learning_path/features/audit/data/audit_repository.dart';
 import 'package:flutter_cbl_learning_path/features/audit/data/stock_item_repository.dart';
+import 'package:flutter_cbl_learning_path/features/drawer/data/user_repository.dart';
 import 'package:flutter_cbl_learning_path/features/project/data/project_repository.dart';
 import 'package:flutter_cbl_learning_path/features/project/data/warehouse_repository.dart';
 import 'package:flutter_cbl_learning_path/features/router/route.dart';
@@ -16,6 +17,7 @@ class InventoryAuditApp extends StatelessWidget {
   final AuditRepository auditRepository;
   final StockItemRepository stockItemRepository;
   final WarehouseRepository warehouseRepository;
+  final UserRepository userRepository;
 
   const InventoryAuditApp(
       {Key? key,
@@ -25,7 +27,8 @@ class InventoryAuditApp extends StatelessWidget {
       required this.projectRepository,
       required this.auditRepository,
       required this.stockItemRepository,
-      required this.warehouseRepository})
+      required this.warehouseRepository,
+      required this.userRepository})
       : super(key: key);
 
   // This is the root of the application.
@@ -40,6 +43,7 @@ class InventoryAuditApp extends StatelessWidget {
           RepositoryProvider.value(value: auditRepository),
           RepositoryProvider.value(value: stockItemRepository),
           RepositoryProvider.value(value: warehouseRepository),
+          RepositoryProvider.value(value: userRepository),
         ],
         child: MultiBlocProvider(
           providers: [
