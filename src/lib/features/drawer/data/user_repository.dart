@@ -32,13 +32,13 @@ class UserRepository {
   }
 
   Future<Map<String, Object?>> get() async {
+    // <1>
+    var documentId = await getCurrentUserDocumentId();
     try {
-      // <1>
-      var db = _databaseProvider.inventoryDatabase;
       // <2>
+      var db = _databaseProvider.inventoryDatabase;
+      // <3>
       if (db != null) {
-        // <3>
-        var documentId = await getCurrentUserDocumentId();
         // <4>
         if (documentId.contains('@')) {
           // <5>
@@ -53,7 +53,7 @@ class UserRepository {
     } catch (e) {
       debugPrint(e.toString());
     }
-    return <String, Object?>{};
+    return <String, Object?>{'email': documentId};
   }
 
   Future<bool> save(Map<String, Object> document) async {

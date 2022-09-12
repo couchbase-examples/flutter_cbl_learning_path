@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_cbl_learning_path/features/router/route.dart';
 import '../../login/login.dart';
+import '../user_profile_ui.dart';
 
 enum MenuRoute { logout, developer, replicator, projects }
 
@@ -19,11 +20,13 @@ class MenuDrawerWidget extends StatelessWidget {
             decoration: BoxDecoration(
               color: Theme.of(context).backgroundColor,
             ),
-            child: const Text("Inventory Audit Demo",
+            child: /*const Text("Inventory Audit Demo",
                 style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w500,
                     fontSize: 20.0)),
+                    */
+                const UserProfile(),
           ),
           MenuItem(
               title: "Home",
