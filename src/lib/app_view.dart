@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_cbl_learning_path/features/drawer/views/user_profile_editor_screen.dart';
 
 import 'package:flutter_cbl_learning_path/features/router/route.dart';
 import 'package:flutter_cbl_learning_path/features/project/project.dart';
@@ -33,6 +34,7 @@ class _AppViewState extends State<AppView> {
         "/projectEditor": (context) => const ProjectEditorScreen(),
         "/audits": (context) => const AuditListScreen(),
         "/auditEditor": (context) => const AuditEditorScreen(),
+        "/userProfileEditor": (context) => const UserProfileEditorScreen(),
         "/dev": (context) => DeveloperMenuScreen(
             routerService: RepositoryProvider.of<AppRouterService>(context)),
         "/devInfo": (context) => DeveloperInfoScreen(
@@ -53,36 +55,71 @@ class _AppViewState extends State<AppView> {
         return MultiBlocListener(
           listeners: [
             BlocListener<RouteBloc, RouteState>(listener: (context, state) {
-              if (state.status == AuthenticationStatus.authenticated &&
-                  state.route == RouteToScreen.projects) {
-                _navigator.pushAndRemoveUntil(
-                    ProjectListScreen.route(), (route) => false);
-                ScaffoldMessenger.of(context).hideCurrentSnackBar();
-              } else if (state.status == AuthenticationStatus.authenticated &&
-                  state.route == RouteToScreen.audits) {
-                _navigator.pushNamed("/audits");
-              } else if (state.status == AuthenticationStatus.authenticated &&
-                  state.route == RouteToScreen.auditEditor) {
-                _navigator.pushNamed("/auditEditor");
-              } else if (state.status == AuthenticationStatus.authenticated &&
-                  state.route == RouteToScreen.projectEditor) {
-                _navigator.pushNamed("/projectEditor");
-              } else if (state.status == AuthenticationStatus.authenticated &&
-                  state.route == RouteToScreen.developer) {
-                _navigator.pushNamedAndRemoveUntil("/dev", (route) => false);
-              } else if (state.status == AuthenticationStatus.authenticated &&
-                  state.route == RouteToScreen.developerInfo) {
-                _navigator.pushNamed("/devInfo");
-              } else if (state.status == AuthenticationStatus.authenticated &&
-                  state.route == RouteToScreen.replicator) {
-                _navigator.pushNamedAndRemoveUntil(
-                    "/replicator", (route) => false);
-              } else if (state.status == AuthenticationStatus.authenticated &&
-                  state.route == RouteToScreen.replicatorConfig) {
-                _navigator.pushNamed("/replicatorConfig");
-              } else if (state.status == AuthenticationStatus.authenticated &&
-                  state.route == RouteToScreen.pop) {
-                _navigator.pop();
+              if (state.status == AuthenticationStatus.authenticated) {
+                switch (state.route) {
+                  case RouteToScreen.projects:
+                    {
+                      _navigator.pushAndRemoveUntil(
+                          ProjectListScreen.route(), (route) => false);
+                      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                    }
+                    break;
+                  case RouteToScreen.projectEditor:
+                    {
+                      //TODO add projectId to route
+                      _navigator.pushNamed("/projectEditor");
+                    }
+                    break;
+                  case RouteToScreen.audits:
+                    {
+                      //TODO add projectId to route
+                      _navigator.pushNamed("/audits");
+                    }
+                    break;
+                  case RouteToScreen.auditEditor:
+                    {
+                      //TODO add projectId and auditId to route
+                      _navigator.pushNamed("/auditEditor");
+                    }
+                    break;
+                  case RouteToScreen.developer:
+                    {
+                      _navigator.pushNamedAndRemoveUntil(
+                          "/dev", (route) => false);
+                    }
+                    break;
+                  case RouteToScreen.developerInfo:
+                    {
+                      _navigator.pushNamed("/devInfo");
+                    }
+                    break;
+                  case RouteToScreen.replicator:
+                    {
+                      _navigator.pushNamedAndRemoveUntil(
+                          "/replicator", (route) => false);
+                    }
+                    break;
+                  case RouteToScreen.replicatorConfig:
+                    {
+                      _navigator.pushNamed("/replicatorConfig");
+                    }
+                    break;
+                  case RouteToScreen.pop:
+                    {
+                      _navigator.pop();
+                    }
+                    break;
+                  case RouteToScreen.userProfileEditor:
+                    {
+                      _navigator.pushNamed("/userProfileEditor");
+                    }
+                    break;
+                  //not needed to handled
+                  case RouteToScreen.none:
+                    break;
+                  case RouteToScreen.logout:
+                    break;
+                }
               } else {
                 if (state.status != AuthenticationStatus.authenticatedFailed) {
                   _navigator.pushAndRemoveUntil(

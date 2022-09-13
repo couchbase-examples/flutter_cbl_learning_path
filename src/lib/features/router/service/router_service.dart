@@ -9,6 +9,7 @@ enum RouteToScreen {
   audits,
   auditEditor,
   itemSelector,
+  userProfileEditor,
   replicator,
   replicatorConfig,
   logout,
