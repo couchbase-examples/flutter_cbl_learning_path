@@ -115,9 +115,7 @@ class _AppViewState extends State<AppView> {
                     }
                     break;
                   //not needed to handled
-                  case RouteToScreen.none:
-                    break;
-                  case RouteToScreen.logout:
+                  default:
                     break;
                 }
               } else {
