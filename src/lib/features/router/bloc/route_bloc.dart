@@ -5,15 +5,6 @@ import 'package:flutter_cbl_learning_path/features/database/database.dart';
 import '../../login/models/user.dart';
 
 class RouteBloc extends Bloc<RouteEvent, RouteState> {
-  final FakeAuthenticationService _authenticationService;
-  final AppRouterService _routerService;
-  final DatabaseProvider _databaseProvider;
-
-  late StreamSubscription<AuthenticationStatus>
-      _authenticationStatusSubscription;
-  // ignore: unused_field
-  late StreamSubscription<RouteToScreen> _routeToScreenSubscription;
-
   RouteBloc(
       this._authenticationService, this._routerService, this._databaseProvider)
       : super(const RouteState.unknown()) {
@@ -24,17 +15,24 @@ class RouteBloc extends Bloc<RouteEvent, RouteState> {
         _handleUserLoggedOut(event, emit);
       }
     });
-
     on<AuthenticationStatusChanged>(_onAuthenticationStatusChanged);
     _authenticationStatusSubscription = _authenticationService.status.listen(
       (status) => add(AuthenticationStatusChanged(status)),
     );
-
     on<RouteChanged>(_onRouteChanged);
     _routeToScreenSubscription = _routerService.route.listen(
       (route) => add(RouteChanged(route)),
     );
   }
+
+  final FakeAuthenticationService _authenticationService;
+  final AppRouterService _routerService;
+  final DatabaseProvider _databaseProvider;
+
+  late StreamSubscription<AuthenticationStatus>
+      _authenticationStatusSubscription;
+  // ignore: unused_field
+  late StreamSubscription<RouteToScreen> _routeToScreenSubscription;
 
   @override
   Future<void> close() {
@@ -68,6 +66,9 @@ class RouteBloc extends Bloc<RouteEvent, RouteState> {
         break;
       case RouteToScreen.replicatorConfig:
         emit(const RouteState.replicatorConfig());
+        break;
+      case RouteToScreen.userProfileEditor:
+        emit(const RouteState.userProfileEditor());
         break;
       case RouteToScreen.pop:
         emit(const RouteState.pop());

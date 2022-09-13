@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_cbl_learning_path/features/router/route.dart';
 import '../user_profile.dart';
 
 class UserProfileWidget extends StatelessWidget {
@@ -40,7 +41,11 @@ class UserProfileWidget extends StatelessWidget {
                       primary: Colors.white,
                       padding: const EdgeInsets.all(4.0),
                       textStyle: const TextStyle(fontSize: 12)),
-                  onPressed: () {},
+                  onPressed: () {
+                    //route to the user profile editor
+                    context.read<RouteBloc>().add(
+                        const RouteChanged(RouteToScreen.userProfileEditor));
+                  },
                   child: const Text('Update Profile',
                       style: TextStyle(decoration: TextDecoration.underline))),
             ]));

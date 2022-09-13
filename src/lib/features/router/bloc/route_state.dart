@@ -76,7 +76,11 @@ class RouteState extends Equatable {
             status: AuthenticationStatus.authenticated,
             user: User.empty,
             route: RouteToScreen.auditEditor);
-
+  const RouteState.userProfileEditor()
+      : this(
+            status: AuthenticationStatus.authenticated,
+            user: User.empty,
+            route: RouteToScreen.userProfileEditor);
   const RouteState.replicator()
       : this(
             status: AuthenticationStatus.authenticated,

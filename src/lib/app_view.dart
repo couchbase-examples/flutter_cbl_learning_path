@@ -82,6 +82,11 @@ class _AppViewState extends State<AppView> {
                       _navigator.pushNamed("/auditEditor");
                     }
                     break;
+                  case RouteToScreen.userProfileEditor:
+                    {
+                      _navigator.pushNamed("/userProfileEditor");
+                    }
+                    break;
                   case RouteToScreen.developer:
                     {
                       _navigator.pushNamedAndRemoveUntil(
@@ -109,11 +114,7 @@ class _AppViewState extends State<AppView> {
                       _navigator.pop();
                     }
                     break;
-                  case RouteToScreen.userProfileEditor:
-                    {
-                      _navigator.pushNamed("/userProfileEditor");
-                    }
-                    break;
+
                   //not needed to handled
                   default:
                     break;
