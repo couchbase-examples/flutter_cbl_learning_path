@@ -4,7 +4,6 @@ import 'package:flutter_cbl_learning_path/features/drawer/data/user_repository.d
 import 'package:flutter_cbl_learning_path/features/drawer/user_profile.dart';
 import 'package:flutter_cbl_learning_path/features/drawer/views/user_profile_widget.dart';
 
-import '../../router/route.dart';
 
 class UserProfile extends StatelessWidget {
   const UserProfile({Key? key}) : super(key: key);

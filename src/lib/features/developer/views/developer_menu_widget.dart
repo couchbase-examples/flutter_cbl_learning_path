@@ -40,7 +40,7 @@ class DeveloperMenuWidget extends StatelessWidget {
                   ..showSnackBar(
                     const SnackBar(
                         content: Text(
-                            'Error generating data, plese check logs for more information.')),
+                            'Error generating data, please check logs for more information.')),
                   );
               }
               break;
@@ -65,7 +65,7 @@ class DeveloperMenuWidget extends StatelessWidget {
                         padding: const EdgeInsets.only(
                             top: 20, bottom: 20, left: 60, right: 60),
                         backgroundColor: Theme.of(context).backgroundColor,
-                        primary: Colors.white,
+                        foregroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12.0),
                         ),
@@ -83,7 +83,7 @@ class DeveloperMenuWidget extends StatelessWidget {
                         padding: const EdgeInsets.only(
                             top: 20, bottom: 20, left: 60, right: 60),
                         backgroundColor: Theme.of(context).backgroundColor,
-                        primary: Colors.white,
+                        foregroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12.0),
                         ),

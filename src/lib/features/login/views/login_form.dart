@@ -111,7 +111,7 @@ class _LoginButton extends StatelessWidget {
                   padding: const EdgeInsets.only(
                       top: 20, bottom: 20, left: 60, right: 60),
                   backgroundColor: Theme.of(context).backgroundColor,
-                  primary: Colors.white,
+                  foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12.0),
                   ),

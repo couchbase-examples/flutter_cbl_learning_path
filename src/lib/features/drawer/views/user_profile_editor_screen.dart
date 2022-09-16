@@ -4,8 +4,6 @@ import 'package:flutter_cbl_learning_path/features/drawer/data/user_repository.d
 import 'package:flutter_cbl_learning_path/features/drawer/user_profile.dart';
 import 'package:flutter_cbl_learning_path/features/drawer/views/user_profile_editor_form.dart';
 
-import 'menu_drawer.dart';
-
 class UserProfileEditorScreen extends StatelessWidget {
   const UserProfileEditorScreen({super.key});
 
