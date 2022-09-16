@@ -2,6 +2,9 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_cbl_learning_path/features/drawer/bloc/user_profile_editor_bloc.dart';
+import 'package:flutter_cbl_learning_path/features/drawer/bloc/user_profile_editor_event.dart';
+import 'package:flutter_cbl_learning_path/features/drawer/bloc/user_profile_editor_state.dart';
 import '../user_profile.dart';
 
 class UserProfileWidget extends StatelessWidget {
@@ -100,6 +103,75 @@ class UserProfileWidget extends StatelessWidget {
           }
       }
     });
+  }
+}
+
+class _FirstNameInput extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<UserProfileEditorBloc, UserProfileEditorState>(
+      buildWhen: (previous, current) => previous.firstName != current.firstName,
+      builder: (context, state) {
+        return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+            child: TextField(
+              key: const Key('userProfileEditor_firstNameInput_textField'),
+              keyboardType: TextInputType.name,
+              onChanged: (firstName) =>
+                  context.read<UserProfileEditorBloc>().add(FirstNameChangedEvent(firstName)),
+              decoration: InputDecoration(
+                labelText: 'First Name',
+                errorText: state.firstName.invalid ? 'invalid first name' : null,
+              ),
+            ));
+      },
+    );
+  }
+}
+
+class _LastNameInput extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<UserProfileEditorBloc, UserProfileEditorState>(
+      buildWhen: (previous, current) => previous.lastName != current.lastName,
+      builder: (context, state) {
+        return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+            child: TextField(
+              key: const Key('userProfileEditor_lastNameInput_textField'),
+              keyboardType: TextInputType.name,
+              onChanged: (lastName) =>
+                  context.read<UserProfileEditorBloc>().add(LastNameChangedEvent(lastName)),
+              decoration: InputDecoration(
+                labelText: 'Last Name',
+                errorText: state.lastName.invalid ? 'invalid last name' : null,
+              ),
+            ));
+      },
+    );
+  }
+}
+
+class _JobTitleInput extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<UserProfileEditorBloc, UserProfileEditorState>(
+      buildWhen: (previous, current) => previous.jobTitle != current.jobTitle,
+      builder: (context, state) {
+        return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+            child: TextField(
+              key: const Key('userProfileEditor_jobTitleInput_textField'),
+              keyboardType: TextInputType.name,
+              onChanged: (jobTitle) =>
+                  context.read<UserProfileEditorBloc>().add(JobTitleChangedEvent(jobTitle)),
+              decoration: InputDecoration(
+                labelText: 'Job Title',
+                errorText: state.jobTitle.invalid ? 'invalid job title' : null,
+              ),
+            ));
+      },
+    );
   }
 }
 
