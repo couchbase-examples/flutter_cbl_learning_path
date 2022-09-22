@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_cbl_learning_path/features/drawer/views/user_profile_editor_screen.dart';
 
 import 'package:flutter_cbl_learning_path/features/router/route.dart';
 import 'package:flutter_cbl_learning_path/features/project/project.dart';
@@ -34,7 +33,6 @@ class _AppViewState extends State<AppView> {
         "/projectEditor": (context) => const ProjectEditorScreen(),
         "/audits": (context) => const AuditListScreen(),
         "/auditEditor": (context) => const AuditEditorScreen(),
-        "/userProfileEditor": (context) => const UserProfileEditorScreen(),
         "/dev": (context) => DeveloperMenuScreen(
             routerService: RepositoryProvider.of<AppRouterService>(context)),
         "/devInfo": (context) => DeveloperInfoScreen(

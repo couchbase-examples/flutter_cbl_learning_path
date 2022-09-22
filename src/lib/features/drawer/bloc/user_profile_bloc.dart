@@ -24,9 +24,7 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
       /* validate we get an email address back, if not fail */
       if (user.containsKey('email')) {
         //make email address readable
-        var documentId = user['email'] as String;
-        var emailAddress = documentId.substring(6, documentId.length);
-        user['emailDisplay'] = emailAddress;
+        user['emailDisplay'] = user['email'] as String;
 
         /* process profile picture if one isn't returned
         return default image */

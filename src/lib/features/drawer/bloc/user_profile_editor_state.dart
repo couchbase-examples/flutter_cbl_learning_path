@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_cbl_learning_path/models/form_status.dart';
 import 'package:formz/formz.dart';
 
 import '../models/models.dart';
@@ -7,29 +8,33 @@ import '../models/models.dart';
 class UserProfileEditorState extends Equatable {
 
   const UserProfileEditorState({
-    this.status = FormzStatus.pure,
-    this.firstName = const FirstName.pure(),
-    this.lastName = const LastName.pure(),
-    this.jobTitle = const JobTitle.pure(),
+    this.status = FormEditorStatus.dataUninitialized,
+    this.firstName = '',
+    this.lastName = '',
+    this.jobTitle = '',
+    this.error = ''
   });
 
-  final FormzStatus status;
-  final FirstName firstName;
-  final LastName lastName;
-  final JobTitle jobTitle;
+  final FormEditorStatus status;
+  final String firstName;
+  final String lastName;
+  final String jobTitle;
+  final String error;
 
   UserProfileEditorState copyWith({
-    FormzStatus? status,
-    FirstName? firstName,
-    LastName? lastName,
-    JobTitle? jobTitle}){
+    FormEditorStatus? status,
+    String? firstName,
+    String? lastName,
+    String? jobTitle,
+    String? error}){
     return UserProfileEditorState(
         status: status?? this.status,
         firstName: firstName ?? this.firstName,
         lastName: lastName ?? this.lastName,
-        jobTitle: jobTitle ?? this.jobTitle);
+        jobTitle: jobTitle ?? this.jobTitle,
+        error: error ?? this.error);
   }
 
   @override
-  List<Object> get props => [status, firstName, lastName, jobTitle];
+  List<Object> get props => [status, firstName, lastName, jobTitle, error];
 }

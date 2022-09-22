@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_cbl_learning_path/features/drawer/bloc/user_profile_editor_bloc.dart';
 import 'package:flutter_cbl_learning_path/features/drawer/bloc/user_profile_editor_event.dart';
 import 'package:flutter_cbl_learning_path/features/drawer/bloc/user_profile_editor_state.dart';
+import 'package:flutter_cbl_learning_path/models/form_status.dart';
 import '../data/user_repository.dart';
 import '../user_profile.dart';
 
@@ -65,7 +66,7 @@ class UserProfileWidget extends StatelessWidget {
                                   userRepository:
                                       RepositoryProvider.of<UserRepository>(
                                           context),
-                                );
+                                )..add(const UserProfileEditorLoadEvent());
                               },
                               child: SafeArea(
                                   child: Container(
@@ -73,43 +74,26 @@ class UserProfileWidget extends StatelessWidget {
                                       height:
                                           MediaQuery.of(context).size.height,
                                       padding: const EdgeInsets.all(20),
-                                      color: Colors.white,
+                                      color: Colors.grey,
                                       child: Scaffold(
-                                          body: Center(
-                                              child: Column(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  children: <Widget>[
+                                          body: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: <Widget>[
+                                            Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: IconButton(
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                                icon: const Icon(Icons.close),
+                                                color: Colors.black,
+                                              ),
+                                            ),
                                             _FirstNameInput(),
                                             _LastNameInput(),
                                             _JobTitleInput(),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: ElevatedButton(
-                                                  onPressed: () {
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                  child: const Text(
-                                                    "Save",
-                                                    style: TextStyle(
-                                                        color: Colors.white),
-                                                  )),
-                                            ),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: ElevatedButton(
-                                                  onPressed: () {
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                  child: const Text(
-                                                    "Close",
-                                                    style: TextStyle(
-                                                        color: Colors.white),
-                                                  )),
-                                            ),
-                                          ]))))));
+                                            _SaveButton(),
+                                          ])))));
                         });
                   },
                   child: const Text('Update User Profile',
@@ -130,15 +114,14 @@ class _FirstNameInput extends StatelessWidget {
         return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
             child: TextField(
+              controller: TextEditingController(text: state.firstName),
               key: const Key('userProfileEditor_firstNameInput_textField'),
-              keyboardType: TextInputType.name,
+              keyboardType: TextInputType.text,
               onChanged: (firstName) => context
                   .read<UserProfileEditorBloc>()
                   .add(FirstNameChangedEvent(firstName)),
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'First Name',
-                errorText:
-                    state.firstName.invalid ? 'invalid first name' : null,
               ),
             ));
       },
@@ -155,14 +138,14 @@ class _LastNameInput extends StatelessWidget {
         return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
             child: TextField(
+              controller: TextEditingController(text: state.lastName),
               key: const Key('userProfileEditor_lastNameInput_textField'),
-              keyboardType: TextInputType.name,
+              keyboardType: TextInputType.text,
               onChanged: (lastName) => context
                   .read<UserProfileEditorBloc>()
                   .add(LastNameChangedEvent(lastName)),
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Last Name',
-                errorText: state.lastName.invalid ? 'invalid last name' : null,
               ),
             ));
       },
@@ -179,18 +162,45 @@ class _JobTitleInput extends StatelessWidget {
         return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
             child: TextField(
+              controller: TextEditingController(text: state.jobTitle),
               key: const Key('userProfileEditor_jobTitleInput_textField'),
-              keyboardType: TextInputType.name,
+              keyboardType: TextInputType.text,
               onChanged: (jobTitle) => context
                   .read<UserProfileEditorBloc>()
                   .add(JobTitleChangedEvent(jobTitle)),
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Job Title',
-                errorText: state.jobTitle.invalid ? 'invalid job title' : null,
               ),
             ));
       },
     );
+  }
+}
+
+class _SaveButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<UserProfileEditorBloc, UserProfileEditorState>(
+        builder: (context, state) {
+      if (state.status == FormEditorStatus.dataSaved || state.status == FormEditorStatus.cancelled) {
+        Navigator.of(context).pop();
+        return const Text('');
+      } else {
+        return Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ElevatedButton(
+              onPressed: () {
+                context
+                    .read<UserProfileEditorBloc>()
+                    .add(const UserProfileEditorSaveEvent());
+              },
+              child: const Text(
+                "Save",
+                style: TextStyle(color: Colors.white),
+              )),
+        );
+      }
+    });
   }
 }
 

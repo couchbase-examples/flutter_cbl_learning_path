@@ -53,11 +53,15 @@ class UserRepository {
     } catch (e) {
       debugPrint(e.toString());
     }
-    return <String, Object?>{'email': documentId};
+    return <String, Object?>{'email': documentId.substring(6, documentId.length)};
   }
 
   Future<bool> save(Map<String, Object> document) async {
     try {
+      var user = await _authenticationService.getCurrentUser();
+      if (user != null && !document.containsKey('email')){
+        document['email'] = user.username;
+      }
       // <1>
       var db = _databaseProvider.inventoryDatabase;
       // <2>

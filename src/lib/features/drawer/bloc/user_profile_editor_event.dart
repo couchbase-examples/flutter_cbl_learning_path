@@ -7,6 +7,13 @@ abstract class UserProfileEditorEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class UserProfileEditorLoadEvent extends UserProfileEditorEvent {
+  const UserProfileEditorLoadEvent();
+
+  @override
+  List<Object> get props => [];
+}
+
 class FirstNameChangedEvent extends UserProfileEditorEvent {
   const FirstNameChangedEvent(this.firstName);
 
