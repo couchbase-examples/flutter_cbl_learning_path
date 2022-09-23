@@ -35,6 +35,14 @@ class Project {
       this.createdOn,
       this.modifiedBy,
       this.modifiedOn);
+
+  String dueDateToString() {
+    var date = dueDate;
+    if (date != null) {
+      return '${date.month}/${date.day}/${date.year}';
+    }
+    return '';
+  }
   factory Project.fromJson(Map<String, dynamic> json) =>
       _$ProjectFromJson(json);
 

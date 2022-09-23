@@ -53,7 +53,6 @@ class ProjectListBloc extends Bloc<ProjectListEvent, ProjectListState> {
         stream.listen((change) async {
           // <4>
           var items = <Project>[];
-
           // <5>
           var results = await change.results.allResults();
           //<6>
