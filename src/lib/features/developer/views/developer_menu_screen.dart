@@ -8,8 +8,9 @@ import '../bloc/dev_data_load_bloc.dart';
 import 'developer_menu_widget.dart';
 
 class DeveloperMenuScreen extends StatelessWidget {
-  final AppRouterService routerService;
   const DeveloperMenuScreen({super.key, required this.routerService});
+
+  final AppRouterService routerService;
 
   @override
   Widget build(BuildContext context) {

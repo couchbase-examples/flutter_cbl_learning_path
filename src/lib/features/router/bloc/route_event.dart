@@ -26,7 +26,7 @@ class AuthenticationStatusChanged extends RouteEvent {
 
 class RouteChanged extends RouteEvent {
   const RouteChanged(this.route);
-  final RouteToScreen route;
+  final ScreenRoute route;
 
   @override
   List<Object> get props => [route];

@@ -6,98 +6,99 @@ import '../service/auth_service.dart';
 class RouteState extends Equatable {
   final AuthenticationStatus status;
   final User user;
-  final RouteToScreen route;
+  final ScreenRoute route;
 
   const RouteState(
       {this.status = AuthenticationStatus.unknown,
       this.user = User.empty,
-      this.route = RouteToScreen.none});
+      this.route = const ScreenRoute(routeToScreen: RouteToScreen.none, projectId: '', auditId: '')
+      });
 
   const RouteState.unknown()
       : this(
             status: AuthenticationStatus.unknown,
             user: User.empty,
-            route: RouteToScreen.none);
+            route: const ScreenRoute(routeToScreen: RouteToScreen.none, projectId: '', auditId: ''));
 
   const RouteState.loggedOut()
       : this(
             status: AuthenticationStatus.logout,
             user: User.empty,
-            route: RouteToScreen.logout);
+            route: const ScreenRoute(routeToScreen:RouteToScreen.logout ));
 
   const RouteState.authenticated(this.user)
       : status = AuthenticationStatus.authenticated,
-        route = RouteToScreen.projects;
+        route = const ScreenRoute(routeToScreen:RouteToScreen.projects);
 
   const RouteState.unauthenticated()
       : this(
             status: AuthenticationStatus.unauthenticated,
             user: User.empty,
-            route: RouteToScreen.none);
+            route: const ScreenRoute(routeToScreen:RouteToScreen.none));
 
   const RouteState.authenticatedFailed()
       : this(
             status: AuthenticationStatus.authenticatedFailed,
             user: User.empty,
-            route: RouteToScreen.none);
+            route: const ScreenRoute(routeToScreen:RouteToScreen.none));
 
   const RouteState.developer()
       : this(
             status: AuthenticationStatus.authenticated,
             user: User.empty,
-            route: RouteToScreen.developer);
+            route: const ScreenRoute(routeToScreen:RouteToScreen.developer));
 
   const RouteState.developerInfo()
       : this(
             status: AuthenticationStatus.authenticated,
             user: User.empty,
-            route: RouteToScreen.developerInfo);
+            route: const ScreenRoute(routeToScreen:RouteToScreen.developerInfo));
 
   const RouteState.projects()
       : this(
             status: AuthenticationStatus.authenticated,
             user: User.empty,
-            route: RouteToScreen.projects);
+            route: const ScreenRoute(routeToScreen:RouteToScreen.projects));
 
-  const RouteState.projectEditor()
+  const RouteState.projectEditor({route = ScreenRoute})
       : this(
             status: AuthenticationStatus.authenticated,
             user: User.empty,
-            route: RouteToScreen.projectEditor);
+            route: route);
 
-  const RouteState.audits()
+  const RouteState.audits({route = ScreenRoute})
       : this(
             status: AuthenticationStatus.authenticated,
             user: User.empty,
-            route: RouteToScreen.audits);
+            route: route);
 
-  const RouteState.auditEditor()
+  const RouteState.auditEditor({route = ScreenRoute})
       : this(
             status: AuthenticationStatus.authenticated,
             user: User.empty,
-            route: RouteToScreen.auditEditor);
+            route: route);
   const RouteState.userProfileEditor()
       : this(
             status: AuthenticationStatus.authenticated,
             user: User.empty,
-            route: RouteToScreen.userProfileEditor);
+            route: const ScreenRoute(routeToScreen: RouteToScreen.userProfileEditor));
   const RouteState.replicator()
       : this(
             status: AuthenticationStatus.authenticated,
             user: User.empty,
-            route: RouteToScreen.replicator);
+            route: const ScreenRoute(routeToScreen:RouteToScreen.replicator));
 
   const RouteState.replicatorConfig()
       : this(
             status: AuthenticationStatus.authenticated,
             user: User.empty,
-            route: RouteToScreen.replicatorConfig);
+            route: const ScreenRoute(routeToScreen:RouteToScreen.replicatorConfig));
 
   const RouteState.pop()
       : this(
             status: AuthenticationStatus.authenticated,
             user: User.empty,
-            route: RouteToScreen.pop);
+            route: const ScreenRoute(routeToScreen:RouteToScreen.pop));
 
   @override
   List<Object> get props => [status, user, route];

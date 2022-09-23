@@ -17,26 +17,38 @@ enum RouteToScreen {
   pop,
 }
 
+class ScreenRoute{
+  const ScreenRoute({
+    required this.routeToScreen,
+    this.projectId = '',
+    this.auditId = ''
+  });
+
+  final RouteToScreen routeToScreen;
+  final String? projectId;
+  final String? auditId;
+}
+
 abstract class RouterService {
-  Stream<RouteToScreen> get route;
-  void routeTo(RouteToScreen route);
+  Stream<ScreenRoute> get route;
+  void routeTo(ScreenRoute route);
 }
 
 class AppRouterService extends RouterService {
-  final _controller = StreamController<RouteToScreen>();
+  final _controller = StreamController<ScreenRoute>();
 
   AppRouterService();
 
   void dispose() => _controller.close();
 
   @override
-  void routeTo(RouteToScreen route) {
+  void routeTo(ScreenRoute route) {
     _controller.add(route);
   }
 
   @override
-  Stream<RouteToScreen> get route async* {
-    yield RouteToScreen.none;
+  Stream<ScreenRoute> get route async* {
+    yield ScreenRoute(routeToScreen: RouteToScreen.none);
     yield* _controller.stream;
   }
 }

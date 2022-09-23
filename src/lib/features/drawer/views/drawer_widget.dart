@@ -76,13 +76,13 @@ class MenuItem extends StatelessWidget {
             context.read<LoginBloc>().add(const LogoutSubmitted());
             break;
           case MenuRoute.developer:
-            routerService.routeTo(RouteToScreen.developer);
+            routerService.routeTo(const ScreenRoute(routeToScreen: RouteToScreen.developer));
             break;
           case MenuRoute.replicator:
-            routerService.routeTo(RouteToScreen.replicator);
+            routerService.routeTo(const ScreenRoute(routeToScreen:RouteToScreen.replicator));
             break;
           case MenuRoute.projects:
-            routerService.routeTo(RouteToScreen.projects);
+            routerService.routeTo(const ScreenRoute(routeToScreen:RouteToScreen.projects));
             break;
         }
       },

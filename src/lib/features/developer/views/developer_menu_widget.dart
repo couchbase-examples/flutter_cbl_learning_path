@@ -71,7 +71,7 @@ class DeveloperMenuWidget extends StatelessWidget {
                         ),
                       ),
                       onPressed: () =>
-                          {routerService.routeTo(RouteToScreen.developerInfo)},
+                          {routerService.routeTo(const ScreenRoute(routeToScreen: RouteToScreen.developerInfo))},
                       child: const Text("Database Information"),
                     ),
                   ),

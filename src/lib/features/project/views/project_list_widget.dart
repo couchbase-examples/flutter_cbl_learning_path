@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../models/models.dart';
+import '../../router/service/router_service.dart';
 import '../bloc/project_list.dart';
 
 class ProjectListWidget extends StatelessWidget {
-  const ProjectListWidget({super.key});
+  const ProjectListWidget({super.key, required this.routerService});
+
+  final AppRouterService routerService;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +23,12 @@ class ProjectListWidget extends StatelessWidget {
               child: ListView.builder(
                   itemCount: state.projects.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return ProjectCard(project: state.projects[index]);
+                    return  GestureDetector(
+                      onTap: () => {
+                        routerService.routeTo(ScreenRoute(routeToScreen: RouteToScreen.audits, projectId: state.projects[index].projectId))
+                      },
+                      child: ProjectCard(project: state.projects[index], routerService: routerService)
+                    );
                   }));
         case DataStatus.empty:
           return const Center(child: Text("No Data was Found"));
@@ -38,9 +46,10 @@ class ProjectListWidget extends StatelessWidget {
 }
 
 class ProjectCard extends StatelessWidget {
-  const ProjectCard({super.key, required this.project});
+  const ProjectCard({super.key, required this.project, required this.routerService});
 
   final Project project;
+  final AppRouterService routerService;
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +60,7 @@ class ProjectCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              TitleRow(project: project),
+              TitleRow(project: project, routerService: routerService),
               IconRow(title: project.warehouse?.name, icon: const Icon(Icons.location_on, size: 16)),
               Padding(
                   padding: const EdgeInsets.only(top: 5),
@@ -65,9 +74,10 @@ class ProjectCard extends StatelessWidget {
 }
 
 class TitleRow extends StatelessWidget {
-  const TitleRow({super.key, required this.project});
+  const TitleRow({super.key, required this.project, required this.routerService});
 
   final Project project;
+  final AppRouterService routerService;
 
   @override
   Widget build(BuildContext context) {

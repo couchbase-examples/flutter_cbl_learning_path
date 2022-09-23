@@ -32,7 +32,7 @@ class RouteBloc extends Bloc<RouteEvent, RouteState> {
   late StreamSubscription<AuthenticationStatus>
       _authenticationStatusSubscription;
   // ignore: unused_field
-  late StreamSubscription<RouteToScreen> _routeToScreenSubscription;
+  late StreamSubscription<ScreenRoute> _routeToScreenSubscription;
 
   @override
   Future<void> close() {
@@ -42,7 +42,7 @@ class RouteBloc extends Bloc<RouteEvent, RouteState> {
   }
 
   void _onRouteChanged(RouteChanged event, Emitter<RouteState> emit) {
-    switch (event.route) {
+    switch (event.route.routeToScreen) {
       case RouteToScreen.developer:
         emit(const RouteState.developer());
         break;
@@ -53,13 +53,13 @@ class RouteBloc extends Bloc<RouteEvent, RouteState> {
         emit(const RouteState.projects());
         break;
       case RouteToScreen.projectEditor:
-        emit(const RouteState.projectEditor());
+        emit(RouteState.projectEditor(route: event.route));
         break;
       case RouteToScreen.audits:
-        emit(const RouteState.audits());
+        emit(RouteState.audits(route: event.route));
         break;
       case RouteToScreen.auditEditor:
-        emit(const RouteState.auditEditor());
+        emit(RouteState.auditEditor(route: event.route));
         break;
       case RouteToScreen.replicator:
         emit(const RouteState.replicator());

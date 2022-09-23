@@ -29,7 +29,7 @@ class _AppViewState extends State<AppView> {
       title: 'Inventory Audit',
       routes: {
         "/login": (context) => const LoginScreen(),
-        "/projects": (context) => const ProjectListScreen(),
+        "/projects": (context) => ProjectListScreen(routerService: RepositoryProvider.of<AppRouterService>(context)),
         "/projectEditor": (context) => const ProjectEditorScreen(),
         "/audits": (context) => const AuditListScreen(),
         "/auditEditor": (context) => const AuditEditorScreen(),
@@ -54,11 +54,11 @@ class _AppViewState extends State<AppView> {
           listeners: [
             BlocListener<RouteBloc, RouteState>(listener: (context, state) {
               if (state.status == AuthenticationStatus.authenticated) {
-                switch (state.route) {
+                switch (state.route.routeToScreen) {
                   case RouteToScreen.projects:
                     {
-                      _navigator.pushAndRemoveUntil(
-                          ProjectListScreen.route(), (route) => false);
+                      _navigator.pushNamedAndRemoveUntil(
+                          "/projects", (route) => false);
                       ScaffoldMessenger.of(context).hideCurrentSnackBar();
                     }
                     break;
