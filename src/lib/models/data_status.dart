@@ -4,5 +4,6 @@ enum DataStatus {
   loaded,
   error,
   changed,
+  empty,
   cancelled
 }

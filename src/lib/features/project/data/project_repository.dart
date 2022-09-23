@@ -43,10 +43,11 @@ class ProjectRepository {
         if (db != null) {
           var query = QueryBuilder.createAsync()
               .select(SelectResult.all())
-              .from(DataSource.database(db))
+              .from(DataSource.database(db)
+                .as('item'))
               .where(Expression.property(attributeDocumentType)
                   .equalTo(Expression.string(projectDocumentType))
-                  .and(Expression.property("team")
+                  .and(Expression.property('team')
                       .equalTo(Expression.string(team)))); // <1>
           return query.changes();
         }

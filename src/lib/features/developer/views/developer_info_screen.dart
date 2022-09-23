@@ -36,7 +36,7 @@ class DeveloperInfoScreen extends BackNavigationStatelessWidget {
                   stockItemRepository:
                       RepositoryProvider.of<StockItemRepository>(context),
                   //call add to have it get data right away
-                )..add(DevInfoGetDataEvent());
+                )..add(DevInfoInitializeEvent());
               },
               child: const DeveloperInfoWidget()),
         ),

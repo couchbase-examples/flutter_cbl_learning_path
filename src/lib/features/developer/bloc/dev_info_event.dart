@@ -4,7 +4,7 @@ abstract class DevInfoEvent extends Equatable {
   const DevInfoEvent([List props = const []]) : super();
 }
 
-class DevInfoGetDataEvent extends DevInfoEvent {
+class DevInfoInitializeEvent extends DevInfoEvent {
   @override
   String toString() => "DevInfoGetDataEvent";
 
