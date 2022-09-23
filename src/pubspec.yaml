@@ -18,7 +18,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.17.6 <3.0.0"
+  sdk: ">=2.17.6 <3.3.2"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -34,13 +34,13 @@ dependencies:
   bloc: ^8.1.0
   formz: ^0.4.0
   cbl: ^2.0.0
-  cbl_flutter: ^2.0.0
-  cbl_flutter_ce: ^2.1.0
+  cbl_flutter: ^2.0.1
+  cbl_flutter_ce: ^2.1.1
   path_provider: ^2.0.2
   collection: ^1.15.0
   path: ^1.8.0
   archive: ^3.3.1
-  google_fonts: ^2.1.0
+  google_fonts: ^3.0.1
   json_annotation: ^4.6.0
   uuid: ^3.0.6
 

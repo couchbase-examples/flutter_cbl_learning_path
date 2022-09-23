@@ -31,7 +31,31 @@ class ProjectRepository {
       this._stockItemRepository);
 
   String getDatabaseName() => _databaseProvider.currentInventoryDatabaseName;
+
   String getDatabasePath() => _databaseProvider.getInventoryDatabasePath();
+
+  Future<AsyncListenStream<QueryChange<ResultSet>>?>? getDocuments() async {
+    try {
+      var user = await _authenticationService.getCurrentUser();
+      var team = user?.team;
+      if (team != null) {
+        var db = _databaseProvider.inventoryDatabase;
+        if (db != null) {
+          var query = QueryBuilder.createAsync()
+              .select(SelectResult.all())
+              .from(DataSource.database(db))
+              .where(Expression.property(attributeDocumentType)
+                  .equalTo(Expression.string(projectDocumentType))
+                  .and(Expression.property("team")
+                      .equalTo(Expression.string(team)))); // <1>
+          return query.changes();
+        }
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+    return null;
+  }
 
   Future<int> count() async {
     var count = 0;
@@ -47,7 +71,6 @@ class ProjectRepository {
             .from(DataSource.database(db))
             .where(Expression.property(attributeDocumentType)
                 .equalTo(Expression.string(projectDocumentType))); // <1>
-
         var result = await query.execute(); // <2>
         var results = await result.allResults(); // <3>
         count = results.first.integer(attributeCount); // <4>
@@ -125,7 +148,7 @@ class ProjectRepository {
     var warehouses = await _warehouseRepository.get();
     var stockItems = await _stockItemRepository.get();
 
-    //won't create items if we can't get warehouse and stock items from prebuit warehouse database
+    //won't create items if we can't get warehouse and stock items from prebuilt warehouse database
     if (warehouses.isNotEmpty && stockItems.isNotEmpty) {
       var db = _databaseProvider.inventoryDatabase;
       if (db != null) {
