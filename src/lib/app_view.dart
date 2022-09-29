@@ -31,7 +31,7 @@ class _AppViewState extends State<AppView> {
         "/login": (context) => const LoginScreen(),
         "/projects": (context) => ProjectListScreen(routerService: RepositoryProvider.of<AppRouterService>(context)),
         "/projectEditor": (context) => const ProjectEditorScreen(),
-        "/audits": (context) => const AuditListScreen(),
+        "/audits": (context) => AuditListScreen(routerService: RepositoryProvider.of<AppRouterService>(context)),
         "/auditEditor": (context) => const AuditEditorScreen(),
         "/dev": (context) => DeveloperMenuScreen(
             routerService: RepositoryProvider.of<AppRouterService>(context)),
@@ -71,7 +71,7 @@ class _AppViewState extends State<AppView> {
                   case RouteToScreen.audits:
                     {
                       //TODO add projectId to route
-                      _navigator.pushNamed("/audits");
+                      _navigator.pushNamed("/audits", arguments: { state.route});
                     }
                     break;
                   case RouteToScreen.auditEditor:

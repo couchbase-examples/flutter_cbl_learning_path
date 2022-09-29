@@ -21,13 +21,13 @@ class ProjectListWidget extends StatelessWidget {
         case DataStatus.loaded:
           return SafeArea(
               child: ListView.builder(
-                  itemCount: state.projects.length,
+                  itemCount: state.items.length,
                   itemBuilder: (BuildContext context, int index) {
                     return  GestureDetector(
                       onTap: () => {
-                        routerService.routeTo(ScreenRoute(routeToScreen: RouteToScreen.audits, projectId: state.projects[index].projectId))
+                        routerService.routeTo(ScreenRoute(routeToScreen: RouteToScreen.audits, projectId: state.items[index].projectId))
                       },
-                      child: ProjectCard(project: state.projects[index], routerService: routerService)
+                      child: ProjectCard(project: state.items[index], routerService: routerService)
                     );
                   }));
         case DataStatus.empty:

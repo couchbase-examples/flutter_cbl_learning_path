@@ -11,17 +11,14 @@ abstract class ProjectListEvent extends Equatable{
 
 class ProjectListInitializeEvent extends ProjectListEvent {
   const ProjectListInitializeEvent();
-
-  @override
-  List<Object> get props => [];
 }
 
 class ProjectListLoadedEvent extends ProjectListEvent {
-  const ProjectListLoadedEvent({required this.projects});
+  const ProjectListLoadedEvent({required this.items});
 
-  final List<Project> projects;
+  final List<Project> items;
 
   @override
-  List<Object> get props => [projects];
+  List<Object> get props => [items];
 }
 

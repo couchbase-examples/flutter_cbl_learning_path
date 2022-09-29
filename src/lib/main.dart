@@ -14,7 +14,7 @@ void main() {
   //setup repositories
   var stockItemRepository = StockItemRepository(dbProvider);
   var warehouseRepository = WarehouseRepository(dbProvider);
-  var auditRepository = AuditRepository(dbProvider);
+  var auditRepository = AuditRepository(dbProvider, authService);
   var projectRepository = ProjectRepository(dbProvider, authService,
       auditRepository, warehouseRepository, stockItemRepository);
   var userRepository = UserRepository(dbProvider, authService);

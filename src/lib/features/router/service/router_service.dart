@@ -48,7 +48,7 @@ class AppRouterService extends RouterService {
 
   @override
   Stream<ScreenRoute> get route async* {
-    yield ScreenRoute(routeToScreen: RouteToScreen.none);
+    yield const ScreenRoute(routeToScreen: RouteToScreen.none);
     yield* _controller.stream;
   }
 }

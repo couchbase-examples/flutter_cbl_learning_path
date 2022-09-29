@@ -1,22 +1,22 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_cbl_learning_path/models/models.dart';
 
-class ProjectListState extends Equatable {
-  const ProjectListState(
+class AuditListState extends Equatable {
+  const AuditListState(
       {this.status = DataStatus.uninitialized,
-      this.items = const <Project>[],
-      this.error = ''});
+        this.items = const <Audit>[],
+        this.error = ''});
 
   final DataStatus status;
-  final List<Project> items;
+  final List<Audit> items;
   final String error;
 
-  ProjectListState copyWith({
+  AuditListState copyWith({
     DataStatus? status,
-    List<Project>? items,
+    List<Audit>? items,
     String? error,
   }) {
-    return ProjectListState(
+    return AuditListState(
         status: status ?? this.status,
         items: items ?? this.items,
         error: error ?? this.error);

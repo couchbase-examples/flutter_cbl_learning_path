@@ -6,7 +6,7 @@ abstract class BackNavigationStatelessWidget extends StatelessWidget {
   const BackNavigationStatelessWidget({super.key, required this.routerService});
 
   Future<bool> onBackPressed() {
-    routerService.routeTo(ScreenRoute(routeToScreen: RouteToScreen.pop));
+    routerService.routeTo(const ScreenRoute(routeToScreen: RouteToScreen.pop));
     return Future.value(false);
   }
 }

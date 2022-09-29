@@ -2,14 +2,43 @@ import 'package:flutter/foundation.dart';
 import 'package:cbl/cbl.dart';
 
 import 'package:flutter_cbl_learning_path/features/database/database.dart';
+import 'package:flutter_cbl_learning_path/features/router/route.dart';
 import 'package:flutter_cbl_learning_path/models/models.dart';
 
 class AuditRepository {
+
+  const AuditRepository(this._databaseProvider, this._authenticationService);
+
+  final AuthenticationService _authenticationService;
   final DatabaseProvider _databaseProvider;
   final String auditDocumentType = 'audit';
   final String attributeDocumentType = 'documentType';
 
-  const AuditRepository(this._databaseProvider);
+  Future<AsyncListenStream<QueryChange<ResultSet>>?>? getDocuments(String projectId) async {
+    try {
+      var user = await _authenticationService.getCurrentUser();
+      var team = user?.team;
+      if (team != null){
+        var db = _databaseProvider.inventoryDatabase;
+        if (db != null){
+          // <1>
+          var query = await AsyncQuery.fromN1ql(db, "SELECT * FROM _ AS item WHERE documentType=\"audit\" AND projectId=\$projectId AND team=\$team");
+
+          //<2>
+          var parameters = Parameters();
+          parameters.setValue(projectId, name: "projectId");
+          parameters.setValue(team, name: "team");
+
+          //<3>
+          await query.setParameters(parameters);
+          return query.changes();
+        }
+      }
+    } catch (e){
+      debugPrint(e.toString());
+    }
+    return null;
+  }
 
   Future<int> count() async {
     var count = 0;
