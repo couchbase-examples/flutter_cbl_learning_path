@@ -5,5 +5,6 @@ enum FormEditorStatus {
   dataChanged,
   dataSaved,
   dataInvalid,
-  error
+  error,
+  newItem
 }

@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_cbl_learning_path/features/project/bloc/project_editor_bloc.dart';
+import 'package:flutter_cbl_learning_path/features/project/views/project_editor_form.dart';
 
 import '../../../widgets/back_navigation.dart';
+import '../data/project_repository.dart';
 
 class ProjectEditorScreen extends BackNavigationStatelessWidget {
   const ProjectEditorScreen({super.key, required super.routerService});
@@ -8,19 +12,19 @@ class ProjectEditorScreen extends BackNavigationStatelessWidget {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-        onWillPop: onBackPressed,
-        child: Scaffold(
-          appBar: AppBar(
-            title: const Text('Project'),
-          ),
-          body: Center(
-            child: ElevatedButton(
-              onPressed: () {
-                // Navigate back to first screen when tapped.
-              },
-              child: const Text('List Editor Here!'),
-            ),
-          ),
-        ));
+      onWillPop: onBackPressed,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Project Editor'),
+        ),
+        body:  BlocProvider(
+          create: (context){
+            return ProjectEditorBloc(projectRepository:
+            RepositoryProvider.of<ProjectRepository>(context));
+          },
+          child: const ProjectEditorForm(),
+        )
+      ),
+    );
   }
 }
