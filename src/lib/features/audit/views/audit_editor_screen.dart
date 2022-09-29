@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 
-class AuditEditorScreen extends StatelessWidget {
-  const AuditEditorScreen({super.key});
+import '../../../widgets/back_navigation.dart';
+
+class AuditEditorScreen extends BackNavigationStatelessWidget {
+  const AuditEditorScreen({super.key, required super.routerService});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return WillPopScope(
+        onWillPop: onBackPressed,
+        child:Scaffold(
       appBar: AppBar(
         title: const Text('Audit Editor'),
       ),
@@ -17,6 +21,6 @@ class AuditEditorScreen extends StatelessWidget {
           child: const Text('Audit Editor Here!'),
         ),
       ),
-    );
+    ));
   }
 }

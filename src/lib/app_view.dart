@@ -30,9 +30,9 @@ class _AppViewState extends State<AppView> {
       routes: {
         "/login": (context) => const LoginScreen(),
         "/projects": (context) => ProjectListScreen(routerService: RepositoryProvider.of<AppRouterService>(context)),
-        "/projectEditor": (context) => const ProjectEditorScreen(),
+        "/projectEditor": (context) => ProjectEditorScreen(routerService: RepositoryProvider.of<AppRouterService>(context)),
         "/audits": (context) => AuditListScreen(routerService: RepositoryProvider.of<AppRouterService>(context)),
-        "/auditEditor": (context) => const AuditEditorScreen(),
+        "/auditEditor": (context) => AuditEditorScreen(routerService: RepositoryProvider.of<AppRouterService>(context)),
         "/dev": (context) => DeveloperMenuScreen(
             routerService: RepositoryProvider.of<AppRouterService>(context)),
         "/devInfo": (context) => DeveloperInfoScreen(

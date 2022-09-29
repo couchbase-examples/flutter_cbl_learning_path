@@ -30,7 +30,13 @@ class ProjectListScreen extends StatelessWidget {
           },
           child: ProjectListWidget(routerService: routerService)
         )
-      )
+      ),floatingActionButton:
+    FloatingActionButton(
+      onPressed: () {
+          routerService.routeTo(const ScreenRoute(routeToScreen: RouteToScreen.projectEditor));
+        },
+      child: const Icon(Icons.add)
+      ),
     );
   }
 }

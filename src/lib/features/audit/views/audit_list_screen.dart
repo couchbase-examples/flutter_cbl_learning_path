@@ -30,7 +30,14 @@ class AuditListScreen extends StatelessWidget {
                 },
                 child: AuditListWidget(routerService: routerService)
             )
-        )
+        ),
+      floatingActionButton:
+        FloatingActionButton(
+          onPressed: () {
+            routerService.routeTo(ScreenRoute(routeToScreen: RouteToScreen.auditEditor, projectId: projectId));
+          },
+          child: const Icon(Icons.add)
+      ),
     );
   }
 }

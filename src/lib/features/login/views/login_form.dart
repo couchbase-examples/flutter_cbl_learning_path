@@ -38,15 +38,20 @@ class LoginForm extends StatelessWidget {
 class _Logo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 0.0),
-      child: Center(
-        child: SizedBox(
-            width: 96,
-            height: 96,
-            child: Image.asset('asset/images/couchbase.png')),
-      ),
-    );
+    return GestureDetector(
+        onTap: () => {
+          context.read<LoginBloc>().add(const LoginUsernameChanged("demo@example.com")),
+          context.read<LoginBloc>().add(const LoginPasswordChanged("P@ssw0rd12")),
+        },
+        child: Padding(
+          padding: const EdgeInsets.only(top: 0.0),
+          child: Center(
+            child: SizedBox(
+                width: 96,
+                height: 96,
+                child: Image.asset('asset/images/couchbase.png')),
+          ),
+        ));
   }
 }
 
@@ -67,7 +72,8 @@ class _UsernameInput extends StatelessWidget {
                 labelText: 'username',
                 errorText: state.username.invalid ? 'invalid username' : null,
               ),
-            ));
+            )
+        );
       },
     );
   }
