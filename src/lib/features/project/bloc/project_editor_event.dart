@@ -5,7 +5,7 @@ abstract class ProjectEditorEvent extends Equatable{
   const ProjectEditorEvent();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class ProjectEditorNameChangedEvent extends ProjectEditorEvent {
@@ -26,13 +26,22 @@ class ProjectEditorDescriptionChangedEvent extends ProjectEditorEvent {
   List<Object> get props => [description];
 }
 
-class ProjectEditorDueDateChangedEvent extends ProjectEditorEvent {
-  const ProjectEditorDueDateChangedEvent(this.dueDate);
+class ProjectEditorDueDateChangeEvent extends ProjectEditorEvent {
+  const ProjectEditorDueDateChangeEvent(this.dueDate);
 
-  final String dueDate;
+  final Future<DateTime?> dueDate;
 
   @override
-  List<Object> get props => [dueDate];
+  List<Object?> get props => [dueDate];
+}
+
+class ProjectEditorDueDateChangedEvent extends ProjectEditorEvent{
+  const ProjectEditorDueDateChangedEvent(this.dateSelected);
+
+  final String dateSelected;
+
+  @override
+  List<Object> get props => [dateSelected];
 }
 
 class ProjectEditorWarehouseChangedEvent extends ProjectEditorEvent {

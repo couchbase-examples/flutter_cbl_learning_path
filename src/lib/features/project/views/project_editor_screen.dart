@@ -17,6 +17,7 @@ class ProjectEditorScreen extends BackNavigationStatelessWidget {
         appBar: AppBar(
           title: const Text('Project Editor'),
         ),
+        backgroundColor: Colors.white,
         body:  BlocProvider(
           create: (context){
             return ProjectEditorBloc(projectRepository:
