@@ -36,6 +36,11 @@ class Warehouse {
       this.longitude,
       this.shippingTo);
 
+  @override
+  String toString(){
+    return name;
+  }
+
   factory Warehouse.fromJson(Map<String, dynamic> json) =>
       _$WarehouseFromJson(json);
 

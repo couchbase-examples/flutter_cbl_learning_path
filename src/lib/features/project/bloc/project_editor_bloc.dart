@@ -69,8 +69,4 @@ class ProjectEditorBloc extends Bloc<ProjectEditorEvent, ProjectEditorState> {
       debugPrint(e.toString());
     }
   }
-
-
-
-
 }

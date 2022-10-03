@@ -7,7 +7,7 @@ class ProjectEditorState extends Equatable {
       {this.status = FormEditorStatus.dataUninitialized,
       this.name = '',
       this.description = '',
-      this.dueDate = 'Due Date',
+      this.dueDate = 'Select Due Date',
       this.error = '',
       this.warehouse});
 

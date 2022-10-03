@@ -6,5 +6,6 @@ enum FormEditorStatus {
   dataSaved,
   dataInvalid,
   error,
-  newItem
+  newItem,
+  submitted,
 }

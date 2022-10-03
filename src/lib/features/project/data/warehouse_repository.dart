@@ -43,7 +43,7 @@ class WarehouseRepository {
     return count;
   }
 
-  Future<List<Warehouse>> get() async {
+  Future<List<Warehouse>> get(String searchCity, String? searchState) async {
     List<Warehouse> items = [];
     try {
       var db = _databaseProvider.warehouseDatabase;
