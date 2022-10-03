@@ -9,6 +9,7 @@ class WarehouseSearchState extends Equatable {
     this.searchCity = '',
     this.searchState = '',
     this.error = '',
+    this.warehouses = const <Warehouse>[],
     this.selectedWarehouse
 
   });
@@ -16,6 +17,7 @@ class WarehouseSearchState extends Equatable {
   final String searchCity;
   final String searchState;
   final String error;
+  final List<Warehouse> warehouses;
   final Warehouse? selectedWarehouse;
 
   WarehouseSearchState copyWith({
@@ -23,6 +25,7 @@ class WarehouseSearchState extends Equatable {
     String? searchCity,
     String? searchState,
     String? error,
+    List<Warehouse>? warehouses,
     Warehouse? selectedWarehouse})
   {
     return WarehouseSearchState(
@@ -30,11 +33,12 @@ class WarehouseSearchState extends Equatable {
       searchCity: searchCity ?? this.searchCity,
       searchState: searchState ?? this.searchState,
       error: error ?? this.error,
+      warehouses: warehouses ?? this.warehouses,
       selectedWarehouse: selectedWarehouse ?? this.selectedWarehouse
       );
   }
 
   @override
   List<Object?> get props =>
-      [status, searchCity, searchState, error, selectedWarehouse];
+      [status, searchCity, searchState, error, warehouses, selectedWarehouse];
 }

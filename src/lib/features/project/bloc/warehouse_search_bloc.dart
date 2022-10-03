@@ -31,7 +31,15 @@ class WarehouseSearchBloc extends Bloc<WarehouseSearchEvent, WarehouseSearchStat
     if (state.searchCity.isNotEmpty){
       //get warehouse list from repository
       try {
-        var items = await _repository.get(state.searchCity, state.searchState);
+        var items = await _repository.search(state.searchCity, state.searchState);
+        if (items.isNotEmpty) {
+          emit(state.copyWith(error: '',
+              status: FormEditorStatus.dataLoaded,
+              warehouses: items));
+        } else {
+          emit(state.copyWith(error: 'No warehouses found matching criteria.', status: FormEditorStatus.error));
+        }
+
       } catch (e){
         emit(state.copyWith(error: e.toString(), status: FormEditorStatus.error));
       }
