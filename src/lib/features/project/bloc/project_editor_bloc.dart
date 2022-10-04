@@ -24,6 +24,7 @@ class ProjectEditorBloc extends Bloc<ProjectEditorEvent, ProjectEditorState> {
         _warehouseSelectionService = warehouseSelectionService,
         _authenticationService = authenticationService,
         super(const ProjectEditorState()) {
+
     //register for listening to events
     on<ProjectEditorNameChangedEvent>(_onNameChanged);
     on<ProjectEditorDescriptionChangedEvent>(_onDescriptionChanged);
@@ -58,7 +59,7 @@ class ProjectEditorBloc extends Bloc<ProjectEditorEvent, ProjectEditorState> {
 
   FutureOr<void> _onDescriptionChanged(ProjectEditorDescriptionChangedEvent event,
       Emitter<ProjectEditorState> emit) {
-    emit(state.copyWith(name: event.description, status: FormEditorStatus.dataChanged));
+    emit(state.copyWith(description: event.description, status: FormEditorStatus.dataChanged));
   }
 
   Future<void> _onDueDateChange  (
@@ -117,6 +118,7 @@ class ProjectEditorBloc extends Bloc<ProjectEditorEvent, ProjectEditorState> {
             createdOn: DateTime.now(),
             modifiedOn: DateTime.now());
         _projectRepository.save(document);
+        emit(state.copyWith(status: FormEditorStatus.dataSaved));
       } else {
         emit(state.copyWith(status: FormEditorStatus.error, error: 'Can\'t save project because current user is null.  This state should never happen.'));
       }

@@ -66,7 +66,7 @@ class ProjectCard extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 5),
                   child: IconRow(title: project.dueDateToString(),icon: const Icon(Icons.calendar_today, size: 16))),
               Padding(padding: const EdgeInsets.only(top: 5), child: IconRow(title: project.team, icon: const Icon(Icons.group, size: 16))),
-              Padding(padding: const EdgeInsets.only(top: 20, bottom: 30, left: 0), child: Text(project.description))
+              Padding(padding: const EdgeInsets.only(top: 20, bottom: 30, left: 16), child: Align(alignment: AlignmentDirectional.centerStart, child:Text(project.description)))
             ],
           ),
         ));

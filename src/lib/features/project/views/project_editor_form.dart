@@ -46,7 +46,7 @@ class _NameInput extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
             child: TextField(
               controller: controller,
-              key: const Key('userProfileEditor_firstNameInput_textField'),
+              key: const Key('projectEditor_nameInput_textField'),
               keyboardType: TextInputType.text,
               onChanged: (name) => context
                   .read<ProjectEditorBloc>()
@@ -71,13 +71,13 @@ class _DescriptionInput extends StatelessWidget {
       builder: (context, state) {
         TextEditingController? controller;
         if (state.status == FormEditorStatus.dataLoaded) {
-          controller = TextEditingController(text: state.name);
+          controller = TextEditingController(text: state.description);
         }
         return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
             child: TextField(
               controller: controller,
-              key: const Key('userProfileEditor_firstNameInput_textField'),
+              key: const Key('projectEditor_DescriptionInput_textField'),
               keyboardType: TextInputType.text,
               onChanged: (description) => context
                   .read<ProjectEditorBloc>()

@@ -23,7 +23,7 @@ class ProjectEditorScreen extends BackNavigationStatelessWidget {
         body:  BlocProvider(
           create: (context){
             return ProjectEditorBloc(projectRepository: RepositoryProvider.of<ProjectRepository>(context),
-            authenticationService: RepositoryProvider.of<AuthenticationService>(context),
+            authenticationService: RepositoryProvider.of<FakeAuthenticationService>(context),
             warehouseSelectionService: RepositoryProvider.of<WarehouseSelectionService>(context));
           },
           child: const ProjectEditorForm(),
