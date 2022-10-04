@@ -18,12 +18,13 @@ abstract class AuthenticationService {
 }
 
 class FakeAuthenticationService extends AuthenticationService {
-  final _controller = StreamController<AuthenticationStatus>();
-  User? _user;
 
   FakeAuthenticationService() {
     _user = null;
   }
+
+  final _controller = StreamController<AuthenticationStatus>();
+  User? _user;
 
   void dispose() => _controller.close();
 

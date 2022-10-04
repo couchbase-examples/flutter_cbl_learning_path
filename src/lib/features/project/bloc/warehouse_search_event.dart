@@ -33,3 +33,12 @@ class WarehouseSearchSubmitChangedEvent extends WarehouseSearchEvent{
   List<Object> get props => [];
 }
 
+class WarehouseSearchSelectionEvent extends WarehouseSearchEvent{
+  const WarehouseSearchSelectionEvent(this.item);
+
+  final Warehouse? item;
+  @override
+  List<Object?> get props => [item];
+}
+
+

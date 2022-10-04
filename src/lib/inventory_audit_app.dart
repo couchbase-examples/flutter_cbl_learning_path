@@ -5,24 +5,17 @@ import 'package:flutter_cbl_learning_path/features/audit/data/stock_item_reposit
 import 'package:flutter_cbl_learning_path/features/drawer/data/user_repository.dart';
 import 'package:flutter_cbl_learning_path/features/project/data/project_repository.dart';
 import 'package:flutter_cbl_learning_path/features/project/data/warehouse_repository.dart';
+import 'package:flutter_cbl_learning_path/features/project/services/warehouse_selected_service.dart';
 import 'package:flutter_cbl_learning_path/features/router/route.dart';
 import 'package:flutter_cbl_learning_path/features/database/database.dart';
 import './app_view.dart';
 
 class InventoryAuditApp extends StatelessWidget {
-  final FakeAuthenticationService authService;
-  final AppRouterService routerService;
-  final DatabaseProvider databaseProvider;
-  final ProjectRepository projectRepository;
-  final AuditRepository auditRepository;
-  final StockItemRepository stockItemRepository;
-  final WarehouseRepository warehouseRepository;
-  final UserRepository userRepository;
-
   const InventoryAuditApp(
       {Key? key,
       required this.authService,
       required this.routerService,
+      required this.warehouseSelectionService,
       required this.databaseProvider,
       required this.projectRepository,
       required this.auditRepository,
@@ -31,6 +24,16 @@ class InventoryAuditApp extends StatelessWidget {
       required this.userRepository})
       : super(key: key);
 
+  final FakeAuthenticationService authService;
+  final AppRouterService routerService;
+  final WarehouseSelectionService warehouseSelectionService;
+  final DatabaseProvider databaseProvider;
+  final ProjectRepository projectRepository;
+  final AuditRepository auditRepository;
+  final StockItemRepository stockItemRepository;
+  final WarehouseRepository warehouseRepository;
+  final UserRepository userRepository;
+
   // This is the root of the application.
   @override
   Widget build(BuildContext context) {
@@ -38,6 +41,7 @@ class InventoryAuditApp extends StatelessWidget {
         providers: [
           RepositoryProvider.value(value: authService),
           RepositoryProvider.value(value: routerService),
+          RepositoryProvider.value(value: warehouseSelectionService),
           RepositoryProvider.value(value: databaseProvider),
           RepositoryProvider.value(value: projectRepository),
           RepositoryProvider.value(value: auditRepository),

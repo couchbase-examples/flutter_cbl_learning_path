@@ -45,7 +45,12 @@ class ProjectEditorDueDateChangedEvent extends ProjectEditorEvent{
 }
 
 class ProjectEditorWarehouseChangedEvent extends ProjectEditorEvent {
-  const ProjectEditorWarehouseChangedEvent();
+  const ProjectEditorWarehouseChangedEvent(this.warehouse);
+
+  final Warehouse? warehouse;
+
+  @override
+  List<Object?> get props => [warehouse];
 }
 
 class ProjectEditorSaveEvent extends ProjectEditorEvent{

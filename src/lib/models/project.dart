@@ -12,7 +12,7 @@ class Project {
   String name;
   String description;
   bool isComplete;
-  String documentType = "project";
+  String documentType = 'project';
   DateTime? dueDate;
   Warehouse? warehouse;
 
@@ -23,18 +23,18 @@ class Project {
   DateTime? createdOn;
   DateTime? modifiedOn;
 
-  Project(
-      this.projectId,
-      this.name,
-      this.description,
-      this.isComplete,
-      this.dueDate,
-      this.warehouse,
-      this.team,
-      this.createdBy,
-      this.createdOn,
-      this.modifiedBy,
-      this.modifiedOn);
+  Project( {
+    required this.projectId,
+    required this.name,
+    required this.description,
+    required this.isComplete,
+    required this.dueDate,
+    required this.warehouse,
+    required this.team,
+    required this.createdBy,
+    required this.createdOn,
+    required this.modifiedBy,
+    required this.modifiedOn});
 
   String dueDateToString() {
     var date = dueDate;

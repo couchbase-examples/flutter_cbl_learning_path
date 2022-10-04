@@ -97,7 +97,17 @@ class ProjectRepository {
       debugPrint(e.toString());
     }
     return Project(
-        documentId, "", "", false, dueDate, null, "", "", now, "", now);
+        projectId: documentId,
+        name: "",
+        description: "",
+        isComplete: false,
+        dueDate: dueDate,
+        warehouse: null,
+        team: "",
+        createdBy: "",
+        createdOn: now,
+        modifiedBy: "",
+        modifiedOn: now);
   }
 
   Future<bool> save(Project document) async {
@@ -180,17 +190,17 @@ class ProjectRepository {
             //create project
             var projectDocument = Project(
                 //<4>
-                projectId,
-                '${warehouse.name} Audit',
-                'Audit of warehouse stock located in ${warehouse.city}, ${warehouse.state}.',
-                false,
-                dueDate,
-                warehouse,
-                currentUser!.team,
-                currentUser.username,
-                date,
-                currentUser.username,
-                date);
+                projectId: projectId,
+                name: '${warehouse.name} Audit',
+                description: 'Audit of warehouse stock located in ${warehouse.city}, ${warehouse.state}.',
+                isComplete: false,
+                dueDate: dueDate,
+                warehouse: warehouse,
+                team: currentUser!.team,
+                createdBy: currentUser.username,
+                createdOn: date,
+                modifiedBy: currentUser.username,
+                modifiedOn: date);
             var didSave = await save(projectDocument); // <5>
             if (didSave) {
               // <6>

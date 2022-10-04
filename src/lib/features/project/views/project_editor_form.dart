@@ -10,6 +10,7 @@ import '../bloc/warehouse_search_bloc.dart';
 import '../bloc/warehouse_search_event.dart';
 import '../bloc/warehouse_search_state.dart';
 import '../data/warehouse_repository.dart';
+import '../services/warehouse_selected_service.dart';
 
 class ProjectEditorForm extends StatelessWidget {
   const ProjectEditorForm({super.key});
@@ -232,13 +233,14 @@ class _WarehouseSearchScreen extends StatelessWidget {
     return BlocProvider(
         create: (context) {
           return WarehouseSearchBloc(
-              repository: RepositoryProvider.of<WarehouseRepository>(context));
+              repository: RepositoryProvider.of<WarehouseRepository>(context),
+              warehouseSelectionService: RepositoryProvider.of<WarehouseSelectionService>(context));
         },
         child: SafeArea(
             child: Container(
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height,
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.all(16),
                 color: Colors.grey,
                 child: Scaffold(
                     body: Column(
@@ -258,6 +260,7 @@ class _WarehouseSearchScreen extends StatelessWidget {
                       const _StateInput(),
                       const _WarehouseSearchButton(),
                       const _ErrorText(),
+                      const Expanded(child: _WarehouseList())
                     ])))));
   }
 }
@@ -337,7 +340,7 @@ class _WarehouseSearchButton extends StatelessWidget {
         return const Text('');
       } else {
         return Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.only(top: 16.0, left: 8.0, right: 8.0),
           child: ElevatedButton(
               onPressed: () {
                 context
@@ -353,6 +356,45 @@ class _WarehouseSearchButton extends StatelessWidget {
         );
       }
     });
+  }
+}
+
+class _WarehouseList extends StatelessWidget {
+  const _WarehouseList({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<WarehouseSearchBloc, WarehouseSearchState>(
+        buildWhen: (previous, current) =>
+            previous.warehouses != current.warehouses,
+        builder: (context, state) {
+          return Padding(
+              padding:
+                  const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 8.0),
+              child: ListView.builder(
+                  itemCount: state.warehouses.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return GestureDetector(
+                        onTap: ()  {
+                        context
+                            .read<WarehouseSearchBloc>()
+                            .add(WarehouseSearchSelectionEvent(state.warehouses[index]));
+                          Navigator.of(context).pop();
+                        },
+                        child: Padding(
+                            padding: const EdgeInsets.only(bottom: 18.0),
+                            child: Card(
+                                child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                  ListTile(
+                                      title: Text(state.warehouses[index].name),
+                                      subtitle: Text(
+                                          '${state.warehouses[index].city}, ${state.warehouses[index].state}')),
+                                ]))));
+                  }));
+        });
   }
 }
 

@@ -7,23 +7,23 @@ part of 'project.dart';
 // **************************************************************************
 
 Project _$ProjectFromJson(Map<String, dynamic> json) => Project(
-      json['projectId'] as String,
-      json['name'] as String,
-      json['description'] as String,
-      json['isComplete'] as bool,
-      json['dueDate'] == null
+      projectId: json['projectId'] as String,
+      name: json['name'] as String,
+      description: json['description'] as String,
+      isComplete: json['isComplete'] as bool,
+      dueDate: json['dueDate'] == null
           ? null
           : DateTime.parse(json['dueDate'] as String),
-      json['warehouse'] == null
+      warehouse: json['warehouse'] == null
           ? null
           : Warehouse.fromJson(json['warehouse'] as Map<String, dynamic>),
-      json['team'] as String,
-      json['createdBy'] as String,
-      json['createdOn'] == null
+      team: json['team'] as String,
+      createdBy: json['createdBy'] as String,
+      createdOn: json['createdOn'] == null
           ? null
           : DateTime.parse(json['createdOn'] as String),
-      json['modifiedBy'] as String,
-      json['modifiedOn'] == null
+      modifiedBy: json['modifiedBy'] as String,
+      modifiedOn: json['modifiedOn'] == null
           ? null
           : DateTime.parse(json['modifiedOn'] as String),
     )..documentType = json['documentType'] as String;
