@@ -24,6 +24,7 @@ class ProjectEditorScreen extends BackNavigationStatelessWidget {
           create: (context){
             return ProjectEditorBloc(projectRepository: RepositoryProvider.of<ProjectRepository>(context),
             authenticationService: RepositoryProvider.of<FakeAuthenticationService>(context),
+            routerService: RepositoryProvider.of<AppRouterService>(context),
             warehouseSelectionService: RepositoryProvider.of<WarehouseSelectionService>(context));
           },
           child: const ProjectEditorForm(),

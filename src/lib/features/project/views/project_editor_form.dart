@@ -167,7 +167,7 @@ class _LocationSelector extends StatelessWidget {
               elevation: 4.0,
               backgroundColor: Colors.white,
             ),
-            onPressed: () {
+            onPressed: () =>
               showGeneralDialog(
                   context: context,
                   barrierDismissible: false,
@@ -184,8 +184,8 @@ class _LocationSelector extends StatelessWidget {
                   },
                   pageBuilder: (context, animation, secondaryAnimation) {
                     return const _WarehouseSearchScreen();
-                  });
-            },
+                  })
+            ,
             child: const _LocationSelectedWarehouse()));
   }
 }
@@ -427,17 +427,12 @@ class _SaveButton extends StatelessWidget {
         builder: (context, state) {
       if (state.status == FormEditorStatus.dataSaved ||
           state.status == FormEditorStatus.cancelled) {
-        Navigator.of(context).pop();
-        return const Text('');
+        return const Center(child: CircularProgressIndicator());
       } else {
         return Padding(
           padding: const EdgeInsets.all(16.0),
           child: ElevatedButton(
-              onPressed: () {
-                context
-                    .read<ProjectEditorBloc>()
-                    .add(const ProjectEditorSaveEvent());
-              },
+              onPressed: () => context.read<ProjectEditorBloc>().add(const ProjectEditorSaveEvent()),
               child: const Padding(
                   padding: EdgeInsets.all(8.0),
                   child: Text(

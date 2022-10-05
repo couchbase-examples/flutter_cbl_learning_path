@@ -19,8 +19,10 @@ class ProjectEditorBloc extends Bloc<ProjectEditorEvent, ProjectEditorState> {
   ProjectEditorBloc({
     required ProjectRepository projectRepository,
     required AuthenticationService authenticationService,
+    required RouterService routerService,
     required WarehouseSelectionService warehouseSelectionService})
       : _projectRepository = projectRepository,
+        _routerService = routerService,
         _warehouseSelectionService = warehouseSelectionService,
         _authenticationService = authenticationService,
         super(const ProjectEditorState()) {
@@ -37,17 +39,16 @@ class ProjectEditorBloc extends Bloc<ProjectEditorEvent, ProjectEditorState> {
     _warehouseSelectionService.init();
 
     //register for listening to streams from services
-    if (!_warehouseSelectionService.hasListener()) {
-      _warehouseSelectionSubscription =
-          _warehouseSelectionService.warehouse.listen(
-                (item) => add(ProjectEditorWarehouseChangedEvent(item)),
-          );
-    }
+   _warehouseSelectionSubscription = _warehouseSelectionService.warehouse.listen(
+      (item) => add(ProjectEditorWarehouseChangedEvent(item)),
+    );
   }
 
   final ProjectRepository _projectRepository;
   final AuthenticationService _authenticationService;
   final WarehouseSelectionService _warehouseSelectionService;
+  final RouterService _routerService;
+
   late StreamSubscription<Warehouse?> _warehouseSelectionSubscription;
 
   @override
@@ -122,11 +123,14 @@ class ProjectEditorBloc extends Bloc<ProjectEditorEvent, ProjectEditorState> {
             modifiedBy: currentUser.username,
             createdOn: DateTime.now(),
             modifiedOn: DateTime.now());
-        _projectRepository.save(document);
-        emit(state.copyWith(status: FormEditorStatus.dataSaved));
-        //close the subscription or when we go back to the screen we will get an error
-        //that we are already subscribed
-        _warehouseSelectionSubscription.cancel();
+        var didSave = await _projectRepository.save(document);
+        if (didSave) {
+          emit(state.copyWith(status: FormEditorStatus.dataSaved));
+          _routerService.routeTo(const ScreenRoute(routeToScreen: RouteToScreen.pop));
+        }
+        else {
+          emit(state.copyWith(status: FormEditorStatus.error, error: 'Tried to save project, repository returned false for save status.'));
+        }
       } else {
         emit(state.copyWith(status: FormEditorStatus.error, error: 'Can\'t save project because current user is null.  This state should never happen.'));
       }

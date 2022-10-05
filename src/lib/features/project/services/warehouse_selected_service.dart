@@ -17,9 +17,6 @@ class WarehouseSelectionService {
     }
   }
 
-  bool hasListener () {
-    return _controller?.hasListener ?? false;
-  }
   void setWarehouse(Warehouse warehouse){
     _controller?.add(warehouse);
   }
