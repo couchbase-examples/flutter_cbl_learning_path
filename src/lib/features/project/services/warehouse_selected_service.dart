@@ -5,15 +5,22 @@ import '../../../models/warehouse.dart';
 class WarehouseSelectionService {
   WarehouseSelectionService();
 
-  final _controller = StreamController<Warehouse>();
+  late StreamController<Warehouse?>? _controller;
 
-  void dispose() => _controller.close();
+  void init() => _controller = StreamController<Warehouse?>();
+
+  void dispose() => _controller?.close();
 
   Stream<Warehouse?> get warehouse async* {
-    yield* _controller.stream;
+    if (_controller != null) {
+      yield* _controller!.stream;
+    }
   }
 
+  bool hasListener () {
+    return _controller?.hasListener ?? false;
+  }
   void setWarehouse(Warehouse warehouse){
-    _controller.add(warehouse);
+    _controller?.add(warehouse);
   }
 }

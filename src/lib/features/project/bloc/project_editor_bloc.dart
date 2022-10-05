@@ -34,10 +34,15 @@ class ProjectEditorBloc extends Bloc<ProjectEditorEvent, ProjectEditorState> {
     on<ProjectEditorInitialProjectLoadingEvent>(_onInitialization);
     on<ProjectEditorSaveEvent>(_onSave);
 
+    _warehouseSelectionService.init();
+
     //register for listening to streams from services
-   _warehouseSelectionSubscription = _warehouseSelectionService.warehouse.listen (
-         (item) => add(ProjectEditorWarehouseChangedEvent(item)),
-   );
+    if (!_warehouseSelectionService.hasListener()) {
+      _warehouseSelectionSubscription =
+          _warehouseSelectionService.warehouse.listen(
+                (item) => add(ProjectEditorWarehouseChangedEvent(item)),
+          );
+    }
   }
 
   final ProjectRepository _projectRepository;
@@ -45,11 +50,11 @@ class ProjectEditorBloc extends Bloc<ProjectEditorEvent, ProjectEditorState> {
   final WarehouseSelectionService _warehouseSelectionService;
   late StreamSubscription<Warehouse?> _warehouseSelectionSubscription;
 
-  //saves from possible memory leak
   @override
   Future<void> close() async{
     super.close();
-    _warehouseSelectionSubscription.cancel();
+    await _warehouseSelectionSubscription.cancel();
+    _warehouseSelectionService.dispose();
   }
 
   FutureOr<void> _onNameChanged(
@@ -119,6 +124,9 @@ class ProjectEditorBloc extends Bloc<ProjectEditorEvent, ProjectEditorState> {
             modifiedOn: DateTime.now());
         _projectRepository.save(document);
         emit(state.copyWith(status: FormEditorStatus.dataSaved));
+        //close the subscription or when we go back to the screen we will get an error
+        //that we are already subscribed
+        _warehouseSelectionSubscription.cancel();
       } else {
         emit(state.copyWith(status: FormEditorStatus.error, error: 'Can\'t save project because current user is null.  This state should never happen.'));
       }
