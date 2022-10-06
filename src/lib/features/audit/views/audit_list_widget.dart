@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_cbl_learning_path/features/audit/data/audit_repository.dart';
 import '../../../models/models.dart';
 import '../../router/service/router_service.dart';
 import '../bloc/audit_list.dart';
@@ -20,12 +21,19 @@ class AuditListWidget extends StatelessWidget {
             case DataStatus.loading:
               return const Center(child: CircularProgressIndicator());
             case DataStatus.loaded:
+            case DataStatus.changed:
               return SafeArea(
                   child: ListView.builder(
                       itemCount: state.items.length,
                       itemBuilder: (BuildContext context, int index) {
                         return  GestureDetector(
                             onTap: () => {
+                              routerService.routeTo(
+                                  ScreenRoute(
+                                      routeToScreen: RouteToScreen.auditEditor,
+                                      audit: state.items[index],
+                                      projectId: state.items[index].projectId)
+                              )
                             },
                             child: AuditCard(item: state.items[index], routerService: routerService)
                         );
@@ -34,9 +42,6 @@ class AuditListWidget extends StatelessWidget {
               return const Center(child: Text("No Data was Found"));
             case DataStatus.error:
               return Center(child: Text("Failed with error: ${state.error}"));
-            case DataStatus.changed:
-            // TODO: Handle this case.
-              break;
             case DataStatus.cancelled:
               return const Center(child: Text("Loading was cancelled."));
           }
@@ -81,17 +86,28 @@ class TitleRow extends StatelessWidget {
     return Row(mainAxisAlignment: MainAxisAlignment.start, children: [
       Expanded(child: Padding(
           padding: const EdgeInsets.only(left: 16),
-          child:Text(item.stockItem.name,
+          child:Text(item.stockItem?.name ?? '',
               style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 17)))
       ),
       PopupMenuButton(
           icon: const Icon(Icons.more_vert),
           itemBuilder: (BuildContext context) => <PopupMenuEntry>[
-            const PopupMenuItem(
-                child: ListTile(
+              PopupMenuItem(
+                onTap: () => {
+                  routerService.routeTo(
+                      ScreenRoute(
+                          routeToScreen: RouteToScreen.auditEditor,
+                          audit: item,
+                          projectId: item.projectId)
+                  )
+                },
+                child: const ListTile(
                     leading: Icon(Icons.edit), title: Text('Edit'))),
-            const PopupMenuItem(
-                child: ListTile(
+            PopupMenuItem(
+              onTap: () => {
+                RepositoryProvider.of<AuditRepository>(context).delete(item.auditId),
+              },
+                child: const ListTile(
                     leading: Icon(Icons.delete), title: Text('Delete'))),
           ]),
     ]);

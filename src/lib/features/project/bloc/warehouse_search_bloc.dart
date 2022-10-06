@@ -10,12 +10,18 @@ import 'package:flutter_cbl_learning_path/models/form_status.dart';
 import '../services/warehouse_selected_service.dart';
 
 class WarehouseSearchBloc extends Bloc<WarehouseSearchEvent, WarehouseSearchState>{
-  WarehouseSearchBloc({required WarehouseRepository repository, required WarehouseSelectionService warehouseSelectionService}) : _repository = repository,
-  _warehouseSelectionService = warehouseSelectionService, super(const WarehouseSearchState()) {
+  WarehouseSearchBloc({
+    required WarehouseRepository repository,
+    required WarehouseSelectionService warehouseSelectionService})
+      : _repository = repository,
+        _warehouseSelectionService = warehouseSelectionService,
+    super(const WarehouseSearchState()) {
+
     on<WarehouseSearchCityChangedEvent>(_onCityChanged);
     on<WarehouseSearchStateChangedEvent>(_onStateChanged);
     on<WarehouseSearchSubmitChangedEvent>(_onSubmitted);
     on<WarehouseSearchSelectionEvent>(_onSelection);
+
   }
   final WarehouseRepository _repository;
   final WarehouseSelectionService _warehouseSelectionService;

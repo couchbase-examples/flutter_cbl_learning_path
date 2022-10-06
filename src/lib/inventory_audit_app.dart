@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:flutter_cbl_learning_path/features/audit/data/audit_repository.dart';
 import 'package:flutter_cbl_learning_path/features/audit/data/stock_item_repository.dart';
 import 'package:flutter_cbl_learning_path/features/drawer/data/user_repository.dart';
 import 'package:flutter_cbl_learning_path/features/project/data/project_repository.dart';
 import 'package:flutter_cbl_learning_path/features/project/data/warehouse_repository.dart';
 import 'package:flutter_cbl_learning_path/features/project/services/warehouse_selected_service.dart';
+import 'package:flutter_cbl_learning_path/features/audit/services/stock_item_selection_service.dart';
 import 'package:flutter_cbl_learning_path/features/router/route.dart';
 import 'package:flutter_cbl_learning_path/features/database/database.dart';
+
 import './app_view.dart';
 
 class InventoryAuditApp extends StatelessWidget {
@@ -16,6 +19,7 @@ class InventoryAuditApp extends StatelessWidget {
       required this.authService,
       required this.routerService,
       required this.warehouseSelectionService,
+      required this.stockItemSelectionService,
       required this.databaseProvider,
       required this.projectRepository,
       required this.auditRepository,
@@ -27,6 +31,7 @@ class InventoryAuditApp extends StatelessWidget {
   final FakeAuthenticationService authService;
   final AppRouterService routerService;
   final WarehouseSelectionService warehouseSelectionService;
+  final StockItemSelectionService stockItemSelectionService;
   final DatabaseProvider databaseProvider;
   final ProjectRepository projectRepository;
   final AuditRepository auditRepository;
@@ -42,6 +47,7 @@ class InventoryAuditApp extends StatelessWidget {
           RepositoryProvider.value(value: authService),
           RepositoryProvider.value(value: routerService),
           RepositoryProvider.value(value: warehouseSelectionService),
+          RepositoryProvider.value(value: stockItemSelectionService),
           RepositoryProvider.value(value: databaseProvider),
           RepositoryProvider.value(value: projectRepository),
           RepositoryProvider.value(value: auditRepository),

@@ -10,8 +10,8 @@ class StockItemRepository {
   final DatabaseProvider _databaseProvider;
   final String documentType = 'item';
 
-  final String cityAttributeName = 'city';
-  final String stateAttributeName = 'state';
+  final String nameAttributeName = 'name';
+  final String descriptionAttributeName = 'description';
   final String attributeDocumentType = 'documentType';
   final String itemAliasName = 'item';
 
@@ -34,6 +34,45 @@ class StockItemRepository {
       debugPrint(e.toString());
     }
     return count;
+  }
+  Future<List<StockItem>> search(
+      String? searchName,
+      String? searchDescription) async {
+    List<StockItem> items = [];
+    try {
+      if (searchName != null) {
+        var db = _databaseProvider.warehouseDatabase;
+        if (db != null) {
+          // <1>
+          var queryString = 'SELECT * FROM _ AS item WHERE documentType="$documentType" AND lower($nameAttributeName) LIKE (\'%\' || \$parameterName || \'%\')';
+          // <2>
+          var parameters = Parameters();
+          // <3>
+          parameters.setString(searchName.toLowerCase(), name: 'parameterName');
+          // <4>
+          if (searchDescription != null && searchDescription.isNotEmpty){
+            queryString = '$queryString AND lower($descriptionAttributeName) LIKE (\'%\' || \$parameterDescription || \'%\')';
+            parameters.setString(searchDescription, name: 'parameterDescription');
+          }
+          // <5>
+          var query = await AsyncQuery.fromN1ql(db, queryString);
+          // <6>
+          query.setParameters(parameters);
+          // <7>
+          var result = await query.execute();
+          var results = await result.allResults();
+          // <8>
+          for(var r in results){
+            var map = r.toPlainMap();
+            var stockItemDoa = StockItemDao.fromJson(map);
+            items.add(stockItemDoa.item);
+          }
+        }
+      }
+    } catch (e){
+      debugPrint(e.toString());
+    }
+    return items;
   }
 
   Future<List<StockItem>> get() async {

@@ -5,6 +5,8 @@ import 'package:flutter_cbl_learning_path/features/project/bloc/project_list_eve
 import 'package:flutter_cbl_learning_path/features/project/views/project_list_widget.dart';
 import 'package:flutter_cbl_learning_path/features/router/route.dart';
 
+import '../../audit/bloc/audit_list_bloc.dart';
+import '../../audit/data/audit_repository.dart';
 import '../bloc/project_list_bloc.dart';
 import '../data/project_repository.dart';
 
@@ -22,12 +24,18 @@ class ProjectListScreen extends StatelessWidget {
       drawer: const MenuDrawer(),
       body: Padding(
         padding: const EdgeInsets.all(2),
-        child: BlocProvider(
-          create: (context) {
-            return ProjectListBloc(
-              repository: RepositoryProvider.of<ProjectRepository>(context))
-                ..add(const ProjectListInitializeEvent());
-          },
+        child: MultiBlocProvider(
+          providers: [
+            BlocProvider<ProjectListBloc>(
+              lazy: false,
+              create: (c) => ProjectListBloc(
+                        repository: RepositoryProvider.of<ProjectRepository>(c))..add(const ProjectListInitializeEvent())
+            ),
+            BlocProvider<AuditListBloc>(
+              lazy: false,
+              create: (c) => AuditListBloc(repository: RepositoryProvider.of<AuditRepository>(c))
+              )
+          ],
           child: ProjectListWidget(routerService: routerService)
         )
       ),floatingActionButton:

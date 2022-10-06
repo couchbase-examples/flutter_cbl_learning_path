@@ -11,7 +11,6 @@ class WarehouseSearchState extends Equatable {
     this.error = '',
     this.warehouses = const <Warehouse>[],
     this.selectedWarehouse
-
   });
   final FormEditorStatus status;
   final String searchCity;

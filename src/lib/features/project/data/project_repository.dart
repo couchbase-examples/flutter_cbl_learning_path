@@ -211,16 +211,16 @@ class ProjectRepository {
                 var stockItemIndex = random.nextInt(stockItems.length);
                 var stockItem = stockItems[stockItemIndex];
                 var auditDocument = Audit(
-                    auditId,
-                    projectId,
-                    stockItem,
-                    stockCount,
-                    'Found item ${stockItem.name} - ${stockItem.description} in warehouse',
-                    currentUser.team,
-                    currentUser.username,
-                    currentUser.username,
-                    date,
-                    date);
+                    auditId: auditId,
+                    projectId: projectId,
+                    stockItem: stockItem,
+                    auditCount: stockCount,
+                    notes: 'Found item ${stockItem.name} - ${stockItem.description} in warehouse',
+                    team: currentUser.team,
+                    createdBy: currentUser.username,
+                    modifiedBy: currentUser.username,
+                    createdOn: date,
+                    modifiedOn: date);
                 await _auditRepository.save(auditDocument);
               }
             }

@@ -5,6 +5,7 @@ import 'package:flutter_cbl_learning_path/features/drawer/data/user_repository.d
 import 'package:flutter_cbl_learning_path/features/project/data/project_repository.dart';
 import 'package:flutter_cbl_learning_path/features/project/data/warehouse_repository.dart';
 import 'package:flutter_cbl_learning_path/features/project/services/warehouse_selected_service.dart';
+import 'package:flutter_cbl_learning_path/features/audit/services/stock_item_selection_service.dart';
 import './inventory_audit_app.dart';
 import 'features/router/route.dart';
 import 'features/database/database_provider.dart';
@@ -13,6 +14,7 @@ void main() {
   var dbProvider = DatabaseProvider();
   var authService = FakeAuthenticationService();
   var warehouseSelectionService = WarehouseSelectionService();
+  var stockItemSelectionService = StockItemSelectionService();
 
   //setup repositories
   var stockItemRepository = StockItemRepository(dbProvider);
@@ -26,6 +28,7 @@ void main() {
     authService: authService,
     routerService: AppRouterService(),
     warehouseSelectionService: warehouseSelectionService,
+    stockItemSelectionService: stockItemSelectionService,
     databaseProvider: dbProvider,
     projectRepository: projectRepository,
     auditRepository: auditRepository,

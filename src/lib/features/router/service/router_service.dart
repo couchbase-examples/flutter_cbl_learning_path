@@ -1,5 +1,8 @@
 import 'dart:async';
 
+import '../../../models/models.dart';
+import '../../audit/bloc/audit_list_bloc.dart';
+
 enum RouteToScreen {
   developer,
   developerInfo,
@@ -21,12 +24,18 @@ class ScreenRoute{
   const ScreenRoute({
     required this.routeToScreen,
     this.projectId = '',
-    this.auditId = ''
+    this.auditId = '',
+    this.project,
+    this.audit,
+    this.auditListBloc,
   });
 
   final RouteToScreen routeToScreen;
   final String? projectId;
   final String? auditId;
+  final Audit? audit;
+  final Project? project;
+  final AuditListBloc? auditListBloc;
 }
 
 abstract class RouterService {

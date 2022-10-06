@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:cbl/cbl.dart';
 
@@ -40,6 +42,33 @@ class AuditRepository {
     return null;
   }
 
+  Future<Audit> get(String projectId, String documentId) async {
+    var now = DateTime.now();
+    try {
+     var db = _databaseProvider.inventoryDatabase;
+     if (db != null){
+       var doc = await db.document(documentId);
+       if (doc != null){
+         return Audit.fromJson(jsonDecode(doc.toJson()));
+       }
+     }
+    }catch (e){
+      debugPrint(e.toString());
+    }
+    return Audit(
+      auditId: documentId,
+      projectId: projectId,
+      notes: '',
+      auditCount: 0,
+      stockItem: null,
+      team: '',
+      createdOn: now,
+      modifiedOn: now,
+      createdBy: '',
+      modifiedBy: ''
+    );
+  }
+
   Future<int> count() async {
     var count = 0;
     try {
@@ -71,6 +100,21 @@ class AuditRepository {
         return true;
       }
     } catch (e) {
+      debugPrint(e.toString());
+    }
+    return false;
+  }
+
+  Future<bool> delete(String auditId) async  {
+    try {
+      var db = _databaseProvider.inventoryDatabase;
+      if (db != null) {
+        var doc = await db.document(auditId);
+        if (doc != null) {
+          return await db.deleteDocument(doc);
+        }
+      }
+    }catch (e){
       debugPrint(e.toString());
     }
     return false;

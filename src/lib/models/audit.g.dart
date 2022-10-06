@@ -7,18 +7,20 @@ part of 'audit.dart';
 // **************************************************************************
 
 Audit _$AuditFromJson(Map<String, dynamic> json) => Audit(
-      json['auditId'] as String,
-      json['projectId'] as String,
-      StockItem.fromJson(json['stockItem'] as Map<String, dynamic>),
-      json['auditCount'] as int,
-      json['notes'] as String,
-      json['team'] as String,
-      json['createdBy'] as String,
-      json['modifiedBy'] as String,
-      json['createdOn'] == null
+      auditId: json['auditId'] as String,
+      projectId: json['projectId'] as String,
+      stockItem: json['stockItem'] == null
+          ? null
+          : StockItem.fromJson(json['stockItem'] as Map<String, dynamic>),
+      auditCount: json['auditCount'] as int,
+      notes: json['notes'] as String,
+      team: json['team'] as String,
+      createdBy: json['createdBy'] as String,
+      modifiedBy: json['modifiedBy'] as String,
+      createdOn: json['createdOn'] == null
           ? null
           : DateTime.parse(json['createdOn'] as String),
-      json['modifiedOn'] == null
+      modifiedOn: json['modifiedOn'] == null
           ? null
           : DateTime.parse(json['modifiedOn'] as String),
     )..documentType = json['documentType'] as String;
@@ -26,7 +28,7 @@ Audit _$AuditFromJson(Map<String, dynamic> json) => Audit(
 Map<String, dynamic> _$AuditToJson(Audit instance) => <String, dynamic>{
       'auditId': instance.auditId,
       'projectId': instance.projectId,
-      'stockItem': instance.stockItem.toJson(),
+      'stockItem': instance.stockItem?.toJson(),
       'auditCount': instance.auditCount,
       'notes': instance.notes,
       'documentType': instance.documentType,

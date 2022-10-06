@@ -11,7 +11,7 @@ part 'audit.g.dart';
 class Audit {
   String auditId;
   String projectId;
-  StockItem stockItem;
+  StockItem? stockItem;
   int auditCount;
   String notes;
   String documentType = "audit";
@@ -23,17 +23,19 @@ class Audit {
   DateTime? createdOn;
   DateTime? modifiedOn;
 
-  Audit(
-      this.auditId,
-      this.projectId,
-      this.stockItem,
-      this.auditCount,
-      this.notes,
-      this.team,
-      this.createdBy,
-      this.modifiedBy,
-      this.createdOn,
-      this.modifiedOn);
+  Audit({
+      required this.auditId,
+      required this.projectId,
+      required this.stockItem,
+      required this.auditCount,
+      required this.notes,
+      required this.team,
+      required this.createdBy,
+      required this.modifiedBy,
+      required this.createdOn,
+      required this.modifiedOn
+  });
+
   factory Audit.fromJson(Map<String, dynamic> json) => _$AuditFromJson(json);
 
   Map<String, dynamic> toJson() => _$AuditToJson(this);

@@ -65,7 +65,7 @@ class _AppViewState extends State<AppView> {
                   case RouteToScreen.projectEditor:
                     {
                       //TODO add projectId to route
-                      _navigator.pushNamed("/projectEditor");
+                      _navigator.pushNamed("/projectEditor", arguments: {state.route});
                     }
                     break;
                   case RouteToScreen.audits:
@@ -77,7 +77,7 @@ class _AppViewState extends State<AppView> {
                   case RouteToScreen.auditEditor:
                     {
                       //TODO add projectId and auditId to route
-                      _navigator.pushNamed("/auditEditor");
+                      _navigator.pushNamed("/auditEditor", arguments: {state.route});
                     }
                     break;
                   case RouteToScreen.userProfileEditor:

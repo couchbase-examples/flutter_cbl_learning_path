@@ -65,6 +65,7 @@ class AuditListBloc extends Bloc<AuditListEvent, AuditListState> {
           }
           // <9>
           add(AuditListLoadedEvent(items: items));
+
         });
       }
     } catch (e) {
