@@ -9,11 +9,12 @@ import './audit.dart';
 part 'audit_dao.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-class AuditDao{
+class AuditDao {
   const AuditDao(this.item);
   final Audit item;
 
-  factory AuditDao.fromJson(Map<String, dynamic> json) => _$AuditDaoFromJson(json);
+  factory AuditDao.fromJson(Map<String, dynamic> json) =>
+      _$AuditDaoFromJson(json);
 
   Map<String, dynamic> toJson() => _$AuditDaoToJson(this);
 }

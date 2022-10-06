@@ -8,8 +8,7 @@ import 'package:flutter_cbl_learning_path/features/login/login.dart';
 import 'package:flutter_cbl_learning_path/features/splash/splash.dart';
 import 'package:flutter_cbl_learning_path/features/developer/developer.dart';
 import 'package:flutter_cbl_learning_path/features/replicator/replicator.dart';
-
-import './theme/palette.dart';
+import 'package:flutter_cbl_learning_path/theme/palette.dart';
 
 class AppView extends StatefulWidget {
   const AppView({super.key});
@@ -29,10 +28,14 @@ class _AppViewState extends State<AppView> {
       title: 'Inventory Audit',
       routes: {
         "/login": (context) => const LoginScreen(),
-        "/projects": (context) => ProjectListScreen(routerService: RepositoryProvider.of<AppRouterService>(context)),
-        "/projectEditor": (context) => ProjectEditorScreen(routerService: RepositoryProvider.of<AppRouterService>(context)),
-        "/audits": (context) => AuditListScreen(routerService: RepositoryProvider.of<AppRouterService>(context)),
-        "/auditEditor": (context) => AuditEditorScreen(routerService: RepositoryProvider.of<AppRouterService>(context)),
+        "/projects": (context) => ProjectListScreen(
+            routerService: RepositoryProvider.of<AppRouterService>(context)),
+        "/projectEditor": (context) => ProjectEditorScreen(
+            routerService: RepositoryProvider.of<AppRouterService>(context)),
+        "/audits": (context) => AuditListScreen(
+            routerService: RepositoryProvider.of<AppRouterService>(context)),
+        "/auditEditor": (context) => AuditEditorScreen(
+            routerService: RepositoryProvider.of<AppRouterService>(context)),
         "/dev": (context) => DeveloperMenuScreen(
             routerService: RepositoryProvider.of<AppRouterService>(context)),
         "/devInfo": (context) => DeveloperInfoScreen(
@@ -64,20 +67,19 @@ class _AppViewState extends State<AppView> {
                     break;
                   case RouteToScreen.projectEditor:
                     {
-                      //TODO add projectId to route
-                      _navigator.pushNamed("/projectEditor", arguments: {state.route});
+                      _navigator.pushNamed("/projectEditor",
+                          arguments: {state.route});
                     }
                     break;
                   case RouteToScreen.audits:
                     {
-                      //TODO add projectId to route
-                      _navigator.pushNamed("/audits", arguments: { state.route});
+                      _navigator.pushNamed("/audits", arguments: {state.route});
                     }
                     break;
                   case RouteToScreen.auditEditor:
                     {
-                      //TODO add projectId and auditId to route
-                      _navigator.pushNamed("/auditEditor", arguments: {state.route});
+                      _navigator
+                          .pushNamed("/auditEditor", arguments: {state.route});
                     }
                     break;
                   case RouteToScreen.userProfileEditor:

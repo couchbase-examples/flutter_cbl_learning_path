@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_cbl_learning_path/features/router/route.dart';
-import '../views/drawer_widget.dart';
-import '../../login/login.dart';
+import 'package:flutter_cbl_learning_path/features/drawer/views/drawer_widget.dart';
+import 'package:flutter_cbl_learning_path/features/login/login.dart';
 
 class MenuDrawer extends StatelessWidget {
   const MenuDrawer({super.key});

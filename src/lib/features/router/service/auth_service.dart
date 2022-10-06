@@ -1,5 +1,5 @@
 import 'dart:async';
-import '../../login/models/user.dart';
+import 'package:flutter_cbl_learning_path/features/login/models/user.dart';
 
 enum AuthenticationStatus {
   unknown,
@@ -18,7 +18,6 @@ abstract class AuthenticationService {
 }
 
 class FakeAuthenticationService extends AuthenticationService {
-
   FakeAuthenticationService() {
     _user = null;
   }

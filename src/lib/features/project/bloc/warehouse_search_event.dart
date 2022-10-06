@@ -2,13 +2,13 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_cbl_learning_path/models/models.dart';
 
 abstract class WarehouseSearchEvent extends Equatable {
-  const WarehouseSearchEvent ();
+  const WarehouseSearchEvent();
 
   @override
   List<Object?> get props => [];
 }
 
-class WarehouseSearchCityChangedEvent extends WarehouseSearchEvent{
+class WarehouseSearchCityChangedEvent extends WarehouseSearchEvent {
   const WarehouseSearchCityChangedEvent(this.searchCity);
 
   final String searchCity;
@@ -17,7 +17,7 @@ class WarehouseSearchCityChangedEvent extends WarehouseSearchEvent{
   List<Object> get props => [searchCity];
 }
 
-class WarehouseSearchStateChangedEvent extends WarehouseSearchEvent{
+class WarehouseSearchStateChangedEvent extends WarehouseSearchEvent {
   const WarehouseSearchStateChangedEvent(this.searchState);
 
   final String searchState;
@@ -26,19 +26,17 @@ class WarehouseSearchStateChangedEvent extends WarehouseSearchEvent{
   List<Object> get props => [searchState];
 }
 
-class WarehouseSearchSubmitChangedEvent extends WarehouseSearchEvent{
+class WarehouseSearchSubmitChangedEvent extends WarehouseSearchEvent {
   const WarehouseSearchSubmitChangedEvent();
 
   @override
   List<Object> get props => [];
 }
 
-class WarehouseSearchSelectionEvent extends WarehouseSearchEvent{
+class WarehouseSearchSelectionEvent extends WarehouseSearchEvent {
   const WarehouseSearchSelectionEvent(this.item);
 
   final Warehouse? item;
   @override
   List<Object?> get props => [item];
 }
-
-

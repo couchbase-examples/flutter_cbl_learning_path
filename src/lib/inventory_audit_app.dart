@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:flutter_cbl_learning_path/app_view.dart';
 import 'package:flutter_cbl_learning_path/features/audit/data/audit_repository.dart';
 import 'package:flutter_cbl_learning_path/features/audit/data/stock_item_repository.dart';
 import 'package:flutter_cbl_learning_path/features/drawer/data/user_repository.dart';
@@ -10,8 +11,6 @@ import 'package:flutter_cbl_learning_path/features/project/services/warehouse_se
 import 'package:flutter_cbl_learning_path/features/audit/services/stock_item_selection_service.dart';
 import 'package:flutter_cbl_learning_path/features/router/route.dart';
 import 'package:flutter_cbl_learning_path/features/database/database.dart';
-
-import './app_view.dart';
 
 class InventoryAuditApp extends StatelessWidget {
   const InventoryAuditApp(

@@ -2,15 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_cbl_learning_path/models/form_status.dart';
-
-import '../bloc/project_editor_bloc.dart';
-import '../bloc/project_editor_event.dart';
-import '../bloc/project_editor_state.dart';
-import '../bloc/warehouse_search_bloc.dart';
-import '../bloc/warehouse_search_event.dart';
-import '../bloc/warehouse_search_state.dart';
-import '../data/warehouse_repository.dart';
-import '../services/warehouse_selected_service.dart';
+import 'package:flutter_cbl_learning_path/features/project/bloc/project_editor.dart';
+import 'package:flutter_cbl_learning_path/features/project/bloc/warehouse_search.dart';
+import 'package:flutter_cbl_learning_path/features/project/data/warehouse_repository.dart';
+import 'package:flutter_cbl_learning_path/features/project/services/warehouse_selected_service.dart';
 
 class ProjectEditorForm extends StatelessWidget {
   const ProjectEditorForm({super.key});
@@ -167,25 +162,23 @@ class _LocationSelector extends StatelessWidget {
               elevation: 4.0,
               backgroundColor: Colors.white,
             ),
-            onPressed: () =>
-              showGeneralDialog(
-                  context: context,
-                  barrierDismissible: false,
-                  transitionDuration: const Duration(milliseconds: 200),
-                  transitionBuilder:
-                      (context, animation, secondaryAnimation, child) {
-                    return FadeTransition(
-                      opacity: animation,
-                      child: ScaleTransition(
-                        scale: animation,
-                        child: child,
-                      ),
-                    );
-                  },
-                  pageBuilder: (context, animation, secondaryAnimation) {
-                    return const _WarehouseSearchScreen();
-                  })
-            ,
+            onPressed: () => showGeneralDialog(
+                context: context,
+                barrierDismissible: false,
+                transitionDuration: const Duration(milliseconds: 200),
+                transitionBuilder:
+                    (context, animation, secondaryAnimation, child) {
+                  return FadeTransition(
+                    opacity: animation,
+                    child: ScaleTransition(
+                      scale: animation,
+                      child: child,
+                    ),
+                  );
+                },
+                pageBuilder: (context, animation, secondaryAnimation) {
+                  return const _WarehouseSearchScreen();
+                }),
             child: const _LocationSelectedWarehouse()));
   }
 }
@@ -234,7 +227,8 @@ class _WarehouseSearchScreen extends StatelessWidget {
         create: (context) {
           return WarehouseSearchBloc(
               repository: RepositoryProvider.of<WarehouseRepository>(context),
-              warehouseSelectionService: RepositoryProvider.of<WarehouseSelectionService>(context));
+              warehouseSelectionService:
+                  RepositoryProvider.of<WarehouseSelectionService>(context));
         },
         child: SafeArea(
             child: Container(
@@ -375,10 +369,10 @@ class _WarehouseList extends StatelessWidget {
                   itemCount: state.warehouses.length,
                   itemBuilder: (BuildContext context, int index) {
                     return GestureDetector(
-                        onTap: ()  {
-                        context
-                            .read<WarehouseSearchBloc>()
-                            .add(WarehouseSearchSelectionEvent(state.warehouses[index]));
+                        onTap: () {
+                          context.read<WarehouseSearchBloc>().add(
+                              WarehouseSearchSelectionEvent(
+                                  state.warehouses[index]));
                           Navigator.of(context).pop();
                         },
                         child: Padding(
@@ -432,7 +426,9 @@ class _SaveButton extends StatelessWidget {
         return Padding(
           padding: const EdgeInsets.all(16.0),
           child: ElevatedButton(
-              onPressed: () => context.read<ProjectEditorBloc>().add(const ProjectEditorSaveEvent()),
+              onPressed: () => context
+                  .read<ProjectEditorBloc>()
+                  .add(const ProjectEditorSaveEvent()),
               child: const Padding(
                   padding: EdgeInsets.all(8.0),
                   child: Text(

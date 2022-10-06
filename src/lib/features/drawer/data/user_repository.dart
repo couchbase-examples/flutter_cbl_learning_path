@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:cbl/cbl.dart';
 import 'package:flutter_cbl_learning_path/features/database/database.dart';
-import '../../router/service/auth_service.dart';
+import 'package:flutter_cbl_learning_path/features/router/service/auth_service.dart';
 
 class UserRepository {
   const UserRepository(this._databaseProvider, this._authenticationService);

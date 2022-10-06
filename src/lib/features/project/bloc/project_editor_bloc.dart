@@ -1,18 +1,13 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:bloc/bloc.dart';
+import 'package:intl/intl.dart';
+import 'package:uuid/uuid.dart';
 import 'package:flutter_cbl_learning_path/features/project/services/warehouse_selected_service.dart';
 import 'package:flutter_cbl_learning_path/features/router/route.dart';
-import 'package:intl/intl.dart';
-
-import 'package:flutter_cbl_learning_path/features/project/bloc/project_editor_event.dart';
-import 'package:flutter_cbl_learning_path/features/project/bloc/project_editor_state.dart';
+import 'package:flutter_cbl_learning_path/features/project/bloc/project_editor.dart';
 import 'package:flutter_cbl_learning_path/features/project/data/project_repository.dart';
-import 'package:flutter_cbl_learning_path/models/form_status.dart';
-import 'package:uuid/uuid.dart';
-
-import '../../../models/project.dart';
-import '../../../models/warehouse.dart';
+import 'package:flutter_cbl_learning_path/models/models.dart';
 
 class ProjectEditorBloc extends Bloc<ProjectEditorEvent, ProjectEditorState> {
   //constructor

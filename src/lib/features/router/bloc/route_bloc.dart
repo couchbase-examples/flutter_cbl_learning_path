@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flutter_cbl_learning_path/features/router/route.dart';
 import 'package:flutter_cbl_learning_path/features/database/database.dart';
-import '../../login/models/user.dart';
+import 'package:flutter_cbl_learning_path/features/login/models/user.dart';
 
 class RouteBloc extends Bloc<RouteEvent, RouteState> {
   RouteBloc(

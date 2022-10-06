@@ -89,6 +89,8 @@ class TitleRow extends StatelessWidget {
           child:Text(item.stockItem?.name ?? '',
               style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 17)))
       ),
+
+      //this provides the overflow menu in the card
       PopupMenuButton(
           icon: const Icon(Icons.more_vert),
           itemBuilder: (BuildContext context) => <PopupMenuEntry>[

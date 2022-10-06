@@ -1,12 +1,10 @@
 import 'dart:convert';
-
 import 'package:bloc/bloc.dart';
 import 'package:cbl/cbl.dart';
 import 'package:flutter/foundation.dart';
-
 import 'package:flutter_cbl_learning_path/features/drawer/bloc/user_profile_event.dart';
 import 'package:flutter_cbl_learning_path/features/drawer/bloc/user_profile_state.dart';
-import '../data/user_repository.dart';
+import 'package:flutter_cbl_learning_path/features/drawer/data/user_repository.dart';
 
 class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
   UserProfileBloc({required UserRepository userRepository})

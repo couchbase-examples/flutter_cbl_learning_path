@@ -4,7 +4,7 @@ import 'package:flutter_cbl_learning_path/features/drawer/drawer.dart';
 import 'package:flutter_cbl_learning_path/features/project/data/project_repository.dart';
 import 'package:flutter_cbl_learning_path/features/router/route.dart';
 
-import '../bloc/dev_data_load_bloc.dart';
+import 'package:flutter_cbl_learning_path/features/developer/bloc/dev_data_load_bloc.dart';
 import 'developer_menu_widget.dart';
 
 class DeveloperMenuScreen extends StatelessWidget {

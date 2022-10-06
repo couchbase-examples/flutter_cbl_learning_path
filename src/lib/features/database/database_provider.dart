@@ -5,10 +5,9 @@ import 'package:path_provider/path_provider.dart';
 import 'package:cbl_flutter/cbl_flutter.dart';
 import 'package:cbl/cbl.dart';
 import 'package:archive/archive_io.dart';
-import '../login/models/user.dart';
+import 'package:flutter_cbl_learning_path/features/login/models/user.dart';
 import 'package:flutter/foundation.dart';
-
-import '../utils/file_system.dart';
+import 'package:flutter_cbl_learning_path/features/utils/file_system.dart';
 
 class DatabaseProvider {
   //database information

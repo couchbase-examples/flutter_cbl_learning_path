@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_cbl_learning_path/features/router/route.dart';
-import '../bloc/dev_data_load_bloc.dart';
-import '../bloc/dev_data_load_event.dart';
-import '../bloc/dev_data_load_state.dart';
+import 'package:flutter_cbl_learning_path/features/developer/bloc/dev_data_load_bloc.dart';
+import 'package:flutter_cbl_learning_path/features/developer/bloc/dev_data_load_event.dart';
+import 'package:flutter_cbl_learning_path/features/developer/bloc/dev_data_load_state.dart';
 
 class DeveloperMenuWidget extends StatelessWidget {
   const DeveloperMenuWidget({super.key, required this.routerService});

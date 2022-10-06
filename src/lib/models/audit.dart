@@ -23,8 +23,8 @@ class Audit {
   DateTime? createdOn;
   DateTime? modifiedOn;
 
-  Audit({
-      required this.auditId,
+  Audit(
+      {required this.auditId,
       required this.projectId,
       required this.stockItem,
       required this.auditCount,
@@ -33,8 +33,7 @@ class Audit {
       required this.createdBy,
       required this.modifiedBy,
       required this.createdOn,
-      required this.modifiedOn
-  });
+      required this.modifiedOn});
 
   factory Audit.fromJson(Map<String, dynamic> json) => _$AuditFromJson(json);
 

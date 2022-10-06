@@ -15,6 +15,11 @@ class AuditListScreen extends StatelessWidget {
     final args = ModalRoute.of(context)!.settings.arguments as Set<ScreenRoute>;
     var routeScreen = args.first;
     var projectId = routeScreen.projectId as String;
+
+    // must define bloc above this widget or it will loose state when routing
+    // to the editor and then back to the list and thus stream for live query
+    // will break among other things - so this is defined in the
+    // project_list_screen.dart
     var bloc = routeScreen.auditListBloc as AuditListBloc;
 
     return BlocProvider<AuditListBloc>.value(

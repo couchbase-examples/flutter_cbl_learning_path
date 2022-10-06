@@ -6,11 +6,12 @@ import 'package:flutter_cbl_learning_path/features/project/data/project_reposito
 import 'package:flutter_cbl_learning_path/features/project/data/warehouse_repository.dart';
 import 'package:flutter_cbl_learning_path/features/project/services/warehouse_selected_service.dart';
 import 'package:flutter_cbl_learning_path/features/audit/services/stock_item_selection_service.dart';
-import './inventory_audit_app.dart';
-import 'features/router/route.dart';
-import 'features/database/database_provider.dart';
+import 'package:flutter_cbl_learning_path/inventory_audit_app.dart';
+import 'package:flutter_cbl_learning_path/features/router/route.dart';
+import 'package:flutter_cbl_learning_path/features/database/database_provider.dart';
 
 void main() {
+  //define global providers and services
   var dbProvider = DatabaseProvider();
   var authService = FakeAuthenticationService();
   var warehouseSelectionService = WarehouseSelectionService();

@@ -1,7 +1,10 @@
 export 'project.dart';
+export 'project_dao.dart';
 export 'audit.dart';
+export 'audit_dao.dart';
 export 'warehouse.dart';
-export 'stock_item.dart';
 export 'warehouse_dao.dart';
+export 'stock_item.dart';
+export 'stock_item_dao.dart';
 export 'form_status.dart';
 export 'data_status.dart';

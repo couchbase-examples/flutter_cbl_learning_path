@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../models/project.dart';
+import 'package:flutter_cbl_learning_path/models/project.dart';
 
 abstract class ProjectListEvent extends Equatable{
   const ProjectListEvent();

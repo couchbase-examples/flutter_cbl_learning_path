@@ -1,14 +1,13 @@
 import 'dart:convert';
 import 'dart:math';
-
 import 'package:flutter/foundation.dart';
 import 'package:cbl/cbl.dart';
-import 'package:flutter_cbl_learning_path/features/audit/data/audit_repository.dart';
 import 'package:uuid/uuid.dart';
 
+import 'package:flutter_cbl_learning_path/features/audit/data/audit_repository.dart';
 import 'package:flutter_cbl_learning_path/features/audit/data/stock_item_repository.dart';
-import 'package:flutter_cbl_learning_path/features/database/database.dart';
 import 'package:flutter_cbl_learning_path/features/project/data/warehouse_repository.dart';
+import 'package:flutter_cbl_learning_path/features/database/database.dart';
 import 'package:flutter_cbl_learning_path/features/router/route.dart';
 import 'package:flutter_cbl_learning_path/models/models.dart';
 
@@ -43,8 +42,7 @@ class ProjectRepository {
         if (db != null) {
           var query = QueryBuilder.createAsync()
               .select(SelectResult.all())
-              .from(DataSource.database(db)
-                .as('item'))
+              .from(DataSource.database(db).as('item'))
               .where(Expression.property(attributeDocumentType)
                   .equalTo(Expression.string(projectDocumentType))
                   .and(Expression.property('team')
@@ -192,7 +190,8 @@ class ProjectRepository {
                 //<4>
                 projectId: projectId,
                 name: '${warehouse.name} Audit',
-                description: 'Audit of warehouse stock located in ${warehouse.city}, ${warehouse.state}.',
+                description:
+                    'Audit of warehouse stock located in ${warehouse.city}, ${warehouse.state}.',
                 isComplete: false,
                 dueDate: dueDate,
                 warehouse: warehouse,
@@ -215,7 +214,8 @@ class ProjectRepository {
                     projectId: projectId,
                     stockItem: stockItem,
                     auditCount: stockCount,
-                    notes: 'Found item ${stockItem.name} - ${stockItem.description} in warehouse',
+                    notes:
+                        'Found item ${stockItem.name} - ${stockItem.description} in warehouse',
                     team: currentUser.team,
                     createdBy: currentUser.username,
                     modifiedBy: currentUser.username,

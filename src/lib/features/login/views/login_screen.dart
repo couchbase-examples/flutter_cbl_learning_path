@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_cbl_learning_path/features/router/route.dart';
-import '../login.dart';
-import 'login_form.dart';
+import 'package:flutter_cbl_learning_path/features/login/login.dart';
+import 'package:flutter_cbl_learning_path/features/login/views/login_form.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});

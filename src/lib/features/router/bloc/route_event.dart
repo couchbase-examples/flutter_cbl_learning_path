@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
-import '../service/auth_service.dart';
-import '../service/router_service.dart';
+import 'package:flutter_cbl_learning_path/features/router/service/auth_service.dart';
+import 'package:flutter_cbl_learning_path/features/router/service/router_service.dart';
 
 abstract class RouteEvent extends Equatable {
   const RouteEvent();

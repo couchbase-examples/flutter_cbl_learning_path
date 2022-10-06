@@ -1,6 +1,5 @@
 import 'dart:async';
-
-import '../../../models/warehouse.dart';
+import 'package:flutter_cbl_learning_path/models/warehouse.dart';
 
 class WarehouseSelectionService {
   WarehouseSelectionService();

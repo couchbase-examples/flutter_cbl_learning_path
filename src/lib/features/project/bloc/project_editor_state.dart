@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter_cbl_learning_path/models/form_status.dart';
-import '../../../models/warehouse.dart';
+import 'package:flutter_cbl_learning_path/models/models.dart';
 
 class ProjectEditorState extends Equatable {
   const ProjectEditorState(

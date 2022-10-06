@@ -1,15 +1,13 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
-
 import 'package:flutter_cbl_learning_path/features/audit/data/audit_repository.dart';
 import 'package:flutter_cbl_learning_path/features/audit/data/stock_item_repository.dart';
 import 'package:flutter_cbl_learning_path/features/project/data/project_repository.dart';
 import 'package:flutter_cbl_learning_path/features/project/data/warehouse_repository.dart';
 import 'package:flutter_cbl_learning_path/features/router/route.dart';
-
-import '../models/dev_info.dart';
-import './dev_info_event.dart';
-import './dev_info_state.dart';
+import 'package:flutter_cbl_learning_path/features/developer/models/dev_info.dart';
+import 'package:flutter_cbl_learning_path/features/developer/bloc/dev_info_event.dart';
+import 'package:flutter_cbl_learning_path/features/developer/bloc/dev_info_state.dart';
 
 class DevInfoBloc extends Bloc<DevInfoEvent, DevInfoState> {
   final FakeAuthenticationService _authenticationService;

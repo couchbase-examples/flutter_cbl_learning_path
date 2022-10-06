@@ -1,14 +1,10 @@
 import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:cbl/cbl.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_cbl_learning_path/features/project/bloc/project_list_event.dart';
-import 'package:flutter_cbl_learning_path/features/project/bloc/project_list_state.dart';
+import 'package:flutter_cbl_learning_path/features/project/bloc/project_list.dart';
 import 'package:flutter_cbl_learning_path/features/project/data/project_repository.dart';
-
-import '../../../models/models.dart';
-import '../../../models/project_dao.dart';
+import 'package:flutter_cbl_learning_path/models/models.dart';
 
 class ProjectListBloc extends Bloc<ProjectListEvent, ProjectListState> {
   ProjectListBloc({required ProjectRepository repository})
@@ -16,7 +12,6 @@ class ProjectListBloc extends Bloc<ProjectListEvent, ProjectListState> {
         super(const ProjectListState()) {
     on<ProjectListInitializeEvent>(_onInitialize);
     on<ProjectListLoadedEvent>(_onLoaded);
-
   }
 
   final ProjectRepository _repository;
@@ -32,7 +27,6 @@ class ProjectListBloc extends Bloc<ProjectListEvent, ProjectListState> {
 
   Future<void> _onLoaded(
       ProjectListLoadedEvent event, Emitter<ProjectListState> emit) async {
-
     var items = event.items;
 
     //if first time loading, then return loaded status, otherwise return changed status
@@ -40,19 +34,19 @@ class ProjectListBloc extends Bloc<ProjectListEvent, ProjectListState> {
     //of a better user experience
 
     // <1>
-    if (items.isNotEmpty && isInitialState){
+    if (items.isNotEmpty && isInitialState) {
       isInitialState = false;
       emit(state.copyWith(status: DataStatus.loaded, items: items, error: ''));
-    // <2>
-    } else if (items.isNotEmpty && !isInitialState){
+      // <2>
+    } else if (items.isNotEmpty && !isInitialState) {
       emit(state.copyWith(status: DataStatus.changed, items: items, error: ''));
-    // <3>
+      // <3>
     } else {
       emit(state.copyWith(status: DataStatus.empty));
     }
   }
 
-  Future<void> _onInitialize (
+  Future<void> _onInitialize(
       ProjectListInitializeEvent event, Emitter<ProjectListState> emit) async {
     try {
       if (_liveQueryStream == null) {
@@ -78,17 +72,14 @@ class ProjectListBloc extends Bloc<ProjectListEvent, ProjectListState> {
               items.add(dao.item);
             }
             // <10>
-            if (!isClosed)
-            {
+            if (!isClosed) {
               add(ProjectListLoadedEvent(items: items));
             }
-
           });
           //await stream?.listening;
         }
       }
-    }
-    catch (e) {
+    } catch (e) {
       emit(state.copyWith(status: DataStatus.error, error: e.toString()));
       debugPrint(e.toString());
     }

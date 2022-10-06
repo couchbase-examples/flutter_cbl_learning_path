@@ -1,7 +1,7 @@
 import 'package:formz/formz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../login.dart';
+import 'package:flutter_cbl_learning_path/features/login/login.dart';
 
 class LoginForm extends StatelessWidget {
   const LoginForm({super.key});
@@ -40,9 +40,13 @@ class _Logo extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () => {
-          context.read<LoginBloc>().add(const LoginUsernameChanged("demo@example.com")),
-          context.read<LoginBloc>().add(const LoginPasswordChanged("P@ssw0rd12")),
-        },
+              context
+                  .read<LoginBloc>()
+                  .add(const LoginUsernameChanged("demo@example.com")),
+              context
+                  .read<LoginBloc>()
+                  .add(const LoginPasswordChanged("P@ssw0rd12")),
+            },
         child: Padding(
           padding: const EdgeInsets.only(top: 0.0),
           child: Center(
@@ -72,8 +76,7 @@ class _UsernameInput extends StatelessWidget {
                 labelText: 'username',
                 errorText: state.username.invalid ? 'invalid username' : null,
               ),
-            )
-        );
+            ));
       },
     );
   }

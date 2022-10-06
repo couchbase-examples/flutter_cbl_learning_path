@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../developer_info.dart';
+import 'package:flutter_cbl_learning_path/features/developer/developer_info.dart';
 
 class DeveloperInfoWidget extends StatelessWidget {
   const DeveloperInfoWidget({super.key});

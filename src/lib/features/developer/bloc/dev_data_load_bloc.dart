@@ -2,8 +2,8 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
 
 import 'package:flutter_cbl_learning_path/features/project/data/project_repository.dart';
-import './dev_data_load_event.dart';
-import './dev_data_load_state.dart';
+import 'package:flutter_cbl_learning_path/features/developer/bloc/dev_data_load_event.dart';
+import 'package:flutter_cbl_learning_path/features/developer/bloc/dev_data_load_state.dart';
 
 class DevDataLoadBloc extends Bloc<DevDataLoadEvent, DevDataLoadState> {
   final ProjectRepository _projectRepository;

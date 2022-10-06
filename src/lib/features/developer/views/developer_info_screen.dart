@@ -6,8 +6,8 @@ import 'package:flutter_cbl_learning_path/features/project/data/project_reposito
 import 'package:flutter_cbl_learning_path/features/project/data/warehouse_repository.dart';
 import 'package:flutter_cbl_learning_path/features/router/service/auth_service.dart';
 import 'package:flutter_cbl_learning_path/widgets/back_navigation.dart';
-import '../developer_info.dart';
-import 'developer_info_widget.dart';
+import 'package:flutter_cbl_learning_path/features/developer/developer_info.dart';
+import 'package:flutter_cbl_learning_path/features/developer/views/developer_info_widget.dart';
 
 class DeveloperInfoScreen extends BackNavigationStatelessWidget {
   const DeveloperInfoScreen({super.key, required super.routerService});

@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_cbl_learning_path/models/models.dart';
 
-abstract class ProjectEditorEvent extends Equatable{
+abstract class ProjectEditorEvent extends Equatable {
   const ProjectEditorEvent();
 
   @override
@@ -35,7 +35,7 @@ class ProjectEditorDueDateChangeEvent extends ProjectEditorEvent {
   List<Object?> get props => [dueDate];
 }
 
-class ProjectEditorDueDateChangedEvent extends ProjectEditorEvent{
+class ProjectEditorDueDateChangedEvent extends ProjectEditorEvent {
   const ProjectEditorDueDateChangedEvent(this.dateSelected);
 
   final String dateSelected;
@@ -53,11 +53,11 @@ class ProjectEditorWarehouseChangedEvent extends ProjectEditorEvent {
   List<Object?> get props => [warehouse];
 }
 
-class ProjectEditorSaveEvent extends ProjectEditorEvent{
+class ProjectEditorSaveEvent extends ProjectEditorEvent {
   const ProjectEditorSaveEvent();
 }
 
-class ProjectEditorInitialProjectLoadingEvent extends ProjectEditorEvent{
+class ProjectEditorInitialProjectLoadingEvent extends ProjectEditorEvent {
   const ProjectEditorInitialProjectLoadingEvent(this.projectId);
   final String projectId;
 
@@ -65,7 +65,7 @@ class ProjectEditorInitialProjectLoadingEvent extends ProjectEditorEvent{
   List<Object> get props => [projectId];
 }
 
-class ProjectEditorInitialProjectLoadedEvent extends ProjectEditorEvent{
+class ProjectEditorInitialProjectLoadedEvent extends ProjectEditorEvent {
   const ProjectEditorInitialProjectLoadedEvent(this.project);
   final Project project;
 

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_cbl_learning_path/features/audit/bloc/audit_list_bloc.dart';
-import '../../../models/models.dart';
-import '../../router/service/router_service.dart';
-import '../bloc/project_list.dart';
+import 'package:flutter_cbl_learning_path/models/models.dart';
+import 'package:flutter_cbl_learning_path/features/router/service/router_service.dart';
+import 'package:flutter_cbl_learning_path/features/project/bloc/project_list.dart';
 
 class ProjectListWidget extends StatelessWidget {
   const ProjectListWidget({super.key, required this.routerService});

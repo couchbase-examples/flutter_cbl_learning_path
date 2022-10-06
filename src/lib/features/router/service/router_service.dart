@@ -1,7 +1,6 @@
 import 'dart:async';
-
-import '../../../models/models.dart';
-import '../../audit/bloc/audit_list_bloc.dart';
+import 'package:flutter_cbl_learning_path/features/audit/bloc/audit_list.dart';
+import 'package:flutter_cbl_learning_path/models/models.dart';
 
 enum RouteToScreen {
   developer,
@@ -20,7 +19,7 @@ enum RouteToScreen {
   pop,
 }
 
-class ScreenRoute{
+class ScreenRoute {
   const ScreenRoute({
     required this.routeToScreen,
     this.projectId = '',

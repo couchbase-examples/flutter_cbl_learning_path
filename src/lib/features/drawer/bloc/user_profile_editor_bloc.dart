@@ -3,8 +3,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter_cbl_learning_path/features/drawer/bloc/user_profile_editor_event.dart';
 import 'package:flutter_cbl_learning_path/features/drawer/bloc/user_profile_editor_state.dart';
 import 'package:flutter_cbl_learning_path/models/form_status.dart';
-
-import '../data/user_repository.dart';
+import 'package:flutter_cbl_learning_path/features/drawer/data/user_repository.dart';
 
 class UserProfileEditorBloc extends Bloc<UserProfileEditorEvent, UserProfileEditorState> {
   UserProfileEditorBloc({required UserRepository userRepository})

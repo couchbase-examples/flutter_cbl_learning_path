@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
-
 import 'package:flutter_cbl_learning_path/features/login/login.dart';
-import '../models/dev_info.dart';
+import 'package:flutter_cbl_learning_path/features/developer/models/dev_info.dart';
 
 enum DevInfoStatus { uninitialized, success, fail, loading }
 
