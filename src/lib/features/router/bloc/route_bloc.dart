@@ -1,13 +1,19 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
+import 'package:flutter_cbl_learning_path/features/database/replicator_provider.dart';
 import 'package:flutter_cbl_learning_path/features/router/route.dart';
 import 'package:flutter_cbl_learning_path/features/database/database.dart';
 import 'package:flutter_cbl_learning_path/features/login/models/user.dart';
 
 class RouteBloc extends Bloc<RouteEvent, RouteState> {
+
   RouteBloc(
-      this._authenticationService, this._routerService, this._databaseProvider)
-      : super(const RouteState.unknown()) {
+      this._authenticationService,
+      this._routerService,
+      this._databaseProvider,
+      this._replicatorProvider)
+      : super(const RouteState.unknown())
+  {
     on<RouteEvent>((event, emit) {
       if (event is AppLoaded) {
         _handleAppLoaded(event, emit);
@@ -15,6 +21,7 @@ class RouteBloc extends Bloc<RouteEvent, RouteState> {
         _handleUserLoggedOut(event, emit);
       }
     });
+
     on<AuthenticationStatusChanged>(_onAuthenticationStatusChanged);
     _authenticationStatusSubscription = _authenticationService.status.listen(
       (status) => add(AuthenticationStatusChanged(status)),
@@ -28,6 +35,7 @@ class RouteBloc extends Bloc<RouteEvent, RouteState> {
   final FakeAuthenticationService _authenticationService;
   final AppRouterService _routerService;
   final DatabaseProvider _databaseProvider;
+  final ReplicatorProvider _replicatorProvider;
 
   late StreamSubscription<AuthenticationStatus>
       _authenticationStatusSubscription;
@@ -90,6 +98,14 @@ class RouteBloc extends Bloc<RouteEvent, RouteState> {
         if (user != null) {
           //init the database of the logged in user
           await _databaseProvider.initDatabases(user: user);
+
+          //init replicator with config
+          //NOTE YOU MUST CHANGE THE CONFIG IN THE
+          //replicator_provider.dart FILE BEFORE
+          //UNCOMMENTING OUT THIS CODE
+
+          //await _replicatorProvider.init();
+
           return emit(RouteState.authenticated(user));
         }
         return emit(const RouteState.unauthenticated());
@@ -98,7 +114,14 @@ class RouteBloc extends Bloc<RouteEvent, RouteState> {
       case AuthenticationStatus.authenticatedFailed:
         return emit(const RouteState.authenticatedFailed());
       case AuthenticationStatus.logout:
-        return emit(const RouteState.loggedOut());
+        {
+          //stop the replicator if running
+          await _replicatorProvider.stopReplicator();
+
+          //close the databases
+          await _databaseProvider.closeDatabases();
+          return emit(const RouteState.loggedOut());
+        }
     }
   }
 

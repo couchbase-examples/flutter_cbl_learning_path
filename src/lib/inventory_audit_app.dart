@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_cbl_learning_path/app_view.dart';
 import 'package:flutter_cbl_learning_path/features/audit/data/audit_repository.dart';
 import 'package:flutter_cbl_learning_path/features/audit/data/stock_item_repository.dart';
+import 'package:flutter_cbl_learning_path/features/database/replicator_provider.dart';
 import 'package:flutter_cbl_learning_path/features/drawer/data/user_repository.dart';
 import 'package:flutter_cbl_learning_path/features/project/data/project_repository.dart';
 import 'package:flutter_cbl_learning_path/features/project/data/warehouse_repository.dart';
@@ -20,6 +21,7 @@ class InventoryAuditApp extends StatelessWidget {
       required this.warehouseSelectionService,
       required this.stockItemSelectionService,
       required this.databaseProvider,
+      required this.replicatorProvider,
       required this.projectRepository,
       required this.auditRepository,
       required this.stockItemRepository,
@@ -37,6 +39,7 @@ class InventoryAuditApp extends StatelessWidget {
   final StockItemRepository stockItemRepository;
   final WarehouseRepository warehouseRepository;
   final UserRepository userRepository;
+  final ReplicatorProvider replicatorProvider;
 
   // This is the root of the application.
   @override
@@ -53,12 +56,13 @@ class InventoryAuditApp extends StatelessWidget {
           RepositoryProvider.value(value: stockItemRepository),
           RepositoryProvider.value(value: warehouseRepository),
           RepositoryProvider.value(value: userRepository),
+          RepositoryProvider.value(value: replicatorProvider),
         ],
         child: MultiBlocProvider(
           providers: [
             BlocProvider(
-              create: (_) =>
-                  RouteBloc(authService, routerService, databaseProvider),
+              create: (_) => RouteBloc(authService, routerService,
+                  databaseProvider, replicatorProvider),
             ),
           ],
           child: const AppView(),

@@ -4,9 +4,6 @@ import 'package:flutter_cbl_learning_path/features/router/service/router_service
 import 'package:flutter_cbl_learning_path/features/router/service/auth_service.dart';
 
 class RouteState extends Equatable {
-  final AuthenticationStatus status;
-  final User user;
-  final ScreenRoute route;
 
   const RouteState(
       {this.status = AuthenticationStatus.unknown,
@@ -103,6 +100,10 @@ class RouteState extends Equatable {
             status: AuthenticationStatus.authenticated,
             user: User.empty,
             route: const ScreenRoute(routeToScreen: RouteToScreen.pop));
+
+  final AuthenticationStatus status;
+  final User user;
+  final ScreenRoute route;
 
   @override
   List<Object> get props => [status, user, route];

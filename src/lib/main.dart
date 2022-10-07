@@ -10,6 +10,8 @@ import 'package:flutter_cbl_learning_path/inventory_audit_app.dart';
 import 'package:flutter_cbl_learning_path/features/router/route.dart';
 import 'package:flutter_cbl_learning_path/features/database/database_provider.dart';
 
+import 'features/database/replicator_provider.dart';
+
 void main() {
   //define global providers and services
   var dbProvider = DatabaseProvider();
@@ -25,12 +27,16 @@ void main() {
       auditRepository, warehouseRepository, stockItemRepository);
   var userRepository = UserRepository(dbProvider, authService);
 
+  //setup replication provider
+  var replicationProvider = ReplicatorProvider(authenticationService: authService, databaseProvider: dbProvider);
+
   runApp(InventoryAuditApp(
     authService: authService,
     routerService: AppRouterService(),
     warehouseSelectionService: warehouseSelectionService,
     stockItemSelectionService: stockItemSelectionService,
     databaseProvider: dbProvider,
+    replicatorProvider: replicationProvider,
     projectRepository: projectRepository,
     auditRepository: auditRepository,
     stockItemRepository: stockItemRepository,

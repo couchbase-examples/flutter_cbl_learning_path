@@ -10,6 +10,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_cbl_learning_path/features/utils/file_system.dart';
 
 class DatabaseProvider {
+
+  DatabaseProvider();
+
   //database information
   final String defaultInventoryDatabaseName = 'inventory';
   final String warehouseDatabaseName = 'warehouse';
@@ -36,22 +39,20 @@ class DatabaseProvider {
   late Directory cblDatabaseDirectory;
 
   //database pointers
-  late final AsyncDatabase? inventoryDatabase;
-  late final AsyncDatabase? warehouseDatabase;
+  AsyncDatabase? inventoryDatabase;
+  AsyncDatabase? warehouseDatabase;
 
-  bool isInitalized = false;
-
-  DatabaseProvider();
+  bool isInitialized = false;
+  bool isReplicatorStarted = false;
 
   Future<void> initialize() async {
     //init Couchbase Lite for use with databases
-    if (!isInitalized) {
-      isInitalized = true;
+    if (!isInitialized) {
+      isInitialized = true;
       await Future.wait([
         setupFileSystem(),
         CouchbaseLiteFlutter.init(),
       ]);
-      //setup logging
       _setupCouchbaseLogging();
     }
   }
@@ -74,6 +75,9 @@ class DatabaseProvider {
   //setup and open the database file(s)
   Future<void> initDatabases({required User user}) async {
     try {
+
+      debugPrint('${DateTime.now()} [DatabaseProvider] info: initializing databases');
+
       var dbConfig =
           DatabaseConfiguration(directory: cblDatabaseDirectory.path);
 
@@ -83,8 +87,7 @@ class DatabaseProvider {
         await _copyWarehouseDatabase();
       }
       //open the warehouse database
-      warehouseDatabase =
-          await Database.openAsync(warehouseDatabaseName, dbConfig);
+      warehouseDatabase = await Database.openAsync(warehouseDatabaseName, dbConfig);
 
       //calculate database name based on current logged in users team name
       final teamName = user.team.toLowerCase().trim();
@@ -102,8 +105,11 @@ class DatabaseProvider {
       await _createCityDocumentTypeIndex();
       await _createCityStateDocumentTypeIndex();
       await _createAuditIndex();
+
+      debugPrint('${DateTime.now()} [DatabaseProvider] info: databases initialized');
+
     } catch (e) {
-      debugPrint(e.toString());
+      debugPrint('${DateTime.now()} [DatabaseProvider] error: ${e.toString()}');
     }
   }
 
@@ -147,8 +153,23 @@ class DatabaseProvider {
 
   /* closeDatabases - close the databases */
   Future<void> closeDatabases() async {
-    await inventoryDatabase?.close();
-    await warehouseDatabase?.close();
+
+    try {
+      debugPrint(
+          '${DateTime.now()} [DatabaseProvider] info: closing databases');
+
+      if (inventoryDatabase != null) {
+        await inventoryDatabase?.close();
+      }
+      if (warehouseDatabase != null) {
+        await warehouseDatabase?.close();
+      }
+      debugPrint('${DateTime.now()} [DatabaseProvider] info: databases closed');
+    }catch (e){
+      debugPrint('${DateTime.now()} [DatabaseProvider] error: trying to close databases ${e.toString()}');
+    }
+    warehouseDatabase = null;
+    inventoryDatabase = null;
   }
 
   Future<void> _createDocumentTypeIndex() async {

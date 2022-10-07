@@ -41,8 +41,7 @@ class _AppViewState extends State<AppView> {
         "/devInfo": (context) => DeveloperInfoScreen(
             routerService: RepositoryProvider.of<AppRouterService>(context)),
         "/devLoadSampleData": (context) => const DeveloperSampleDataScreen(),
-        "/replicator": (context) => const ReplicatorScreen(),
-        "/replicatorConfig": (context) => const ReplicatorConfigScreen(),
+        "/replicator": (context) => ReplicatorScreen(routerService: RepositoryProvider.of<AppRouterService>(context)),
       },
       theme: ThemeData(
         primarySwatch: Palette.couchbaseRed,

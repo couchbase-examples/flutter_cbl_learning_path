@@ -4,7 +4,6 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter_cbl_learning_path/features/audit/data/audit_repository.dart';
 import 'package:flutter_cbl_learning_path/features/audit/services/stock_item_selection_service.dart';
 import 'package:uuid/uuid.dart';
-import 'package:intl/intl.dart';
 
 import 'package:flutter_cbl_learning_path/features/router/route.dart';
 import 'package:flutter_cbl_learning_path/models/models.dart';
@@ -111,7 +110,7 @@ class AuditEditorBloc extends Bloc<AuditEditorEvent, AuditEditorState> {
           var document = Audit(
             auditId: auditId,
             projectId: _projectId,
-            notes: state?.notes ?? '',
+            notes: state.notes ?? '',
             auditCount: state.auditCount,
             stockItem: state.stockItem,
             team: currentUser.team,
