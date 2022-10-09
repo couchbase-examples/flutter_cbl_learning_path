@@ -18,3 +18,11 @@ class ReplicatorStart extends ReplicatorEvent {
 class ReplicatorClearLogs extends ReplicatorEvent{
   const ReplicatorClearLogs();
 }
+
+class ReplicatorUpdateDocumentLog extends ReplicatorEvent{
+  const ReplicatorUpdateDocumentLog();
+}
+
+class ReplicatorUpdateStatusLog extends ReplicatorEvent{
+  const ReplicatorUpdateStatusLog();
+}
