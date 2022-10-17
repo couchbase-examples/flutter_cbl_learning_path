@@ -1,0 +1,189 @@
+{
+	"interface":":4984",
+	"adminInterface":":4985",
+	"log": ["*"],
+	"logging": {
+	  "log_file_path": "/var/tmp/sglogs",
+	  "console": {
+		"log_level": "debug",
+		"log_keys": ["*"]
+	  },
+	  "error": {
+		"enabled": true,
+		"rotation": {
+		  "max_size": 20,
+		  "max_age": 180
+		}
+	  },
+	  "warn": {
+		"enabled": true,
+		"rotation": {
+		  "max_size": 20,
+		  "max_age": 90
+		}
+	  },
+	  "info": {
+		"enabled": false
+	  },
+	  "debug": {
+		"enabled": false
+	  }
+	},
+	"disable_persistent_config":true,
+	"server_tls_skip_verify": true,
+	"use_tls_server": false,
+	"databases": {
+	  "projects": {
+		"import_docs": true,
+		"bucket":"projects",
+		"server": "couchbase://couchbase-server",
+		"enable_shared_bucket_access":true,
+		"delta_sync": {
+		  "enabled":false
+		},
+		 "num_index_replicas":0,
+		"username": "admin",
+		"password": "P@$$w0rd",
+	   "users": { 
+		"demo@example.com":  { "password": "P@ssw0rd12", "admin_roles": ["team1"] },
+		"demo1@example.com": { "password": "P@ssw0rd12", "admin_roles": ["team1"] },
+		"demo2@example.com": { "password": "P@ssw0rd12", "admin_roles": ["team2"] },
+		"demo3@example.com": { "password": "P@ssw0rd12", "admin_roles": ["team2"] },
+		"demo4@example.com": { "password": "P@ssw0rd12", "admin_roles": ["team3"] },
+		"demo5@example.com": { "password": "P@ssw0rd12", "admin_roles": ["team3"] },
+		"demo6@example.com": { "password": "P@ssw0rd12", "admin_roles": ["team4"] },
+		"demo7@example.com": { "password": "P@ssw0rd12", "admin_roles": ["team4"] },
+		"demo8@example.com": { "password": "P@ssw0rd12", "admin_roles": ["team5"] },
+		"demo9@example.com": { "password": "P@ssw0rd12", "admin_roles": ["team5"] },
+		"demo10@example.com": { "password": "P@ssw0rd12", "admin_roles": ["team6"] },
+		"demo11@example.com": { "password": "P@ssw0rd12", "admin_roles": ["team6"] },
+		"demo12@example.com": { "password": "P@ssw0rd12", "admin_roles": ["team7"] },
+		"demo13@example.com": { "password": "P@ssw0rd12", "admin_roles": ["team8"] },
+		"demo14@example.com": { "password": "P@ssword12", "admin_roles": ["team9"] },
+		"demo15@example.com": { "password": "P@ssw0rd12", "admin_roles": ["team10"] }
+		},
+		"roles": {
+		  "team1": {
+			"admin_channels": [
+			  "channel.team1"
+			]
+		  },
+		  "team2": {
+			"admin_channels": [
+			  "channel.team2"
+			]
+		  },
+		  "team3": {
+			"admin_channels": [
+			  "channel.team3"
+			]
+		  },
+		  "team4": {
+			"admin_channels": [
+			  "channel.team4"
+			]
+		  },
+		  "team5": {
+			"admin_channels": [
+			  "channel.team5"
+			]
+		  },
+		  "team6": {
+			"admin_channels": [
+			  "channel.team6"
+			]
+		  },
+		  "team7": {
+			"admin_channels": [
+			  "channel.team7"
+			]
+		  },
+		  "team8": {
+			"admin_channels": [
+			  "channel.team8"
+			]
+		  },
+		  "team9": {
+			"admin_channels": [
+			  "channel.team9"
+			]
+		  },
+		  "team10": {
+			"admin_channels": [
+			  "channel.team10"
+			]
+		  }
+		},
+	  "import_filter":  ` function(doc) {
+		console.log("********Processing import filter - documents from couchbase server");
+ 		if (doc.documentType == 'project' || doc.documentType == 'warehouse' || doc.documentType == 'user' || doc.documentType == 'audit' || doc.documentType == 'item') {
+			return true;
+		}
+		return false;
+	  } `,
+	  "sync":  `
+		function sync(doc, oldDoc) {
+	  
+		/* Data Validation */
+		validateNotEmpty("documentType", doc.documentType);
+  
+		if (doc.documentType == 'warehouse'){
+		  console.log("********Processing Warehouse Docs - setting it to global/public");
+		  channel('!');
+		} else {
+		  console.log("********Processing Team Docs");
+		  validateNotEmpty("team", doc.team);
+		  if (!isDelete()) {
+   
+			/* Routing  -- add channel routing rules here for document */
+			var team = getTeam();
+			var channelId = "channel." + team;
+			console.log("********Setting Channel to " + channelId);
+			channel(channelId);
+				
+			/* Authorization  - Access Control */
+		   requireRole(team);
+		   access("role:team1", "channel.team1");
+		   access("role:team2", "channel.team2");
+		   access("role:team3", "channel.team3");
+		   access("role:team4", "channel.team4");
+		   access("role:team5", "channel.team5");
+		   access("role:team6", "channel.team6");
+		   access("role:team7", "channel.team7");
+		   access("role:team8", "channel.team8");
+		   access("role:team9", "channel.team9");
+		   access("role:team10", "channel.team10");
+		   }
+		}
+	// get type property
+	function getType() {
+	  return (isDelete() ? oldDoc.documentType : doc.documentType);
+	}
+  
+	// get email Id property
+	function getTeam() {
+	  return (isDelete() ? oldDoc.team : doc.team);
+	}
+  
+	// Check if document is being created/added for first time
+	function isCreate() {
+	  // Checking false for the Admin UI to work
+	  return ((oldDoc == false) || (oldDoc == null || oldDoc._deleted) && !isDelete());
+	}
+  
+	// Check if this is a document delete
+	function isDelete() {
+	  return (doc._deleted == true);
+	}
+  
+	// Verify that specified property exists
+	function validateNotEmpty(key, value) {
+	  if (!value) {
+		throw({forbidden: key + " is not provided."});
+	  }
+	}
+  }
+		`
+	  }
+	}
+  }

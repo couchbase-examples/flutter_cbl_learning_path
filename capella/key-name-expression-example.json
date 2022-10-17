@@ -1,0 +1,27 @@
+{
+	"name": "Santa Clare Warehouse 100",
+	"documentType": "project",
+	"modifiedOn": "2022-10-01",
+	"createdBy": "demo@example.com",
+	"dueDate": "2022-12-31",
+	"description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
+	"warehouse":{
+		"warehouseId":"e1839e0b-57a0-472c-b29d-8d57e256ef32",
+		"name":"Santa Clara Warehouse",
+		"address1":"3250 Dr Olcott Street",
+		"address2":"",
+		"city":"Santa Clara",
+		"state":"CA",
+		"postalCode":"95054",
+		"salesTax":0.0913,
+		"latitude":32.3803024,
+		"longitude":-121.9674197,
+		"documentType":"warehouse",
+		"yearToDateBalance":0
+	},
+	"modifiedBy": "demo@example.com",
+	"team": "team1",
+	"createdOn": "2022-10-01",
+	"projectId": "8b37f8e2-f8f7-4fe0-bb6d-58bbfde62841",
+	"isComplete": false
+}
