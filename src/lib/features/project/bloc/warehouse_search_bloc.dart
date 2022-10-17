@@ -36,22 +36,23 @@ class WarehouseSearchBloc
         searchState: event.searchState, status: FormEditorStatus.dataChanged));
   }
 
-  FutureOr<void> _onSubmitted(WarehouseSearchSubmitChangedEvent event,
-      Emitter<WarehouseSearchState> emit) async {
-    if (state.searchCity.isNotEmpty) {
+  FutureOr<void> _onSubmitted(
+      WarehouseSearchSubmitChangedEvent event, Emitter<WarehouseSearchState> emit) async {
+
+    if (state.searchCity.isNotEmpty) { // <1>
       //get warehouse list from repository
       try {
         var items =
-            await _repository.search(state.searchCity, state.searchState);
+            await _repository.search(state.searchCity, state.searchState);  // <2>
         if (items.isNotEmpty) {
           emit(state.copyWith(
               error: '',
               status: FormEditorStatus.dataLoaded,
-              warehouses: items));
+              warehouses: items)); //<3>
         } else {
           emit(state.copyWith(
               error: 'No warehouses found matching criteria.',
-              status: FormEditorStatus.error));
+              status: FormEditorStatus.error)); //<4>
         }
       } catch (e) {
         emit(state.copyWith(

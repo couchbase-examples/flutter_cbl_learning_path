@@ -78,7 +78,7 @@ class DatabaseProvider {
 
       debugPrint('${DateTime.now()} [DatabaseProvider] info: initializing databases');
 
-      var dbConfig =
+      final dbConfig =
           DatabaseConfiguration(directory: cblDatabaseDirectory.path);
 
       // create the warehouse database if it doesn't already exist
@@ -197,18 +197,18 @@ class DatabaseProvider {
 
   Future<void> _createTeamDocumentTypeIndex() async {
     final documentTypeExpression =
-        Expression.property(documentTypeAttributeName);
-    final teamExpression = Expression.property(teamAttributeName);
+        Expression.property(documentTypeAttributeName); //<1>
+    final teamExpression = Expression.property( teamAttributeName); //<2>
     final valueIndexItems = {
       ValueIndexItem.expression(documentTypeExpression),
       ValueIndexItem.expression(teamExpression)
-    };
-    final index = IndexBuilder.valueIndex(valueIndexItems);
-    var inventoryDb = inventoryDatabase;
-    if (inventoryDb != null) {
-      final indexes = await inventoryDb.indexes;
-      if (!(indexes.contains(teamIndexName))) {
-        await inventoryDb.createIndex(teamIndexName, index);
+    }; //<3>
+    final index = IndexBuilder.valueIndex(valueIndexItems);  //<4>
+    var inventoryDb = inventoryDatabase; //<5>
+    if (inventoryDb != null) {         //<6>
+      final indexes = await inventoryDb.indexes; //<7>
+      if (!(indexes.contains(teamIndexName))) {  //<8>
+        await inventoryDb.createIndex(teamIndexName, index); //<9>
       }
     }
   }

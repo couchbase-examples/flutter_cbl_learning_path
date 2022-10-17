@@ -39,19 +39,19 @@ class DevInfoBloc extends Bloc<DevInfoEvent, DevInfoState> {
       emit(state);
       List<DeveloperInfo> items = [];
       //get user
-      var user = await _authenticationService.getCurrentUser();
+      final user = await _authenticationService.getCurrentUser();
       if (user != null) {
         //get counters
-        var projectCounter = await _projectRepository.count();
-        var auditCounter = await _auditRepository.count();
-        var warehouseCounter = await _warehouseRepository.count();
-        var stockItemCounter = await _stockItemRepository.count();
+        final projectCounter = await _projectRepository.count();
+        final auditCounter = await _auditRepository.count();
+        final warehouseCounter = await _warehouseRepository.count();
+        final stockItemCounter = await _stockItemRepository.count();
 
         //get database information
-        var inventoryName = _projectRepository.getDatabaseName();
-        var inventoryPath = _projectRepository.getDatabasePath();
-        var warehouseName = _warehouseRepository.getDatabaseName();
-        var warehousePath = _warehouseRepository.getDatabasePath();
+        final inventoryName = _projectRepository.getDatabaseName();
+        final inventoryPath = _projectRepository.getDatabasePath();
+        final warehouseName = _warehouseRepository.getDatabaseName();
+        final warehousePath = _warehouseRepository.getDatabasePath();
         items.add(DeveloperInfo(title: 'Username', details: user.username));
         items.add(DeveloperInfo(title: 'Team', details: user.team));
         items.add(DeveloperInfo(
@@ -73,15 +73,15 @@ class DevInfoBloc extends Bloc<DevInfoEvent, DevInfoState> {
         items.add(DeveloperInfo(
             title: 'Stock Item Document Count',
             details: stockItemCounter.toString()));
-        var success = state.copyWith(DevInfoStatus.success, items, user, '');
+        final success = state.copyWith(DevInfoStatus.success, items, user, '');
         emit(success);
       } else {
-        var error = state.copyWith(
+        final error = state.copyWith(
             DevInfoStatus.fail, null, null, 'Error: could not get user');
         emit(error);
       }
     } catch (e) {
-      var error = state.copyWith(DevInfoStatus.fail, null, null, e.toString());
+      final error = state.copyWith(DevInfoStatus.fail, null, null, e.toString());
       emit(error);
       debugPrint(e.toString());
     }

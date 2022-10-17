@@ -7,22 +7,22 @@ abstract class ReplicatorEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class ReplicatorStop extends ReplicatorEvent {
-  const ReplicatorStop();
+class ReplicatorStopEvent extends ReplicatorEvent {
+  const ReplicatorStopEvent();
 }
 
-class ReplicatorStart extends ReplicatorEvent {
-  const ReplicatorStart();
+class ReplicatorStartEvent extends ReplicatorEvent {
+  const ReplicatorStartEvent();
 }
 
-class ReplicatorClearLogs extends ReplicatorEvent{
-  const ReplicatorClearLogs();
+class ReplicatorClearLogsEvent extends ReplicatorEvent{
+  const ReplicatorClearLogsEvent();
 }
 
-class ReplicatorUpdateDocumentLog extends ReplicatorEvent{
-  const ReplicatorUpdateDocumentLog();
+class ReplicatorUpdateDocumentLogEvent extends ReplicatorEvent{
+  const ReplicatorUpdateDocumentLogEvent();
 }
 
-class ReplicatorUpdateStatusLog extends ReplicatorEvent{
-  const ReplicatorUpdateStatusLog();
+class ReplicatorUpdateStatusLogEvent extends ReplicatorEvent{
+  const ReplicatorUpdateStatusLogEvent();
 }

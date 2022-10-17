@@ -35,18 +35,18 @@ class ProjectRepository {
 
   Future<AsyncListenStream<QueryChange<ResultSet>>?>? getDocuments() async {
     try {
-      var user = await _authenticationService.getCurrentUser();
-      var team = user?.team;
+      final user = await _authenticationService.getCurrentUser();
+      final team = user?.team;
       if (team != null) {
-        var db = _databaseProvider.inventoryDatabase;
+        final db = _databaseProvider.inventoryDatabase;
         if (db != null) {
-          var query = QueryBuilder.createAsync()
-              .select(SelectResult.all())
-              .from(DataSource.database(db).as('item'))
+          final query = QueryBuilder.createAsync() //<1>
+              .select(SelectResult.all())  // <2>
+              .from(DataSource.database(db).as('item')) //<3>
               .where(Expression.property(attributeDocumentType)
                   .equalTo(Expression.string(projectDocumentType))
                   .and(Expression.property('team')
-                      .equalTo(Expression.string(team)))); // <1>
+                      .equalTo(Expression.string(team)))); // <4>
           return query.changes();
         }
       }
@@ -59,19 +59,19 @@ class ProjectRepository {
   Future<int> count() async {
     var count = 0;
     try {
-      var attributeCount = 'count';
+      const attributeCount = 'count';
 
-      var db = _databaseProvider.inventoryDatabase;
+      final db = _databaseProvider.inventoryDatabase;
       if (db != null) {
-        var query = QueryBuilder.createAsync()
+        final query = QueryBuilder.createAsync()
             .select(
                 SelectResult.expression(Function_.count(Expression.string("*")))
                     .as(attributeCount))
             .from(DataSource.database(db))
             .where(Expression.property(attributeDocumentType)
                 .equalTo(Expression.string(projectDocumentType))); // <1>
-        var result = await query.execute(); // <2>
-        var results = await result.allResults(); // <3>
+        final result = await query.execute(); // <2>
+        final results = await result.allResults(); // <3>
         count = results.first.integer(attributeCount); // <4>
       }
     } catch (e) {
@@ -81,12 +81,12 @@ class ProjectRepository {
   }
 
   Future<Project> get(String documentId) async {
-    var now = DateTime.now();
-    var dueDate = DateTime(now.year, now.month + 3, now.day);
+    final now = DateTime.now();
+    final dueDate = DateTime(now.year, now.month + 3, now.day);
     try {
-      var db = _databaseProvider.inventoryDatabase;
+      final db = _databaseProvider.inventoryDatabase;
       if (db != null) {
-        var doc = await db.document(documentId);
+        final doc = await db.document(documentId);
         if (doc != null) {
           return Project.fromJson(jsonDecode(doc.toJson()));
         }
@@ -110,11 +110,11 @@ class ProjectRepository {
 
   Future<bool> save(Project document) async {
     try {
-      var db = _databaseProvider.inventoryDatabase;
+      final db = _databaseProvider.inventoryDatabase;
       if (db != null) {
         Map<String, dynamic> map = document.toJson();
-        var doc = MutableDocument.withId(document.projectId, map);
-        var result = await db.saveDocument(doc);
+        final doc = MutableDocument.withId(document.projectId, map);
+        final result = await db.saveDocument(doc);
         debugPrint(
             'Did save project ${document.projectId} resulted in ${result.toString()}');
         return true;
@@ -127,9 +127,9 @@ class ProjectRepository {
 
   Future<bool> delete(String documentId) async {
     try {
-      var db = _databaseProvider.inventoryDatabase;
+      final db = _databaseProvider.inventoryDatabase;
       if (db != null) {
-        var doc = await db.document(documentId);
+        final doc = await db.document(documentId);
         if (doc != null) {
           return await db.deleteDocument(doc);
         }
@@ -142,7 +142,7 @@ class ProjectRepository {
 
   Future<bool> updateWarehouse(String projectId, Warehouse warehouse) async {
     try {
-      var project = await get(projectId);
+      final project = await get(projectId);
       project.warehouse = warehouse;
       await save(project);
       return true;
@@ -153,13 +153,13 @@ class ProjectRepository {
   }
 
   Future<void> loadSampleData() async {
-    var currentUser = await _authenticationService.getCurrentUser();
-    var warehouses = await _warehouseRepository.get();
-    var stockItems = await _stockItemRepository.get();
+    final currentUser = await _authenticationService.getCurrentUser();
+    final warehouses = await _warehouseRepository.get();
+    final stockItems = await _stockItemRepository.get();
 
     //won't create items if we can't get warehouse and stock items from prebuilt warehouse database
     if (warehouses.isNotEmpty && stockItems.isNotEmpty) {
-      var db = _databaseProvider.inventoryDatabase;
+      final db = _databaseProvider.inventoryDatabase;
       if (db != null) {
         /* batch operations for saving multiple documents is a faster way to process
         groups of documents at once */
@@ -174,19 +174,19 @@ class ProjectRepository {
           const maxMonth = 12;
           const minDay = 1;
           const maxDay = 28;
-          var date = DateTime.now();
+          final date = DateTime.now();
           //create 12 new projects with random data
           for (var projectIndex = 0; projectIndex <= 11; projectIndex++) {
             // <2>
             //get data items to create project
             String projectId = uuid.v4();
-            var warehouse = warehouses[projectIndex]; // <3>
-            var yearRandom = minYear + random.nextInt(maxYear - minYear);
-            var monthRandom = minMonth + random.nextInt(maxMonth - minMonth);
-            var dayRandom = minDay + random.nextInt(maxDay - minDay);
-            var dueDate = DateTime.utc(yearRandom, monthRandom, dayRandom);
+            final warehouse = warehouses[projectIndex]; // <3>
+            final yearRandom = minYear + random.nextInt(maxYear - minYear);
+            final monthRandom = minMonth + random.nextInt(maxMonth - minMonth);
+            final dayRandom = minDay + random.nextInt(maxDay - minDay);
+            final dueDate = DateTime.utc(yearRandom, monthRandom, dayRandom);
             //create project
-            var projectDocument = Project(
+            final projectDocument = Project(
                 //<4>
                 projectId: projectId,
                 name: '${warehouse.name} Audit',
@@ -200,16 +200,16 @@ class ProjectRepository {
                 createdOn: date,
                 modifiedBy: currentUser.username,
                 modifiedOn: date);
-            var didSave = await save(projectDocument); // <5>
+            final didSave = await save(projectDocument); // <5>
             if (didSave) {
               // <6>
               //create random audit counts per project // <7>
               for (var auditIndex = 0; auditIndex <= 49; auditIndex++) {
-                var auditId = uuid.v4();
-                var stockCount = 1 + random.nextInt(10000 - 1);
-                var stockItemIndex = random.nextInt(stockItems.length);
-                var stockItem = stockItems[stockItemIndex];
-                var auditDocument = Audit(
+                final auditId = uuid.v4();
+                final stockCount = 1 + random.nextInt(10000 - 1);
+                final stockItemIndex = random.nextInt(stockItems.length);
+                final stockItem = stockItems[stockItemIndex];
+                final auditDocument = Audit(
                     auditId: auditId,
                     projectId: projectId,
                     stockItem: stockItem,

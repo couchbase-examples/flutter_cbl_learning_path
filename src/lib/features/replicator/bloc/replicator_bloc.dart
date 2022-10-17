@@ -13,15 +13,15 @@ class ReplicatorBloc extends Bloc<ReplicatorEvent, ReplicatorState> {
   ReplicatorBloc(ReplicatorProvider replicatorProvider) :
         _replicatorProvider = replicatorProvider,
         super(const ReplicatorState()) {
-    on<ReplicatorStop>(_onReplicatorStop);
-    on<ReplicatorStart>(_onReplicatorStart);
-    on<ReplicatorClearLogs>(_onReplicatorClearLogs);
+    on<ReplicatorStopEvent>(_onReplicatorStop);
+    on<ReplicatorStartEvent>(_onReplicatorStart);
+    on<ReplicatorClearLogsEvent>(_onReplicatorClearLogs);
   }
 
   final ReplicatorProvider _replicatorProvider;
 
   FutureOr<void> _onReplicatorStop(
-      ReplicatorStop event,
+      ReplicatorStopEvent event,
       Emitter<ReplicatorState> emit) async {
     try {
       emit(const ReplicatorState.stopping());
@@ -33,7 +33,7 @@ class ReplicatorBloc extends Bloc<ReplicatorEvent, ReplicatorState> {
   }
 
   FutureOr<void> _onReplicatorStart(
-      ReplicatorStart event,
+      ReplicatorStartEvent event,
       Emitter<ReplicatorState> emit) async {
     try {
       emit(const ReplicatorState.starting());
@@ -53,7 +53,7 @@ class ReplicatorBloc extends Bloc<ReplicatorEvent, ReplicatorState> {
   }
 
   FutureOr<void> _onReplicatorClearLogs(
-      ReplicatorClearLogs event,
+      ReplicatorClearLogsEvent event,
       Emitter<ReplicatorState> emit) async {
   }
 }
