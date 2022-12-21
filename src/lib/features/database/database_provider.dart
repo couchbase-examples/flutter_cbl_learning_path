@@ -232,6 +232,8 @@ class DatabaseProvider {
   }
 
   Future<void> _createCityStateDocumentTypeIndex() async {
+    final config = ValueIndexConfiguration(["type", "name"]);
+    inventoryDatabase?.createIndex("TypeNameIndex", config);
     final documentTypeExpression =
         Expression.property(documentTypeAttributeName);
     final cityExpression = Expression.property(cityAttributeName);

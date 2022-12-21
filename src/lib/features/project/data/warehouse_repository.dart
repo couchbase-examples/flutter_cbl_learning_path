@@ -28,7 +28,7 @@ class WarehouseRepository {
       if (db != null) {
         final query = QueryBuilder.createAsync()
             .select(
-                SelectResult.expression(Function_.count(Expression.string("*")))
+                SelectResult.expression(Function_.count(Expression.all()))
                     .as(attributeCount))
             .from(DataSource.database(db))
             .where(Expression.property(attributeDocumentType)
@@ -76,15 +76,19 @@ class WarehouseRepository {
       final db = _databaseProvider.warehouseDatabase;
       if (db != null) {
         // <1>
-        var whereExpression = Function_.lower(Expression.property(attributeDocumentType)).equalTo(Expression.string(documentType));
+        var whereExpression = Function_.lower(
+            Expression.property(attributeDocumentType)).equalTo(
+            Expression.string(documentType));
         // <2>
-        final cityExpression = Function_.lower(Expression.property(cityAttributeName))
-                                .like(Expression.string("%${searchCity.toLowerCase()}%"));
+        final cityExpression = Function_.lower(
+            Expression.property(cityAttributeName))
+            .like(Expression.string("%${searchCity.toLowerCase()}%"));
         whereExpression = whereExpression.and(cityExpression);
 
         // <3>
-        if(searchState != null && searchState.isNotEmpty){
-          final stateExpression = Function_.lower(Expression.property(stateAttributeName))
+        if (searchState != null && searchState.isNotEmpty) {
+          final stateExpression = Function_.lower(
+              Expression.property(stateAttributeName))
               .like(Expression.string("%${searchState.toLowerCase()}%"));
           whereExpression = whereExpression.and(stateExpression);
         }

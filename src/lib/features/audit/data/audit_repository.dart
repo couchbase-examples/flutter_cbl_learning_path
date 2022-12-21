@@ -18,6 +18,8 @@ class AuditRepository {
 
   Future<AsyncListenStream<QueryChange<ResultSet>>?>? getDocuments(String projectId) async {
     try {
+
+
       var user = await _authenticationService.getCurrentUser();
       var team = user?.team;
       if (team != null){

@@ -1,15 +1,18 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_cbl_learning_path/features/drawer/bloc/user_profile_editor_bloc.dart';
 import 'package:flutter_cbl_learning_path/features/drawer/bloc/user_profile_editor_event.dart';
 import 'package:flutter_cbl_learning_path/features/drawer/bloc/user_profile_editor_state.dart';
 import 'package:flutter_cbl_learning_path/features/drawer/data/user_repository.dart';
+import 'package:flutter_cbl_learning_path/features/router/bloc/route_state.dart';
 import 'package:flutter_cbl_learning_path/models/form_status.dart';
+import 'package:image_picker/image_picker.dart';
 
 
 class UserProfileEditorWidget extends StatelessWidget{
   const UserProfileEditorWidget({super.key});
-
   @override
   Widget build(BuildContext context){
     return BlocProvider(
@@ -41,16 +44,66 @@ class UserProfileEditorWidget extends StatelessWidget{
                               color: Colors.black,
                             ),
                           ),
-                          _FirstNameInput(),
-                          _LastNameInput(),
-                          _JobTitleInput(),
-                          _SaveButton(),
+                          const ImageSelector(),
+                          const _FirstNameInput(),
+                          const _LastNameInput(),
+                          const _JobTitleInput(),
+                          const _SaveButton(),
                         ])))));
   }
 }
+class ImageSelector extends StatefulWidget {
+  const ImageSelector({super.key});
 
+  @override
+  _ImageSelectorState createState() => _ImageSelectorState();
+}
+
+class _ImageSelectorState extends State<ImageSelector>{
+
+  var imagePicker = ImagePicker();
+
+  @override
+  Widget build(BuildContext context){
+    final bloc = BlocProvider.of<UserProfileEditorBloc>(context);
+
+    return BlocBuilder<UserProfileEditorBloc, UserProfileEditorState>(
+      builder: (context, state) {
+        if (state.imageRaw != null && (state.status == FormEditorStatus.dataLoaded || state.status == FormEditorStatus.dataChanged)) {
+          var imageBytes = state.imageRaw as Uint8List;
+          var image = Image.memory(imageBytes,
+              alignment:
+              AlignmentDirectional.center,
+              height: 80,
+              width: 80);
+          return GestureDetector(
+            onTap:() async {
+              final file = await imagePicker.pickImage(source: ImageSource.gallery);
+              if (file != null && mounted) {
+                bloc.add(SelectImageEvent(file));
+              }
+            },
+              child: Padding(
+              padding: const EdgeInsets.all(2),
+              child: ClipOval(
+                  child: SizedBox.fromSize(
+                      size: const Size.fromRadius(80), child: image))));
+        } else  {
+          return const CircleAvatar();
+        }
+
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+}
 
 class _FirstNameInput extends StatelessWidget {
+  const _FirstNameInput({super.key});
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<UserProfileEditorBloc, UserProfileEditorState>(
@@ -75,6 +128,8 @@ class _FirstNameInput extends StatelessWidget {
 }
 
 class _LastNameInput extends StatelessWidget {
+  const _LastNameInput({super.key});
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<UserProfileEditorBloc, UserProfileEditorState>(
@@ -99,6 +154,8 @@ class _LastNameInput extends StatelessWidget {
 }
 
 class _JobTitleInput extends StatelessWidget {
+  const _JobTitleInput({super.key});
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<UserProfileEditorBloc, UserProfileEditorState>(
@@ -123,6 +180,8 @@ class _JobTitleInput extends StatelessWidget {
 }
 
 class _SaveButton extends StatelessWidget {
+  const _SaveButton({super.key});
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<UserProfileEditorBloc, UserProfileEditorState>(

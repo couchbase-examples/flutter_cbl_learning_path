@@ -11,3 +11,4 @@ class UserProfileGetDataEvent extends UserProfileEvent {
   @override
   List<Object> get props => [];
 }
+
