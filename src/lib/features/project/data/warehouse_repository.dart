@@ -58,7 +58,6 @@ class WarehouseRepository {
         final result = await query.execute();
         final results = await result.allResults();
         for (var r in results) {
-          r.toJson();
           final map = r.toPlainMap();
           final warehouseDoa = WarehouseDao.fromJson(map);
           items.add(warehouseDoa.warehouse);
