@@ -6,49 +6,44 @@ import 'package:flutter_cbl_learning_path/features/drawer/bloc/user_profile_edit
 import 'package:flutter_cbl_learning_path/features/drawer/data/user_repository.dart';
 import 'package:flutter_cbl_learning_path/models/form_status.dart';
 
-
-class UserProfileEditorWidget extends StatelessWidget{
+class UserProfileEditorWidget extends StatelessWidget {
   const UserProfileEditorWidget({super.key});
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return BlocProvider(
         create: (context) {
           return UserProfileEditorBloc(
-            userRepository:
-            RepositoryProvider.of<UserRepository>(
-                context),
+            userRepository: RepositoryProvider.of<UserRepository>(context),
           )..add(const UserProfileEditorLoadEvent());
         },
         child: SafeArea(
             child: Container(
                 width: MediaQuery.of(context).size.width,
-                height:
-                MediaQuery.of(context).size.height,
+                height: MediaQuery.of(context).size.height,
                 padding: const EdgeInsets.all(20),
                 color: Colors.grey,
                 child: Scaffold(
                     body: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: IconButton(
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                              icon: const Icon(Icons.close),
-                              color: Colors.black,
-                            ),
-                          ),
-                          _FirstNameInput(),
-                          _LastNameInput(),
-                          _JobTitleInput(),
-                          _SaveButton(),
-                        ])))));
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: IconButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          icon: const Icon(Icons.close),
+                          color: Colors.black,
+                        ),
+                      ),
+                      _FirstNameInput(),
+                      _LastNameInput(),
+                      _JobTitleInput(),
+                      _SaveButton(),
+                    ])))));
   }
 }
-
 
 class _FirstNameInput extends StatelessWidget {
   @override
@@ -59,7 +54,10 @@ class _FirstNameInput extends StatelessWidget {
         return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
             child: TextField(
-              controller: TextEditingController(text: state.firstName),
+              controller: TextEditingController()
+                ..text = state.firstName
+                ..selection =
+                    TextSelection.collapsed(offset: state.firstName.length),
               key: const Key('userProfileEditor_firstNameInput_textField'),
               keyboardType: TextInputType.text,
               onChanged: (firstName) => context
@@ -83,7 +81,10 @@ class _LastNameInput extends StatelessWidget {
         return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
             child: TextField(
-              controller: TextEditingController(text: state.lastName),
+              controller: TextEditingController()
+                ..text = state.lastName
+                ..selection =
+                    TextSelection.collapsed(offset: state.lastName.length),
               key: const Key('userProfileEditor_lastNameInput_textField'),
               keyboardType: TextInputType.text,
               onChanged: (lastName) => context
@@ -107,7 +108,10 @@ class _JobTitleInput extends StatelessWidget {
         return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
             child: TextField(
-              controller: TextEditingController(text: state.jobTitle),
+              controller: TextEditingController()
+                ..text = state.jobTitle
+                ..selection =
+                    TextSelection.collapsed(offset: state.jobTitle.length),
               key: const Key('userProfileEditor_jobTitleInput_textField'),
               keyboardType: TextInputType.text,
               onChanged: (jobTitle) => context
