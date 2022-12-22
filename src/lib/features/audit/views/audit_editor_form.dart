@@ -97,23 +97,25 @@ class _SaveButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AuditEditorBloc, AuditEditorState>(
         builder: (context, state) {
-          if (state.status == FormEditorStatus.dataSaved ||
-              state.status == FormEditorStatus.cancelled) {
-            return const Center(child: CircularProgressIndicator());
-          } else {
-            return Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: ElevatedButton(
-                  onPressed: () => context.read<AuditEditorBloc>().add(const AuditEditorSaveEvent()),
-                  child: const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text(
-                        "Save",
-                        style: TextStyle(color: Colors.white, fontSize: 24.0),
-                      ))),
-            );
-          }
-        });
+      if (state.status == FormEditorStatus.dataSaved ||
+          state.status == FormEditorStatus.cancelled) {
+        return const Center(child: CircularProgressIndicator());
+      } else {
+        return Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: ElevatedButton(
+              onPressed: () => context
+                  .read<AuditEditorBloc>()
+                  .add(const AuditEditorSaveEvent()),
+              child: const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text(
+                    "Save",
+                    style: TextStyle(color: Colors.white, fontSize: 24.0),
+                  ))),
+        );
+      }
+    });
   }
 }
 
@@ -224,30 +226,29 @@ class _StockItemSearchButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<StockItemSearchBloc, StockItemSearchState>(
-        builder: (context, state) {
-          if (state.status == FormEditorStatus.dataSaved ||
-              state.status == FormEditorStatus.cancelled) {
-            Navigator.of(context).pop();
-            return const Text('');
-          } else {
-            return Padding(
-              padding: const EdgeInsets.only(top: 16.0, left: 8.0, right: 8.0),
-              child: ElevatedButton(
-                  onPressed: () {
-                    context
-                        .read<StockItemSearchBloc>()
-                        .add(const StockItemSearchSubmitChangedEvent());
-                  },
-                  child: const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text(
-                        "Search",
-                        style: TextStyle(color: Colors.white, fontSize: 24.0),
-                      ))),
-            );
-          }
-        });
+    return BlocListener<StockItemSearchBloc, StockItemSearchState>(
+      listener: (context, state) {
+        if (state.status == FormEditorStatus.dataSaved ||
+            state.status == FormEditorStatus.cancelled) {
+          Navigator.of(context).pop();
+        }
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(top: 16.0, left: 8.0, right: 8.0),
+        child: ElevatedButton(
+          onPressed: () => context
+              .read<StockItemSearchBloc>()
+              .add(const StockItemSearchSubmitChangedEvent()),
+          child: const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Text(
+              "Search",
+              style: TextStyle(color: Colors.white, fontSize: 24.0),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
 

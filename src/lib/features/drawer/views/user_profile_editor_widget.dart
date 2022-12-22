@@ -125,26 +125,25 @@ class _JobTitleInput extends StatelessWidget {
 class _SaveButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<UserProfileEditorBloc, UserProfileEditorState>(
-        builder: (context, state) {
-          if (state.status == FormEditorStatus.dataSaved || state.status == FormEditorStatus.cancelled) {
-            Navigator.of(context).pop();
-            return const Text('');
-          } else {
-            return Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ElevatedButton(
-                  onPressed: () {
-                    context
-                        .read<UserProfileEditorBloc>()
-                        .add(const UserProfileEditorSaveEvent());
-                  },
-                  child: const Text(
-                    "Save",
-                    style: TextStyle(color: Colors.white),
-                  )),
-            );
-          }
-        });
+    return BlocListener<UserProfileEditorBloc, UserProfileEditorState>(
+      listener: (context, state) {
+        if (state.status == FormEditorStatus.dataSaved ||
+            state.status == FormEditorStatus.cancelled) {
+          Navigator.of(context).pop();
+        }
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ElevatedButton(
+          onPressed: () => context
+              .read<UserProfileEditorBloc>()
+              .add(const UserProfileEditorSaveEvent()),
+          child: const Text(
+            "Save",
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+      ),
+    );
   }
 }

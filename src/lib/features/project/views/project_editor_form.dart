@@ -322,34 +322,33 @@ class _StateInput extends StatelessWidget {
 }
 
 class _WarehouseSearchButton extends StatelessWidget {
-  const _WarehouseSearchButton({super.key});
+  const _WarehouseSearchButton();
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<WarehouseSearchBloc, WarehouseSearchState>(
-        builder: (context, state) {
-      if (state.status == FormEditorStatus.dataSaved ||
-          state.status == FormEditorStatus.cancelled) {
-        Navigator.of(context).pop();
-        return const Text('');
-      } else {
-        return Padding(
-          padding: const EdgeInsets.only(top: 16.0, left: 8.0, right: 8.0),
-          child: ElevatedButton(
-              onPressed: () {
-                context
-                    .read<WarehouseSearchBloc>()
-                    .add(const WarehouseSearchSubmitChangedEvent());
-              },
-              child: const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text(
-                    "Search",
-                    style: TextStyle(color: Colors.white, fontSize: 24.0),
-                  ))),
-        );
-      }
-    });
+    return BlocListener<WarehouseSearchBloc, WarehouseSearchState>(
+      listener: (context, state) {
+        if (state.status == FormEditorStatus.dataSaved ||
+            state.status == FormEditorStatus.cancelled) {
+          Navigator.of(context).pop();
+        }
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(top: 16.0, left: 8.0, right: 8.0),
+        child: ElevatedButton(
+          onPressed: () => context
+              .read<WarehouseSearchBloc>()
+              .add(const WarehouseSearchSubmitChangedEvent()),
+          child: const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Text(
+              "Search",
+              style: TextStyle(color: Colors.white, fontSize: 24.0),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
 
