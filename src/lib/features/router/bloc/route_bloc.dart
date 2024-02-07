@@ -100,10 +100,13 @@ class RouteBloc extends Bloc<RouteEvent, RouteState> {
           await _databaseProvider.initDatabases(user: user);
 
           //init replicator with config
-          //NOTE YOU MUST CHANGE THE CONFIG IN THE
-          //replicator_provider.dart FILE BEFORE
-          //UNCOMMENTING OUT THIS CODE
 
+          /*******************************
+           * NOTE YOU MUST CHANGE THE CONFIG IN THE
+           * replicator_provider.dart FILE BEFORE
+           * UNCOMMENTING OUT THIS LINE OF CODE
+           * OR YOU WILL GET ERRORS
+           *******************************/
           //await _replicatorProvider.init();
 
           return emit(RouteState.authenticated(user));

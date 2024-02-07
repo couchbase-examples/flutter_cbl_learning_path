@@ -2,6 +2,7 @@ import 'package:cbl/cbl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cbl_learning_path/features/database/database.dart';
 import 'package:flutter_cbl_learning_path/features/router/route.dart';
+import 'package:flutter/services.dart';
 
 class ReplicatorProvider {
 
@@ -21,43 +22,70 @@ class ReplicatorProvider {
   // or it will not function properly.
   Future<void> init () async {
 
+    debugPrint('${DateTime.now()} [ReplicatorProvider] info: starting init.');
     var db = databaseProvider.inventoryDatabase;
     var user = await authenticationService.getCurrentUser();
     if (db != null && user != null) {
 
       //MODIFY THIS CONFIG OR REPLICATOR WILL NOT RUN PROPERLY
-      // **
-      // ** For App Services Users:  You can find  this url in your
-      // ** App Services Endpoint connection tab
-      // ** you will need to replace host with the provided host in the App Services
-      // ** connection tab and replace path with the endpoint path.
-      // ** for the learning path, you can default it to projects.
-      //
-      //  example
-      //    host:
-      //       your_account_hostname.apps.cloud.couchbase.com
-      //
-      // ** For Sync Gateway User:  Docker installations on your local computer
-      // ** require these changes to work with the learning path documentation
-      //
-      // scheme: switch from wss to ws
-      //
-      // port: 4984
-      //
-      // host:
-      //    Android:
-      //      10.0.2.2
-      //    iOS:
-      //      localhost
-      //
-      // path:  projects
-      // **
+
+      /*********************************************************************
+
+      ** For Sync Gateway User:  Docker installations on your local computer
+      ** require these changes to work with the learning path documentation
+
+      ** scheme: switch from wss to ws
+
+      ** port: 4984
+
+      ** host:
+      **    Android:
+      **      10.0.2.2
+      **    iOS:
+      **      localhost
+      **
+      ** path:  projects
+      **
+
+       ** For App Services Users:  You can find  this url in your
+       ** App Services Endpoint connection tab
+       ** you will need to replace host with the provided host in the App Services
+       ** connection tab and replace path with the endpoint path.
+       ** for the learning path, you can default it to projects.
+
+       **  example
+       **    host:
+       **     your_account_hostname.apps.cloud.couchbase.com
+       **
+       ** APP SERVICES Users - you must do the following:
+
+       ** 1. Find the url in your App Services Endpoint connection tab
+       **  a. you will need to replace host with the provided host in the App Services
+       **     connection tab and replace path with the endpoint path.
+       **  example
+       **    host:
+       **     your_account_hostname.apps.cloud.couchbase.com
+
+       ** 2. In Capella, download the Public Certificate from the Connection tab in your App EndPoint
+       ** 3. Add the .pem file to the asset folder in the src folder
+       ** 4. Update your pubspec.yaml to include the certificate - note it's yaml so the spacing is important
+       ** example
+       **   assets:
+       ** - asset/images/couchbase.png
+       ** - asset/database/startingWarehouses.zip
+       ** - asset/cert.pem
+       ** 5. Uncomment the line below to load the certificate
+       ** 6. Uncomment the line in the replicator configuration to load the certificate
+       ************************************************************************************/
+
+      // App Services Users - Uncomment to Load the certificate from the asset folder
+      //var pem = await rootBundle.load('cert.pem');
 
       // <1>
       var url = Uri(scheme: 'wss',
-          port: 4984,
-          host: 'put_your_url_in_here',             //change this line to match your configuration!!
-          path: 'projects',
+        port: 4984,
+        host: 'put_your_url_in_here',             //change this line to match your configuration!!
+        path: 'projects',
       );
 
       var basicAuthenticator = BasicAuthenticator(username: user.username, password: user.password);
@@ -71,6 +99,8 @@ class ReplicatorProvider {
           continuous: true,
           replicatorType: ReplicatorType.pushAndPull,
           heartbeat: const Duration(seconds: 60),
+          // **UNCOMMENT** this the line below if you are using App Services or a custom certificate
+          // pinnedServerCertificate: pem.buffer.asUint8List()
         );
 
       //check for nulls
@@ -92,7 +122,7 @@ class ReplicatorProvider {
     debugPrint('${DateTime.now()} [ReplicatorProvider] info: starting replicator.');
 
     var replicator = _replicator;
-    if (replicator != null && replicator.isClosed) {
+    if (replicator != null) {
 
       if(onStatusChange != null) {
         var function = onStatusChange;
@@ -105,6 +135,9 @@ class ReplicatorProvider {
       await replicator.start();
 
       debugPrint('${DateTime.now()} [ReplicatorProvider] info: started replicator.');
+    }
+    else {
+      debugPrint('${DateTime.now()} [ReplicatorProvider] error: cannot start replicator, it is null.');
     }
   }
 
