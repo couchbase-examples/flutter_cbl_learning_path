@@ -17,6 +17,13 @@ class AuditListBloc extends Bloc<AuditListEvent, AuditListState> {
 
   final AuditRepository _repository;
   var isInitialState = true;
+  var _isClosed = false;
+
+  @override
+  Future<void> close() {
+    _isClosed = true;
+    return super.close();
+  }
 
   Future<void> _onLoaded(
       AuditListLoadedEvent event, Emitter<AuditListState> emit) async {
@@ -55,17 +62,18 @@ class AuditListBloc extends Bloc<AuditListEvent, AuditListState> {
           var items = <Audit>[];
           // <5>
           var results = await change.results.allResults();
-          //<6>
-          for (var result in results) {
-            // <7>
-            var map = result.toPlainMap();
-            var dao = AuditDao.fromJson(map);
-            // <8>
-            items.add(dao.item);
+          if (!_isClosed) {
+            //<6>
+            for (var result in results) {
+              // <7>
+              var map = result.toPlainMap();
+              var dao = AuditDao.fromJson(map);
+              // <8>
+              items.add(dao.item);
+            }
+            // <9>
+            add(AuditListLoadedEvent(items: items));
           }
-          // <9>
-          add(AuditListLoadedEvent(items: items));
-
         });
       }
     } catch (e) {
