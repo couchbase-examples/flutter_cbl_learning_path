@@ -47,6 +47,72 @@ The default state of the app is for the user to not be authenticated, which will
 
 The user can use the <a target="_blank" rel="noopener noreferrer" href="https://github.com/couchbase-examples/flutter_cbl_learning_path/blob/main/src/lib/features/drawer/views/menu_drawer.dart#L7">menu drawer</a> to navigate to other sections of the app or use the Floating Action button to <a target="_blank" rel="noopener noreferrer" href="https://github.com/couchbase-examples/flutter_cbl_learning_path/blob/main/src/lib/featu">add a new Project</a>.
 
+### Replication
+
+#### Couchbase Capella App Services Users
+It's highly recommended to follow the full documentation on the [Couchbase Developer Portal](https://developer.couchbase.com/learn/).  An overview of the steps using the <a target="_blank" rel="noopener noreferrer" href="https://docs.couchbase.com/cloud/mobile-guides/intro.html">Couchbase Capella</a> documentation is provided below:
+
+The steps below will guide you through the following:
+ * Setup an App Endpoint under your App Services in Couchbase Capella named `projects` 
+ * Update your import and sync functions
+ * Create App Roles and App Users
+ * Copy the URL of the App Endpoint
+ * Download the App Endpoint Public Certificate file
+ * Update the app to use the public certficate and URL information to connect to Couchbase Capella App Services to sync documents between the mobile app and App Services.  
+
+1. Create an endpoint called projects using the documentation found  <a target="_blank" rel="noopener noreferrer" href="https://docs.couchbase.com/cloud/app-services/deployment/creating-an-app-endpoint.html">here</a>.
+  * **NOTE** Use the import.js file in the Import Filter section of the documentation.
+2. You will need to update the Access Control and Validation for the App Endpoint usng documentation you can find <a target="_blank" rel="noopener noreferrer" href="https://docs.couchbase.com/cloud/app-services/deployment/access-control-data-validation.html">here</a>.
+  * **NOTE** Use the sync.js file in the second step under Security > Access and Validation.
+3. You will need to add the roles for the users using the documentation found <a target="_blank" rel="noopener noreferrer" href="https://docs.couchbase.com/cloud/app-services/user-management/create-app-role.html">here</a>.
+  a. You will need to create roles `team1` through `team15` with the same channel name as the role name.  These are assigned to the user in the <a target="_blank" rel="noopener noreferrer" href="https://github.com/couchbase-examples/flutter_cbl_learning_path/blob/main/src/lib/features/router/service/auth_service.dart#L67">auth_services.dart</a> file and must must match this file or you will get a 403 error when trying to replicate.
+4. You will need to create sample users using the documentation found <a target="_blank" rel="noopener noreferrer" href="https://docs.couchbase.com/cloud/app-services/user-management/create-user.html">here</a>.
+  a. You will need to create users `demo@example.com` through `demo15@example.com` same roles as found in the <a target="_blank" rel="noopener noreferrer" href="https://github.com/couchbase-examples/flutter_cbl_learning_path/blob/main/src/lib/features/router/service/auth_service.dart#L67">auth_services.dart</a> file.  If the user isn't added to the proper role, you will have issues when trying to replicate documents.
+5. From the App Services Endpoint section of Couchbase Capella, click on the <a target="_blank" rel="noopener noreferrer" href="https://docs.couchbase.com/cloud/app-services/connect/connect-apps-to-endpoint.html">Connect tab</a>.
+6.  You will need to write down the `Public Connection` URL that is provided on this page so we can update the hostname in the `replicator_provider.dart` file in a later step.
+7.  Download the Public Certificate file.  The dart SDK doesn't include the App Services certificate, so you will need to provide it in the app and then `pin it` in the replication configuration.  You can click the Download button under Public Certificate which should download a cert.pem file.
+8.  Add the .pem file (certificate) to the src folder.  It should be at the same folder structure level as your <a target="_blank" rel="noopener noreferrer" href="https://github.com/couchbase-examples/flutter_cbl_learning_path/blob/main/src/pubspec.yaml">pubspec.yaml</a> file. 
+9.  Update the <a target="_blank" rel="noopener noreferrer" href="https://github.com/couchbase-examples/flutter_cbl_learning_path/blob/main/src/pubspec.yaml#L43">src/pubspec.yaml</a> file to include the certificate file.  Note it's YAML so the spacing is important.  An example of what the file file should look like after this change is provided below:
+```yaml
+  assets:
+    - asset/images/couchbase.png
+    - asset/database/startingWarehouses.zip
+    - cert.pem
+```  
+10. Open the <a target="_blank" rel="noopener noreferrer" href="https://github.com/couchbase-examples/flutter_cbl_learning_path/blob/main/src/lib/features/database/replicator_provider.dart">replicator_provider.dart</a> file found in the src/lib/features/database directory.
+11. Uncomment <a target="_blank" rel="noopener noreferrer" href="https://github.com/couchbase-examples/flutter_cbl_learning_path/blob/main/src/lib/features/database/replicator_provider.dart#L82">line 82</a> that will load the pem file that you added in `step 5` and put in the YAML file in `step 6`
+```dart
+var pem = await rootBundle.load('cert.pem');
+```
+12. Update <a target="_blank" rel="noopener noreferrer" href="https://github.com/couchbase-examples/flutter_cbl_learning_path/blob/main/src/lib/features/database/replicator_provider.dart#L87">line 87</a> with the hostname part of your URL that you got from `step 3`.  Note you have to remove the `endpoint` name from the url to get the hostname.  It should look similar to this:
+```dart
+  var url = Uri(scheme: 'wss',
+        port: 4984,
+        host: 'your_account_hostname.apps.cloud.couchbase.com',             
+        path: 'projects',
+      );
+```  
+13.  Uncomment out <a target="_blank" rel="noopener noreferrer" href="https://github.com/couchbase-examples/flutter_cbl_learning_path/blob/main/src/lib/features/database/replicator_provider.dart#L103">line 103</a> in order to load the PEM file as a pinned certificate.  This will allow the device to trust the connection between App Services and the mobile device.  Your code should look like this when done:
+```dart
+      _replicatorConfiguration = ReplicatorConfiguration(
+          database: db,
+          target: endPoint,
+          authenticator: basicAuthenticator,
+          continuous: true,
+          replicatorType: ReplicatorType.pushAndPull,
+          heartbeat: const Duration(seconds: 60),
+          // **UNCOMMENT** this the line below if you are using App Services or a custom certificate
+          pinnedServerCertificate: pem.buffer.asUint8List()
+        );
+```
+14.  Open the <a target="_blank" rel="noopener noreferrer" href="https://github.com/couchbase-examples/flutter_cbl_learning_path/blob/main/src/lib/features/router/bloc/route_bloc.dart#L110">src/lib/features/router/bloc/route_bloc.dart</a> file 
+15.  Uncomment out <a target="_blank" rel="noopener noreferrer" href="https://github.com/couchbase-examples/flutter_cbl_learning_path/blob/main/src/lib/features/router/bloc/route_bloc.dart#L110">line 110</a> so it enables the replicator to initalize once the user logs into the app.
+
+```dart
+  await _replicatorProvider.init();
+```
+16.  You should be able to now debug the app and replication should start working.  Any documents found on Couchbase Server will be replicated to the mobile device and any documents created on the mobile device will be replicated to the server.  You can use the Couchbase Server UI to see the documents that are being replicated.
+
 ### Try it out
 
 * Open src folder using your favorite IDE
