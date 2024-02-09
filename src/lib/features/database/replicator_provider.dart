@@ -79,7 +79,7 @@ class ReplicatorProvider {
        ************************************************************************************/
 
       // App Services Users - Uncomment to Load the certificate from the asset folder
-      //var pem = await rootBundle.load('cert.pem');
+      //var pem = await rootBundle.load('projects.pem');
 
       // <1>
       var url = Uri(scheme: 'wss',
