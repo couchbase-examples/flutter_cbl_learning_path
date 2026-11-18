@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
+import 'package:cbl/cbl.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_cbl_learning_path/features/audit/data/audit_repository.dart';
 import 'audit_list.dart';
@@ -17,12 +20,22 @@ class AuditListBloc extends Bloc<AuditListEvent, AuditListState> {
 
   final AuditRepository _repository;
   var isInitialState = true;
-  var _isClosed = false;
+
+  // The bloc owns its live query subscription: it is replaced when a different
+  // project's audits are requested and cancelled when the bloc closes, which
+  // removes the Couchbase Lite change listener behind the stream.
+  StreamSubscription<QueryChange<ResultSet>>? _liveQuerySubscription;
 
   @override
-  Future<void> close() {
-    _isClosed = true;
+  Future<void> close() async {
+    await _cancelLiveQuery();
     return super.close();
+  }
+
+  Future<void> _cancelLiveQuery() async {
+    final subscription = _liveQuerySubscription;
+    _liveQuerySubscription = null;
+    await subscription?.cancel();
   }
 
   Future<void> _onLoaded(
@@ -51,18 +64,24 @@ class AuditListBloc extends Bloc<AuditListEvent, AuditListState> {
   Future<void> _onInitialize (
       AuditListInitializeEvent event, Emitter<AuditListState> emit) async {
     try {
+      // stop listening to the previous project's live query before starting
+      // a new one, otherwise its results keep being added to this bloc
+      await _cancelLiveQuery();
       emit(state.copyWith(status: DataStatus.loading));
       // <1>
       var stream = await _repository.getDocuments(event.projectId);
       // <2>
-      if (stream != null) {
+      if (stream != null && !isClosed) {
+        // a newer initialize event may have subscribed while this one was
+        // waiting on the repository, so swap synchronously and cancel the old one
+        final previous = _liveQuerySubscription;
         // <3>
-        stream.listen((change) async {
+        _liveQuerySubscription = stream.listen((change) async {
           // <4>
           var items = <Audit>[];
           // <5>
           var results = await change.results.allResults();
-          if (!_isClosed) {
+          if (!isClosed) {
             //<6>
             for (var result in results) {
               // <7>
@@ -75,6 +94,7 @@ class AuditListBloc extends Bloc<AuditListEvent, AuditListState> {
             add(AuditListLoadedEvent(items: items));
           }
         });
+        await previous?.cancel();
       }
     } catch (e) {
       emit(state.copyWith(status: DataStatus.error, error: e.toString()));

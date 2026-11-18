@@ -17,12 +17,18 @@ class ProjectListBloc extends Bloc<ProjectListEvent, ProjectListState> {
   final ProjectRepository _repository;
   AsyncListenStream<QueryChange<ResultSet>>? _liveQueryStream;
 
+  // Cancelling the subscription removes the Couchbase Lite change listener
+  // behind the live query stream.
+  StreamSubscription<QueryChange<ResultSet>>? _liveQuerySubscription;
+
   var isInitialState = true;
 
   @override
   Future<void> close() async {
-    super.close();
+    await _liveQuerySubscription?.cancel();
+    _liveQuerySubscription = null;
     _liveQueryStream = null;
+    return super.close();
   }
 
   Future<void> _onLoaded(
@@ -53,12 +59,12 @@ class ProjectListBloc extends Bloc<ProjectListEvent, ProjectListState> {
         // <1>
         _liveQueryStream = await _repository.getDocuments();
         // <2>
-        if (_liveQueryStream != null) {
+        if (_liveQueryStream != null && !isClosed) {
           // <3>
           var stream = _liveQueryStream;
           emit(state.copyWith(status: DataStatus.loading));
           // <4>
-          stream?.listen((change) async {
+          _liveQuerySubscription = stream?.listen((change) async {
             // <5>
             var items = <Project>[];
             // <6>
